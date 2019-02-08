@@ -73,7 +73,7 @@ namespace WebGLDotNET
 
         public static object CreateShader(object type) => Invoke("createShader", type);
 
-        public static void DepthFunc(object func) => gl.Invoke("depthFunc", func);
+        public static void DepthFunc(object func) => Invoke("depthFunc", func);
 
         public static void DrawElements(object mode, int count, object type, int offset) =>
             Invoke("drawElements", mode, count, type, offset);
