@@ -11,6 +11,8 @@ namespace WebGLDotNET
 
         public static object ColorBufferBit => GetProperty("COLOR_BUFFER_BIT");
 
+        public static object DepthBufferBit => GetProperty("DEPTH_BUFFER_BIT");
+
         public static object DepthTest => GetProperty("DEPTH_TEST");
 
         public static object ElementArrayBuffer => GetProperty("ELEMENT_ARRAY_BUFFER");
@@ -18,6 +20,8 @@ namespace WebGLDotNET
         public static object Float => GetProperty("FLOAT");
 
         public static object FragmentShader => GetProperty("FRAGMENT_SHADER");
+
+        public static object LEqual => GetProperty("LEQUAL");
 
         public static object StaticDraw => GetProperty("STATIC_DRAW");
 
@@ -59,6 +63,8 @@ namespace WebGLDotNET
         public static void ClearColor(double red, double green, double blue, double alpha) =>
             Invoke("clearColor", red, green, blue, alpha);
 
+        public static void ClearDepth(double depth) => Invoke("clearDepth", depth);
+
         public static void CompileShader(object shader) => Invoke("compileShader", shader);
 
         public static object CreateBuffer() => Invoke("createBuffer");
@@ -66,6 +72,8 @@ namespace WebGLDotNET
         public static object CreateProgram() => Invoke("createProgram");
 
         public static object CreateShader(object type) => Invoke("createShader", type);
+
+        public static void DepthFunc(object func) => gl.Invoke("depthFunc", func);
 
         public static void DrawElements(object mode, int count, object type, int offset) =>
             Invoke("drawElements", mode, count, type, offset);
@@ -77,6 +85,9 @@ namespace WebGLDotNET
         public static object GetAttribLocation(object program, string name) => 
             Invoke("getAttribLocation", program, name);
 
+        public static object GetUniformLocation(object program, string name) =>
+            Invoke("getUniformLocation", program, name);
+
         public static void Init(JSObject canvas)
         {
             gl = (JSObject)canvas.Invoke("getContext", "webgl");
@@ -85,6 +96,9 @@ namespace WebGLDotNET
         public static void LinkProgram(object program) => Invoke("linkProgram", program);
 
         public static void ShaderSource(object shader, string source) => Invoke("shaderSource", shader, source);
+
+        public static void UniformMatrix4fv(object location, bool transpose, float[] value) =>
+            Invoke("uniformMatrix4fv", location, transpose, value);
 
         public static void UseProgram(object program) => Invoke("useProgram", program);
 

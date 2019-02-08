@@ -5,7 +5,7 @@ namespace Samples
 {
     public static class Triangle
     {
-        public static void Run(JSObject canvas)
+        public static void Run(JSObject canvas, object canvasWidth, object canvasHeight)
         {
             WebGL.Init(canvas);
 
@@ -123,7 +123,7 @@ namespace Samples
             WebGL.Clear(WebGL.ColorBufferBit);
 
             // Set the view port
-            WebGL.Viewport(0, 0, canvas.GetObjectProperty("width"), canvas.GetObjectProperty("height"));
+            WebGL.Viewport(0, 0, canvasWidth, canvasHeight);
 
             // Draw the triangle
             WebGL.DrawElements(WebGL.Triangles, indices.Length, WebGL.UnsignedShort, 0);

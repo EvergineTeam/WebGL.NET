@@ -7,7 +7,11 @@ namespace Samples
         static void Main(string[] args)
         {
             var canvas = CreateCanvasElement();
-            Triangle.Run(canvas);
+            var canvasWidth = canvas.GetObjectProperty("width");
+            var canvasHeight = canvas.GetObjectProperty("height");
+
+            //Triangle.Run(canvas, canvasWidth, canvasHeight);
+            RotatingCube.Run(canvas, canvasWidth, canvasHeight);
         }
 
         static JSObject CreateCanvasElement()
