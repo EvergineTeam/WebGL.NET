@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <MonoRuntimeDebuggerEnabled>false</MonoRuntimeDebuggerEnabled>
+    <MonoWasmSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/1900/label=ubuntu-1804-amd64/Azure/processDownloadRequest/1900/ubuntu-1804-amd64/sdks/wasm/mono-wasm-5f7db9082e2.zip</MonoWasmSDKUri>
+    <MonoWasmAOTSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/1900/label=ubuntu-1804-amd64/Azure/processDownloadRequest/1900/ubuntu-1804-amd64/wasm-release-Linux-5f7db9082e2684d9890825028528edc8c07d5963.zip</MonoWasmAOTSDKUri>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0-dev.151" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Reference Include="WebAssembly.Bindings">
+      <HintPath>..\WebGLDotNET\WebAssembly.Bindings.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <LinkerDescriptor Remove="LinkerConfig.xml" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\WebGLDotNET\WebGLDotNET.csproj" />
+  </ItemGroup>
+  
+</Project>
