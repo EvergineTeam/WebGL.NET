@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using WebAssembly;
 
 namespace WebGLDotNET
@@ -6,6 +7,18 @@ namespace WebGLDotNET
     public static class WebGL
     {
         private static JSObject gl;
+
+        public static void RequestAnimationFrame(string loopMemberName, Type callerType)
+        {
+            var animationBootstrap = 
+                "var animate = function(time) {\n" +
+                $"    BINDING.call_static_method('[{callerType.Namespace}] {callerType.FullName}:{loopMemberName}', " +
+                    "[time]);\n" +
+                "    window.requestAnimationFrame(animate);\n" +
+                "}\n" +
+                "animate(0);";
+            Runtime.InvokeJS(animationBootstrap);
+        }
 
         public static object ArrayBuffer => GetProperty("ARRAY_BUFFER");
 

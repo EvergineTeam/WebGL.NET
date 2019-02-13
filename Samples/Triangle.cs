@@ -3,9 +3,9 @@ using WebGLDotNET;
 
 namespace Samples
 {
-    public static class Triangle
+    public class Triangle : ISample
     {
-        public static void Run(JSObject canvas, object canvasWidth, object canvasHeight)
+        public void Run(JSObject canvas, int canvasWidth, int canvasHeight)
         {
             WebGL.Init(canvas);
 

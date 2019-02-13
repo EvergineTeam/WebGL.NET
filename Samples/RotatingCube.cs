@@ -4,10 +4,12 @@ using WebGLDotNET;
 
 namespace Samples
 {
-    public static class RotatingCube
+    public class RotatingCube : ISample
     {
         static int width;
         static int height;
+
+        static double time_old;
 
         static object Pmatrix;
         static object Vmatrix;
@@ -20,7 +22,7 @@ namespace Samples
         static ushort[] indices;
         static object index_buffer;
 
-        public static void Run(JSObject canvas, object canvasWidth, object canvasHeight)
+        public void Run(JSObject canvas, int canvasWidth, int canvasHeight)
         {
             WebGL.Init(canvas);
 
@@ -36,25 +38,21 @@ namespace Samples
 
             PrepareMatrices();
 
-            Update(0);
+            // Needed for linker preserve
+            Loop(0);
+
+            WebGL.RequestAnimationFrame(nameof(Loop), GetType());
+        }
+
+        static void Loop(double time)
+        {
+            var dt = time - time_old;
+
+            Update(dt);
+
+            time_old = time;
 
             Draw();
-
-            Runtime.InvokeJS(
-@"var time_old = 0;
-var animate = function(time) 
-{
-    var dt = time - time_old;
-
-    BINDING.call_static_method('[Samples] Samples.RotatingCube:Update', [dt]);
-
-    time_old = time;
-
-    BINDING.call_static_method('[Samples] Samples.RotatingCube:Draw', []);
-
-    window.requestAnimationFrame(animate);
-}
-animate(0);");
         }
 
         static void InitializeProgram(object vertex_buffer, object color_buffer)
