@@ -1,5 +1,5 @@
 # WebGL.NET
 
-A *proof-of-concept* C# wrapper for WebGL through WebAssembly.
+A *proof-of-concept* C# wrapper for WebGL through WebAssembly, thought for @WaveEngine.
 
-ee the samples running [here](https://marcoscobena.com/tmp/webgldotnet/).
+See the samples running [here](https://marcoscobena.com/tmp/webgldotnet/).
