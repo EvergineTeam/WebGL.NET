@@ -11,8 +11,8 @@ namespace Samples
         {
             var samples = new ISample[] 
             { 
-                //new Triangle(), 
-                //new RotatingCube(),
+                new Triangle(), 
+                new RotatingCube(),
                 new Draw2DImage()
             };
 

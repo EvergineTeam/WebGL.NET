@@ -6,6 +6,7 @@ namespace Samples
 {
     public class RotatingCube : ISample
     {
+        static WebGL gl;
         static int width;
         static int height;
 
@@ -24,7 +25,7 @@ namespace Samples
 
         public void Run(JSObject canvas, int canvasWidth, int canvasHeight)
         {
-            WebGL.Init(canvas);
+            gl = WebGL.Init(canvas);
 
             width = (int)canvasWidth;
             height = (int)canvasHeight;
@@ -41,7 +42,7 @@ namespace Samples
             // Needed for linker preserve
             Loop(0);
 
-            WebGL.RequestAnimationFrame(nameof(Loop), GetType());
+            gl.RequestAnimationFrame(nameof(Loop), GetType());
         }
 
         static void Loop(double time)
@@ -59,22 +60,22 @@ namespace Samples
         {
             var shaderProgram = PrepareShaderProgram();
 
-            Pmatrix = WebGL.GetUniformLocation(shaderProgram, "Pmatrix");
-            Vmatrix = WebGL.GetUniformLocation(shaderProgram, "Vmatrix");
-            Mmatrix = WebGL.GetUniformLocation(shaderProgram, "Mmatrix");
+            Pmatrix = gl.GetUniformLocation(shaderProgram, "Pmatrix");
+            Vmatrix = gl.GetUniformLocation(shaderProgram, "Vmatrix");
+            Mmatrix = gl.GetUniformLocation(shaderProgram, "Mmatrix");
 
-            WebGL.BindBuffer(WebGL.ArrayBuffer, vertex_buffer);
+            gl.BindBuffer(gl.ArrayBuffer, vertex_buffer);
 
-            var position = WebGL.GetAttribLocation(shaderProgram, "position");
-            WebGL.VertexAttribPointer(position, 3, WebGL.Float, false, 0, 0);
-            WebGL.EnableVertexAttribArray(position);
-            WebGL.BindBuffer(WebGL.ArrayBuffer, color_buffer);
+            var position = gl.GetAttribLocation(shaderProgram, "position");
+            gl.VertexAttribPointer(position, 3, gl.Float, false, 0, 0);
+            gl.EnableVertexAttribArray(position);
+            gl.BindBuffer(gl.ArrayBuffer, color_buffer);
 
-            var color = WebGL.GetAttribLocation(shaderProgram, "color");
-            WebGL.VertexAttribPointer(color, 3, WebGL.Float, false, 0, 0);
-            WebGL.EnableVertexAttribArray(color);
+            var color = gl.GetAttribLocation(shaderProgram, "color");
+            gl.VertexAttribPointer(color, 3, gl.Float, false, 0, 0);
+            gl.EnableVertexAttribArray(color);
 
-            WebGL.UseProgram(shaderProgram);
+            gl.UseProgram(shaderProgram);
         }
 
         static void Update(double dt)
@@ -86,25 +87,25 @@ namespace Samples
 
         static void Draw()
         {
-            WebGL.Enable(WebGL.DepthTest);
-            WebGL.DepthFunc(WebGL.LEqual);
-            WebGL.ClearColor(0.5, 0.5, 0.5, 0.9);
-            WebGL.ClearDepth(1.0);
+            gl.Enable(gl.DepthTest);
+            gl.DepthFunc(gl.LEqual);
+            gl.ClearColor(0.5, 0.5, 0.5, 0.9);
+            gl.ClearDepth(1.0);
 
-            WebGL.Viewport(0, 0, width, height);
+            gl.Viewport(0, 0, width, height);
 
-            var flag1 = (int)WebGL.ColorBufferBit;
-            var flag2 = (int)WebGL.DepthBufferBit;
+            var flag1 = (int)gl.ColorBufferBit;
+            var flag2 = (int)gl.DepthBufferBit;
 
-            WebGL.Clear(flag1 | flag2);
+            gl.Clear(flag1 | flag2);
 
-            WebGL.UniformMatrix4fv(Pmatrix, false, proj_matrix);
-            WebGL.UniformMatrix4fv(Vmatrix, false, view_matrix);
-            WebGL.UniformMatrix4fv(Mmatrix, false, mov_matrix);
+            gl.UniformMatrix4fv(Pmatrix, false, proj_matrix);
+            gl.UniformMatrix4fv(Vmatrix, false, view_matrix);
+            gl.UniformMatrix4fv(Mmatrix, false, mov_matrix);
 
-            WebGL.BindBuffer(WebGL.ElementArrayBuffer, index_buffer);
+            gl.BindBuffer(gl.ElementArrayBuffer, index_buffer);
 
-            WebGL.DrawElements(WebGL.Triangles, indices.Length, WebGL.UnsignedShort, 0);
+            gl.DrawElements(gl.Triangles, indices.Length, gl.UnsignedShort, 0);
         }
 
         static object PrepareColorBuffer()
@@ -119,9 +120,9 @@ namespace Samples
                 0,1,0, 0,1,0, 0,1,0, 0,1,0
             };
 
-            var color_buffer = WebGL.CreateBuffer();
-            WebGL.BindBuffer(WebGL.ArrayBuffer, color_buffer);
-            WebGL.BufferData(WebGL.ArrayBuffer, colors, WebGL.StaticDraw);
+            var color_buffer = gl.CreateBuffer();
+            gl.BindBuffer(gl.ArrayBuffer, color_buffer);
+            gl.BufferData(gl.ArrayBuffer, colors, gl.StaticDraw);
 
             return color_buffer;
         }
@@ -135,9 +136,9 @@ namespace Samples
                     "gl_FragColor = vec4(vColor, 1.);" +
                 "}";
 
-            var fragShader = WebGL.CreateShader(WebGL.FragmentShader);
-            WebGL.ShaderSource(fragShader, fragCode);
-            WebGL.CompileShader(fragShader);
+            var fragShader = gl.CreateShader(gl.FragmentShader);
+            gl.ShaderSource(fragShader, fragCode);
+            gl.CompileShader(fragShader);
 
             return fragShader;
         }
@@ -151,9 +152,9 @@ namespace Samples
                 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23
             };
 
-            index_buffer = WebGL.CreateBuffer();
-            WebGL.BindBuffer(WebGL.ElementArrayBuffer, index_buffer);
-            WebGL.BufferData(WebGL.ElementArrayBuffer, indices, WebGL.StaticDraw);
+            index_buffer = gl.CreateBuffer();
+            gl.BindBuffer(gl.ElementArrayBuffer, index_buffer);
+            gl.BufferData(gl.ElementArrayBuffer, indices, gl.StaticDraw);
         }
 
         static void PrepareMatrices()
@@ -185,10 +186,10 @@ namespace Samples
             var vertShader = PrepareVertexShader();
             var fragShader = PrepareFragmentShader();
 
-            var shaderProgram = WebGL.CreateProgram();
-            WebGL.AttachShader(shaderProgram, vertShader);
-            WebGL.AttachShader(shaderProgram, fragShader);
-            WebGL.LinkProgram(shaderProgram);
+            var shaderProgram = gl.CreateProgram();
+            gl.AttachShader(shaderProgram, vertShader);
+            gl.AttachShader(shaderProgram, fragShader);
+            gl.LinkProgram(shaderProgram);
 
             return shaderProgram;
         }
@@ -205,9 +206,9 @@ namespace Samples
                 -1, 1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1,
             };
 
-            var vertex_buffer = WebGL.CreateBuffer();
-            WebGL.BindBuffer(WebGL.ArrayBuffer, vertex_buffer);
-            WebGL.BufferData(WebGL.ArrayBuffer, vertices, WebGL.StaticDraw);
+            var vertex_buffer = gl.CreateBuffer();
+            gl.BindBuffer(gl.ArrayBuffer, vertex_buffer);
+            gl.BufferData(gl.ArrayBuffer, vertices, gl.StaticDraw);
 
             return vertex_buffer;
         }
@@ -227,9 +228,9 @@ namespace Samples
                    "vColor = color;" +
                 "}";
 
-            var vertShader = WebGL.CreateShader(WebGL.VertexShader);
-            WebGL.ShaderSource(vertShader, vertCode);
-            WebGL.CompileShader(vertShader);
+            var vertShader = gl.CreateShader(gl.VertexShader);
+            gl.ShaderSource(vertShader, vertCode);
+            gl.CompileShader(vertShader);
 
             return vertShader;
         }
