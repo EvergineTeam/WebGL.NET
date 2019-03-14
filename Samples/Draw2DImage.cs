@@ -11,7 +11,7 @@ namespace Samples
 
         public void Run(JSObject canvas, int canvasWidth, int canvasHeight)
         {
-            var gl = WebGL.Init(canvas);
+            var gl = WebGL.GetContext(canvas);
 
             var vertexShaderCode =
 @"attribute vec2 a_position;

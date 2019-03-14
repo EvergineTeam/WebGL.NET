@@ -12,7 +12,7 @@ namespace WebGLDotNET
             gl = (JSObject)canvas.Invoke("getContext", "webgl");
         }
 
-        public static WebGL Init(JSObject canvas)
+        public static WebGL GetContext(JSObject canvas)
         {
             var instance = new WebGL(canvas);
 
