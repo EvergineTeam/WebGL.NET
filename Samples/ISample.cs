@@ -1,9 +1,12 @@
 using WebAssembly;
+using System.Drawing;
 
 namespace Samples
 {
     public interface ISample
     {
-        void Run(JSObject canvas, int canvasWidth, int canvasHeight);
+        string Description { get; }
+
+        void Run(JSObject canvas, int canvasWidth, int canvasHeight, Color clearColor);
     }
 }

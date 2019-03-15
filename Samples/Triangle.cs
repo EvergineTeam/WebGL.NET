@@ -1,11 +1,14 @@
-﻿using WebAssembly;
+﻿using System.Drawing;
+using WebAssembly;
 using WebGLDotNET;
 
 namespace Samples
 {
     public class Triangle : ISample
     {
-        public void Run(JSObject canvas, int canvasWidth, int canvasHeight)
+        public string Description => string.Empty;
+
+        public void Run(JSObject canvas, int canvasWidth, int canvasHeight, Color clearColor)
         {
             var gl = WebGL.GetContext(canvas);
 
@@ -57,7 +60,7 @@ void main(void) {
             gl.VertexAttribPointer(coordinates, 3, gl.Float, false, 0, 0);
             gl.EnableVertexAttribArray(coordinates);
 
-            gl.ClearColor(0.5, 0.5, 0.5, 0.9);
+            gl.ClearColor(clearColor.R, clearColor.G, clearColor.B, clearColor.A);
             gl.Enable(gl.DepthTest);
             gl.Clear(gl.ColorBufferBit);
             gl.Viewport(0, 0, canvasWidth, canvasHeight);

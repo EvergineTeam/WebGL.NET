@@ -1,4 +1,5 @@
-﻿using WebAssembly;
+﻿using System.Drawing;
+using WebAssembly;
 using WebGLDotNET;
 
 namespace Samples
@@ -9,7 +10,9 @@ namespace Samples
         int imageWidth = 64;
         int imageHeight = 64;
 
-        public void Run(JSObject canvas, int canvasWidth, int canvasHeight)
+        public string Description => "The image is passed as byte[] in ARGB.";
+
+        public void Run(JSObject canvas, int canvasWidth, int canvasHeight, Color clearColor)
         {
             var gl = WebGL.GetContext(canvas);
 
@@ -103,7 +106,7 @@ void main() {
 
             gl.Viewport(0, 0, canvasWidth, canvasHeight);
 
-            gl.ClearColor(0, 0, 0, 0);
+            gl.ClearColor(clearColor.R, clearColor.G, clearColor.B, clearColor.A);
             gl.Clear(gl.ColorBufferBit);
 
             gl.UseProgram(program);

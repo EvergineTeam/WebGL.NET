@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Drawing;
+using WaveEngine.Common.Math;
 using WebAssembly;
 using WebGLDotNET;
-using WaveEngine.Common.Math;
 
 namespace Samples
 {
@@ -10,6 +11,7 @@ namespace Samples
         static WebGL gl;
         static int width;
         static int height;
+        static Color clearColor;
 
         static ushort[] indices;
         static object indexBuffer;
@@ -24,11 +26,16 @@ namespace Samples
 
         static double oldTime;
 
-        public void Run(JSObject canvas, int canvasWidth, int canvasHeight)
+        public string Description =>
+            "Every matrix calc relies in Wave Engine's Math library, consumed through NuGet. This will make @jcant0n " +
+            "happy :-)";
+
+        public void Run(JSObject canvas, int canvasWidth, int canvasHeight, Color clearColor)
         {
             gl = WebGL.GetContext(canvas);
             width = canvasWidth;
             height = canvasHeight;
+            RotatingCube.clearColor = clearColor;
 
             var vertices = new float[]
             {
@@ -146,7 +153,7 @@ void main(void) {
         {
             gl.Enable(gl.DepthTest);
             gl.DepthFunc(gl.LEqual);
-            gl.ClearColor(0.5, 0.5, 0.5, 0.9);
+            gl.ClearColor(clearColor.R, clearColor.G, clearColor.B, clearColor.A);
             gl.ClearDepth(1.0);
             gl.Viewport(0, 0, width, height);
             gl.Clear((int)gl.ColorBufferBit | (int)gl.DepthBufferBit);

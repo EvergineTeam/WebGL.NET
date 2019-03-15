@@ -1,4 +1,5 @@
-﻿using WebAssembly;
+﻿using System.Drawing;
+using WebAssembly;
 
 namespace Samples
 {
@@ -18,12 +19,12 @@ namespace Samples
 
             foreach (var item in samples)
             {
-                var canvas = CreateCanvasFor(item.GetType().Name);
-                item.Run(canvas, CanvasWidth, CanvasHeight);
+                var canvas = CreateCanvasFor(item.GetType().Name, item.Description);
+                item.Run(canvas, CanvasWidth, CanvasHeight, Color.Fuchsia);
             }
         }
 
-        static JSObject CreateCanvasFor(string sampleName)
+        static JSObject CreateCanvasFor(string sampleName, string sampleDescription)
         {
             var document = Runtime.GetGlobalObject("document") as JSObject;
             var canvas = (JSObject)document.Invoke("createElement", "canvas");
@@ -33,7 +34,11 @@ namespace Samples
             var header = (JSObject)document.Invoke("createElement", "h1");
             var headerText = (JSObject)document.Invoke("createTextNode", sampleName);
             header.Invoke("appendChild", headerText);
+            var description = (JSObject)document.Invoke("createElement", "p");
+            var descriptionText = (JSObject)document.Invoke("createTextNode", sampleDescription);
+            description.Invoke("appendChild", descriptionText);
             body.Invoke("appendChild", header);
+            body.Invoke("appendChild", description);
             body.Invoke("appendChild", canvas);
 
             return canvas;
