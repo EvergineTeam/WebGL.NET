@@ -22,10 +22,12 @@
   
   <ItemGroup>
     <LinkerDescriptor Remove="LinkerConfig.xml" />
+    <None Remove="WasmCSS\styles.css" />
+    <EmbeddedResource Include="WasmCSS\styles.css" />
   </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\WebGLDotNET\WebGLDotNET.csproj" />
   </ItemGroup>
-  
+
 </Project>
