@@ -7,6 +7,6 @@ namespace Samples
     {
         string Description { get; }
 
-        void Run(JSObject canvas, int canvasWidth, int canvasHeight, Color clearColor);
+        void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor);
     }
 }

@@ -5,11 +5,11 @@ using WebGLDotNET;
 namespace Samples
 {
     // Based on: https://webglfundamentals.org/webgl/lessons/webgl-image-processing.html
-    public partial class Draw2DImage : ISample
+    public class Draw2DImage : ISample
     {
         public string Description => "The image is passed as byte[] in ARGB.";
 
-        public void Run(JSObject canvas, int canvasWidth, int canvasHeight, Color clearColor)
+        public void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor)
         {
             var gl = WebGL.GetContext(canvas);
 

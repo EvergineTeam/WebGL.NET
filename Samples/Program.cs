@@ -10,9 +10,14 @@ namespace Samples
 
         static void Main(string[] args)
         {
-            var samples = new ISample[] 
-            { 
-                new Triangle(), 
+            AddHeader1("WebGL.NET Samples Gallery");
+            AddParagraph(
+                "A collection of WebGL samples translated from .NET/C# into WebAssembly. " +
+                "See the <a href=\"https://github.com/MarcosCobena/WebGL.NET\">GitHub repo</a>.");
+
+            var samples = new ISample[]
+            {
+                new Triangle(),
                 new RotatingCube(),
                 new Draw2DImage(),
                 new TexturedCube()
@@ -20,29 +25,46 @@ namespace Samples
 
             foreach (var item in samples)
             {
-                var canvas = CreateCanvasFor(item.GetType().Name, item.Description);
+                AddHeader2(item.GetType().Name);
+                AddParagraph(item.Description);
+                var canvas = AddCanvas(CanvasWidth, CanvasHeight);
                 item.Run(canvas, CanvasWidth, CanvasHeight, Color.Fuchsia);
             }
         }
 
-        static JSObject CreateCanvasFor(string sampleName, string sampleDescription)
+        static JSObject AddCanvas(int width, int height)
         {
-            var document = Runtime.GetGlobalObject("document") as JSObject;
-            var canvas = (JSObject)document.Invoke("createElement", "canvas");
-            canvas.SetObjectProperty("width", CanvasWidth);
-            canvas.SetObjectProperty("height", CanvasHeight);
+            var document = (JSObject)Runtime.GetGlobalObject("document");
             var body = (JSObject)document.GetObjectProperty("body");
-            var header = (JSObject)document.Invoke("createElement", "h1");
-            var headerText = (JSObject)document.Invoke("createTextNode", sampleName);
-            header.Invoke("appendChild", headerText);
-            var description = (JSObject)document.Invoke("createElement", "p");
-            var descriptionText = (JSObject)document.Invoke("createTextNode", sampleDescription);
-            description.Invoke("appendChild", descriptionText);
-            body.Invoke("appendChild", header);
-            body.Invoke("appendChild", description);
+            var canvas = (JSObject)document.Invoke("createElement", "canvas");
+            canvas.SetObjectProperty("width", width);
+            canvas.SetObjectProperty("height", height);
             body.Invoke("appendChild", canvas);
 
             return canvas;
+        }
+
+        static void AddHeader(int headerIndex, string text)
+        {
+            var document = (JSObject)Runtime.GetGlobalObject("document");
+            var body = (JSObject)document.GetObjectProperty("body");
+            var header = (JSObject)document.Invoke("createElement", $"h{headerIndex}");
+            var headerText = (JSObject)document.Invoke("createTextNode", text);
+            header.Invoke("appendChild", headerText);
+            body.Invoke("appendChild", header);
+        }
+
+        static void AddHeader1(string text) => AddHeader(1, text);
+
+        static void AddHeader2(string text) => AddHeader(2, text);
+
+        static void AddParagraph(string text)
+        {
+            var document = (JSObject)Runtime.GetGlobalObject("document");
+            var body = (JSObject)document.GetObjectProperty("body");
+            var paragraph = (JSObject)document.Invoke("createElement", "p");
+            paragraph.SetObjectProperty("innerHTML", text);
+            body.Invoke("appendChild", paragraph);
         }
     }
 }

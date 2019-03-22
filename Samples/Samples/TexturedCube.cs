@@ -2,7 +2,6 @@
 using WaveEngine.Common.Math;
 using WebAssembly;
 using WebGLDotNET;
-using System;
 
 namespace Samples
 {
@@ -12,8 +11,8 @@ namespace Samples
     public class TexturedCube : ISample
     {
         static WebGL gl;
-        static int width;
-        static int height;
+        static float canvasWidth;
+        static float canvasHeight;
         static Color clearColor;
         static object shaderProgram;
         static object positionBuffer;
@@ -31,13 +30,13 @@ namespace Samples
         static double oldTimeMilliseconds;
         static double totalElapsedTimeSeconds;
 
-        public string Description => string.Empty;
+        public string Description => "The image is passed as byte[] in ARGB and Wave Engine's ruling the matrices.";
 
-        public void Run(JSObject canvas, int canvasWidth, int canvasHeight, Color clearColor)
+        public void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor)
         {
             gl = WebGL.GetContext(canvas);
-            width = canvasWidth;
-            height = canvasHeight;
+            TexturedCube.canvasWidth = canvasWidth;
+            TexturedCube.canvasHeight = canvasHeight;
             TexturedCube.clearColor = clearColor;
 
             var vertexShaderCode =
@@ -184,7 +183,7 @@ void main(void) {
 
             projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
                 MathHelper.ToRadians(45), 
-                width / (float)height, 
+                canvasWidth / canvasHeight, 
                 0.1f, 
                 100f);
 
@@ -222,7 +221,7 @@ void main(void) {
             gl.ClearDepth(1.0);
             gl.Enable(gl.DepthTest);
             gl.DepthFunc(gl.LEqual);
-            gl.Viewport(0, 0, width, height);
+            gl.Viewport(0, 0, canvasWidth, canvasHeight);
 
             gl.Clear((int)gl.ColorBufferBit | (int)gl.DepthBufferBit);
 

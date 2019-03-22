@@ -8,7 +8,7 @@ namespace Samples
     {
         public string Description => string.Empty;
 
-        public void Run(JSObject canvas, int canvasWidth, int canvasHeight, Color clearColor)
+        public void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor)
         {
             var gl = WebGL.GetContext(canvas);
 

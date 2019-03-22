@@ -9,8 +9,8 @@ namespace Samples
     public class RotatingCube : ISample
     {
         static WebGL gl;
-        static int width;
-        static int height;
+        static float canvasWidth;
+        static float canvasHeight;
         static Color clearColor;
 
         static ushort[] indices;
@@ -30,11 +30,11 @@ namespace Samples
             "Every matrix calc relies in Wave Engine's Math library, consumed through NuGet. This will make @jcant0n " +
             "happy :-)";
 
-        public void Run(JSObject canvas, int canvasWidth, int canvasHeight, Color clearColor)
+        public void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor)
         {
             gl = WebGL.GetContext(canvas);
-            width = canvasWidth;
-            height = canvasHeight;
+            RotatingCube.canvasWidth = canvasWidth;
+            RotatingCube.canvasHeight = canvasHeight;
             RotatingCube.clearColor = clearColor;
 
             var vertices = new float[]
@@ -121,7 +121,7 @@ void main(void) {
             gl.EnableVertexAttribArray(color);
 
             projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
-                (float)Math.PI / 4, width / (float)height, 0.1f, 1000f);
+                (float)Math.PI / 4, canvasWidth / canvasHeight, 0.1f, 1000f);
             viewMatrix = Matrix.CreateLookAt(Vector3.UnitZ * 10, Vector3.Zero, Vector3.Up);
             worldMatrix = Matrix.Identity;
 
@@ -155,7 +155,7 @@ void main(void) {
             gl.DepthFunc(gl.LEqual);
             gl.ClearColor(clearColor.R, clearColor.G, clearColor.B, clearColor.A);
             gl.ClearDepth(1.0);
-            gl.Viewport(0, 0, width, height);
+            gl.Viewport(0, 0, canvasWidth, canvasHeight);
             gl.Clear((int)gl.ColorBufferBit | (int)gl.DepthBufferBit);
 
             gl.UniformMatrix4fv(pMatrix, false, projectionMatrix.ToArray());
