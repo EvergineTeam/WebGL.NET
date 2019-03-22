@@ -14,7 +14,8 @@ namespace Samples
             { 
                 new Triangle(), 
                 new RotatingCube(),
-                new Draw2DImage()
+                new Draw2DImage(),
+                new TexturedCube()
             };
 
             foreach (var item in samples)

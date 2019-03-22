@@ -1,4 +1,6 @@
-﻿using System;
+﻿// WebGL 1.x specs.: https://github.com/KhronosGroup/WebGL/blob/master/specs/1.0.3/webgl.idl
+
+using System;
 using WebAssembly;
 
 namespace WebGLDotNET
@@ -87,6 +89,8 @@ namespace WebGLDotNET
 
         public object StaticDraw => GetProperty("STATIC_DRAW");
 
+        public object Texture0 => GetProperty("TEXTURE0");
+
         public object Texture2D => GetProperty("TEXTURE_2D");
 
         public object TextureMagFilter => GetProperty("TEXTURE_MAG_FILTER");
@@ -104,6 +108,8 @@ namespace WebGLDotNET
         public object UnsignedShort => GetProperty("UNSIGNED_SHORT");
 
         public object VertexShader => GetProperty("VERTEX_SHADER");
+
+        public void ActiveTexture(object texture) => Invoke("activeTexture", texture);
 
         public void AttachShader(object program, object shader) => Invoke("attachShader", program, shader);
 
@@ -146,6 +152,8 @@ namespace WebGLDotNET
 
         public void EnableVertexAttribArray(object index) => Invoke("enableVertexAttribArray", index);
 
+        public void GenerateMipmap(object target) => Invoke("generateMipmap", target);
+
         public object GetAttribLocation(object program, string name) => 
             Invoke("getAttribLocation", program, name);
 
@@ -162,11 +170,13 @@ namespace WebGLDotNET
             object internalformat,
             object format,
             object type,
-            object pixels) =>
-            Invoke("texImage2D", target, level, internalformat, format, type, pixels);
+            ImageData pixels) =>
+            Invoke("texImage2D", target, level, internalformat, format, type, pixels.Handle);
 
         public void TexParameteri(object target, object pname, object param) =>
             Invoke("texParameteri", target, pname, param);
+
+        public void Uniform1i(object location, object x) => Invoke("uniform1i", location, x);
 
         public void Uniform2f(object location, object v0, object v1) =>
             Invoke("uniform2f", location, v0, v1);

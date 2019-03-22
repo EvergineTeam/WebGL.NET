@@ -58,9 +58,9 @@ void main() {
             var positionBuffer = gl.CreateBuffer();
             gl.BindBuffer(gl.ArrayBuffer, positionBuffer);
             var x1 = 0;
-            var x2 = imageWidth;
+            var x2 = Image.Width;
             var y1 = 0;
-            var y2 = imageHeight;
+            var y2 = Image.Height;
             gl.BufferData(
                 gl.ArrayBuffer,
                 new float[]
@@ -97,10 +97,7 @@ void main() {
             gl.TexParameteri(gl.Texture2D, gl.TextureMinFilter, gl.Nearest);
             gl.TexParameteri(gl.Texture2D, gl.TextureMagFilter, gl.Nearest);
 
-            var uint8ClampedArray = (JSObject)Runtime.GetGlobalObject("Uint8ClampedArray");
-            var imageNativeArray = Runtime.NewJSObject(uint8ClampedArray, image);
-            var imageDataObject = (JSObject)Runtime.GetGlobalObject("ImageData");
-            var imageData = Runtime.NewJSObject(imageDataObject, imageNativeArray, imageWidth, imageHeight);
+            var imageData = new ImageData(Image.ARGBColors, Image.Width, Image.Height);
             gl.TexImage2D(gl.Texture2D, 0, gl.RGB, gl.RGB, gl.UnsignedByte, imageData);
 
             var resolutionLocation = gl.GetUniformLocation(program, "u_resolution");
