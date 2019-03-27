@@ -1,4 +1,10 @@
-﻿// WebGL 1.x specs.: https://github.com/KhronosGroup/WebGL/blob/master/specs/1.0.3/webgl.idl
+﻿/*
+ * WebGL 1.x specs.: https://github.com/KhronosGroup/WebGL/blob/master/specs/1.0.3/webgl.idl
+ * 
+ * Random thoughts:
+ * - There are too many "object", we could go forward by using int for GLint and similar, with the goal of providing 
+ *   better types while using the API
+ */
 
 using System;
 using WebAssembly;
@@ -49,18 +55,6 @@ namespace WebGLDotNET
             }
 
             return array;
-        }
-
-        public void RequestAnimationFrame(string loopMemberName, Type callerType)
-        {
-            var animationBootstrap = 
-                "var animate = function(time) {\n" +
-                $"    BINDING.call_static_method('[{callerType.Namespace}] {callerType.FullName}:{loopMemberName}', " +
-                    "[time]);\n" +
-                "    window.requestAnimationFrame(animate);\n" +
-                "}\n" +
-                "animate(0);";
-            Runtime.InvokeJS(animationBootstrap);
         }
 
         public object ArrayBuffer => GetProperty("ARRAY_BUFFER");

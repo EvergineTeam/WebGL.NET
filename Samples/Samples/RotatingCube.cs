@@ -2,40 +2,31 @@
 using System.Drawing;
 using WaveEngine.Common.Math;
 using WebAssembly;
-using WebGLDotNET;
 
 namespace Samples
 {
-    public class RotatingCube : ISample
+    public class RotatingCube : BaseSample
     {
-        static WebGL gl;
-        static float canvasWidth;
-        static float canvasHeight;
-        static Color clearColor;
+        object vertexBuffer;
+        ushort[] indices;
+        object indexBuffer;
+        object colorBuffer;
 
-        static ushort[] indices;
-        static object indexBuffer;
+        object pMatrixUniform;
+        object vMatrixUniform;
+        object wMatrixUniform;
 
-        static object pMatrix;
-        static object vMatrix;
-        static object wMatrix;
+        Matrix projectionMatrix;
+        Matrix viewMatrix;
+        Matrix worldMatrix;
 
-        static Matrix projectionMatrix;
-        static Matrix viewMatrix;
-        static Matrix worldMatrix;
-
-        static double oldTime;
-
-        public string Description =>
+        public override string Description =>
             "Every matrix calc relies in Wave Engine's Math library, consumed through NuGet. This will make @jcant0n " +
             "happy :-)";
 
-        public void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor)
+        public override void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor)
         {
-            gl = WebGL.GetContext(canvas);
-            RotatingCube.canvasWidth = canvasWidth;
-            RotatingCube.canvasHeight = canvasHeight;
-            RotatingCube.clearColor = clearColor;
+            base.Run(canvas, canvasWidth, canvasHeight, clearColor);
 
             var vertices = new float[]
             {
@@ -46,9 +37,7 @@ namespace Samples
                 -1, -1, -1, -1, -1, 1, 1, -1, 1, 1, -1, -1,
                 -1, 1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1,
             };
-            var vertexBuffer = gl.CreateBuffer();
-            gl.BindBuffer(gl.ArrayBuffer, vertexBuffer);
-            gl.BufferData(gl.ArrayBuffer, vertices, gl.StaticDraw);
+            vertexBuffer = CreateArrayBuffer(vertices);
 
             indices = new ushort[]
             {
@@ -56,9 +45,7 @@ namespace Samples
                 8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15,
                 16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23
             };
-            indexBuffer = gl.CreateBuffer();
-            gl.BindBuffer(gl.ElementArrayBuffer, indexBuffer);
-            gl.BufferData(gl.ElementArrayBuffer, indices, gl.StaticDraw);
+            indexBuffer = CreateElementArrayBuffer(indices);
 
             var colors = new float[]
             {
@@ -69,11 +56,10 @@ namespace Samples
                 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0,
                 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0
             };
-            var colorBuffer = gl.CreateBuffer();
-            gl.BindBuffer(gl.ArrayBuffer, colorBuffer);
-            gl.BufferData(gl.ArrayBuffer, colors, gl.StaticDraw);
+            colorBuffer = CreateArrayBuffer(colors);
 
-            var vertexShaderCode =
+            InitializeShaders(
+                vertexShaderCode:
 @"attribute vec3 position;
 uniform mat4 pMatrix;
 uniform mat4 vMatrix;
@@ -84,83 +70,57 @@ varying vec3 vColor;
 void main(void) {
     gl_Position = pMatrix * vMatrix * wMatrix * vec4(position, 1.);
     vColor = color;
-}";
-            var vertexShader = gl.CreateShader(gl.VertexShader);
-            gl.ShaderSource(vertexShader, vertexShaderCode);
-            gl.CompileShader(vertexShader);
-
-            var fragmentShaderCode =
+}",
+                fragmentShaderCode:
 @"precision mediump float;
 varying vec3 vColor;
 
 void main(void) {
     gl_FragColor = vec4(vColor, 1.);
-}";
-            var fragmentShader = gl.CreateShader(gl.FragmentShader);
-            gl.ShaderSource(fragmentShader, fragmentShaderCode);
-            gl.CompileShader(fragmentShader);
+}");
 
-            var shaderProgram = gl.CreateProgram();
-            gl.AttachShader(shaderProgram, vertexShader);
-            gl.AttachShader(shaderProgram, fragmentShader);
-            gl.LinkProgram(shaderProgram);
-            gl.UseProgram(shaderProgram);
-
-            pMatrix = gl.GetUniformLocation(shaderProgram, "pMatrix");
-            vMatrix = gl.GetUniformLocation(shaderProgram, "vMatrix");
-            wMatrix = gl.GetUniformLocation(shaderProgram, "wMatrix");
+            pMatrixUniform = gl.GetUniformLocation(shaderProgram, "pMatrix");
+            vMatrixUniform = gl.GetUniformLocation(shaderProgram, "vMatrix");
+            wMatrixUniform = gl.GetUniformLocation(shaderProgram, "wMatrix");
 
             gl.BindBuffer(gl.ArrayBuffer, vertexBuffer);
-            var position = gl.GetAttribLocation(shaderProgram, "position");
-            gl.VertexAttribPointer(position, 3, gl.Float, false, 0, 0);
-            gl.EnableVertexAttribArray(position);
+            var positionAttribute = gl.GetAttribLocation(shaderProgram, "position");
+            gl.VertexAttribPointer(positionAttribute, 3, gl.Float, false, 0, 0);
+            gl.EnableVertexAttribArray(positionAttribute);
 
             gl.BindBuffer(gl.ArrayBuffer, colorBuffer);
-            var color = gl.GetAttribLocation(shaderProgram, "color");
-            gl.VertexAttribPointer(color, 3, gl.Float, false, 0, 0);
-            gl.EnableVertexAttribArray(color);
+            var colorAttribute = gl.GetAttribLocation(shaderProgram, "color");
+            gl.VertexAttribPointer(colorAttribute, 3, gl.Float, false, 0, 0);
+            gl.EnableVertexAttribArray(colorAttribute);
 
             projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
                 (float)Math.PI / 4, canvasWidth / canvasHeight, 0.1f, 1000f);
             viewMatrix = Matrix.CreateLookAt(Vector3.UnitZ * 10, Vector3.Zero, Vector3.Up);
             worldMatrix = Matrix.Identity;
-
-            // Needed for linker preserve
-            Loop(0);
-
-            gl.RequestAnimationFrame(nameof(Loop), GetType());
         }
 
-        static void Loop(double time)
+        public override void Update(double elapsedTime)
         {
-            var elapsedTime = time - oldTime;
+            base.Update(elapsedTime);
 
-            Update(elapsedTime);
-
-            oldTime = time;
-
-            Draw();
-        }
-
-        static void Update(double elapsedTime)
-        {
+            var elapsedTimeFloat = (float)elapsedTime;
             var rotation = Quaternion.CreateFromYawPitchRoll(
-                (float)elapsedTime * 0.003f, (float)elapsedTime * 0.002f, (float)elapsedTime * 0.005f);
+                elapsedTimeFloat * 0.003f, 
+                elapsedTimeFloat * 0.002f, 
+                elapsedTimeFloat * 0.005f);
             worldMatrix *= Matrix.CreateFromQuaternion(rotation);
         }
 
-        static void Draw()
+        public override void Draw()
         {
-            gl.Enable(gl.DepthTest);
             gl.DepthFunc(gl.LEqual);
-            gl.ClearColor(clearColor.R, clearColor.G, clearColor.B, clearColor.A);
             gl.ClearDepth(1.0);
-            gl.Viewport(0, 0, canvasWidth, canvasHeight);
-            gl.Clear((int)gl.ColorBufferBit | (int)gl.DepthBufferBit);
 
-            gl.UniformMatrix4fv(pMatrix, false, projectionMatrix.ToArray());
-            gl.UniformMatrix4fv(vMatrix, false, viewMatrix.ToArray());
-            gl.UniformMatrix4fv(wMatrix, false, worldMatrix.ToArray());
+            base.Draw();
+
+            gl.UniformMatrix4fv(pMatrixUniform, false, projectionMatrix.ToArray());
+            gl.UniformMatrix4fv(vMatrixUniform, false, viewMatrix.ToArray());
+            gl.UniformMatrix4fv(wMatrixUniform, false, worldMatrix.ToArray());
 
             gl.BindBuffer(gl.ElementArrayBuffer, indexBuffer);
             gl.DrawElements(gl.Triangles, indices.Length, gl.UnsignedShort, 0);

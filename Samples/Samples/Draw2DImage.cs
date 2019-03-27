@@ -1,19 +1,19 @@
 ﻿using System.Drawing;
 using WebAssembly;
-using WebGLDotNET;
 
 namespace Samples
 {
     // Based on: https://webglfundamentals.org/webgl/lessons/webgl-image-processing.html
-    public class Draw2DImage : ISample
+    public class Draw2DImage : BaseSample
     {
-        public string Description => "The image is passed as byte[] in ARGB.";
+        public override string Description => "The image is passed as byte[] in ARGB.";
 
-        public void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor)
+        public override void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor)
         {
-            var gl = WebGL.GetContext(canvas);
+            base.Run(canvas, canvasWidth, canvasHeight, clearColor);
 
-            var vertexShaderCode =
+            InitializeShaders(
+                vertexShaderCode:
 @"attribute vec2 a_position;
 attribute vec2 a_texCoord;
 
@@ -28,12 +28,8 @@ void main() {
    gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
 
    v_texCoord = a_texCoord;
-}";
-            var vertexShader = gl.CreateShader(gl.VertexShader);
-            gl.ShaderSource(vertexShader, vertexShaderCode);
-            gl.CompileShader(vertexShader);
-
-            var fragmentShaderCode =
+}",
+                fragmentShaderCode:
 @"precision mediump float;
 
 uniform sampler2D u_image;
@@ -42,82 +38,54 @@ varying vec2 v_texCoord;
 
 void main() {
    gl_FragColor = texture2D(u_image, v_texCoord);
-}";
-            var fragmentShader = gl.CreateShader(gl.FragmentShader);
-            gl.ShaderSource(fragmentShader, fragmentShaderCode);
-            gl.CompileShader(fragmentShader);
+}");
 
-            var program = gl.CreateProgram();
-            gl.AttachShader(program, vertexShader);
-            gl.AttachShader(program, fragmentShader);
-            gl.LinkProgram(program);
+            var positionAttribute = gl.GetAttribLocation(shaderProgram, "a_position");
+            var texCoordAttribute = gl.GetAttribLocation(shaderProgram, "a_texCoord");
 
-            var positionLocation = gl.GetAttribLocation(program, "a_position");
-            var texcoordLocation = gl.GetAttribLocation(program, "a_texCoord");
-
-            var positionBuffer = gl.CreateBuffer();
-            gl.BindBuffer(gl.ArrayBuffer, positionBuffer);
             var x1 = 0;
             var x2 = Image.Width;
             var y1 = 0;
             var y2 = Image.Height;
-            gl.BufferData(
-                gl.ArrayBuffer,
-                new float[]
-                {
-                    x1, y1,
-                    x2, y1,
-                    x1, y2,
-                    x1, y2,
-                    x2, y1,
-                    x2, y2
-                },
-                gl.StaticDraw);
+            var positions = new float[]
+            {
+                x1, y1,
+                x2, y1,
+                x1, y2,
+                x1, y2,
+                x2, y1,
+                x2, y2
+            };
+            var positionBuffer = CreateArrayBuffer(positions);
 
-            var texcoordBuffer = gl.CreateBuffer();
-            gl.BindBuffer(gl.ArrayBuffer, texcoordBuffer);
-            gl.BufferData(
-                gl.ArrayBuffer, 
-                new float[]
-                {
-                    0, 0, 
-                    0, 1, 
-                    1, 0, 
-                    1, 0, 
-                    0, 1, 
-                    1, 1,
-                },
-                gl.StaticDraw);
+            var texCoordBuffer = CreateArrayBuffer(new float[]
+            {
+                0, 0, 
+                0, 1, 
+                1, 0, 
+                1, 0, 
+                0, 1, 
+                1, 1,
+            });
 
-            var texture = gl.CreateTexture();
-            gl.BindTexture(gl.Texture2D, texture);
+            CreateTexture();
 
-            gl.TexParameteri(gl.Texture2D, gl.TextureWrapS, gl.ClampToEdge);
-            gl.TexParameteri(gl.Texture2D, gl.TextureWrapT, gl.ClampToEdge);
-            gl.TexParameteri(gl.Texture2D, gl.TextureMinFilter, gl.Nearest);
-            gl.TexParameteri(gl.Texture2D, gl.TextureMagFilter, gl.Nearest);
+            var resolutionUniform = gl.GetUniformLocation(shaderProgram, "u_resolution");
 
-            var imageData = new ImageData(Image.ARGBColors, Image.Width, Image.Height);
-            gl.TexImage2D(gl.Texture2D, 0, gl.RGB, gl.RGB, gl.UnsignedByte, imageData);
-
-            var resolutionLocation = gl.GetUniformLocation(program, "u_resolution");
-
-            gl.Viewport(0, 0, canvasWidth, canvasHeight);
-
-            gl.ClearColor(clearColor.R, clearColor.G, clearColor.B, clearColor.A);
-            gl.Clear(gl.ColorBufferBit);
-
-            gl.UseProgram(program);
-
-            gl.EnableVertexAttribArray(positionLocation);
+            gl.EnableVertexAttribArray(positionAttribute);
             gl.BindBuffer(gl.ArrayBuffer, positionBuffer);
-            gl.VertexAttribPointer(positionLocation, 2, gl.Float, false, 0, 0);
+            gl.VertexAttribPointer(positionAttribute, 2, gl.Float, false, 0, 0);
 
-            gl.EnableVertexAttribArray(texcoordLocation);
-            gl.BindBuffer(gl.ArrayBuffer, texcoordBuffer);
-            gl.VertexAttribPointer(texcoordLocation, 2, gl.Float, false, 0, 0);
+            gl.EnableVertexAttribArray(texCoordAttribute);
+            gl.BindBuffer(gl.ArrayBuffer, texCoordBuffer);
+            gl.VertexAttribPointer(texCoordAttribute, 2, gl.Float, false, 0, 0);
 
-            gl.Uniform2f(resolutionLocation, canvasWidth, canvasHeight);
+            gl.Uniform2f(resolutionUniform, canvasWidth, canvasHeight);
+        }
+
+        public override void Draw()
+        {
+            base.Draw();
 
             gl.DrawArrays(gl.Triangles, 0, 6);
         }

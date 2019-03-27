@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using WebAssembly;
 
 namespace Samples
@@ -8,6 +9,8 @@ namespace Samples
         const int CanvasWidth = 320;
         const int CanvasHeight = 240;
 
+        static ISample[] samples;
+
         static void Main(string[] args)
         {
             AddHeader1("WebGL.NET Samples Gallery");
@@ -15,13 +18,16 @@ namespace Samples
                 "A collection of WebGL samples translated from .NET/C# into WebAssembly. " +
                 "See the <a href=\"https://github.com/MarcosCobena/WebGL.NET\">GitHub repo</a>.");
 
-            var samples = new ISample[]
+            samples = new ISample[]
             {
                 new Triangle(),
                 new RotatingCube(),
                 new Draw2DImage(),
                 new TexturedCube()
             };
+
+            // Needed for linker preserve
+            Loop(-1);
 
             foreach (var item in samples)
             {
@@ -30,6 +36,8 @@ namespace Samples
                 var canvas = AddCanvas(CanvasWidth, CanvasHeight);
                 item.Run(canvas, CanvasWidth, CanvasHeight, Color.Fuchsia);
             }
+
+            RequestAnimationFrame();
         }
 
         static JSObject AddCanvas(int width, int height)
@@ -65,6 +73,37 @@ namespace Samples
             var paragraph = (JSObject)document.Invoke("createElement", "p");
             paragraph.SetObjectProperty("innerHTML", text);
             body.Invoke("appendChild", paragraph);
+        }
+
+        static void Loop(double milliseconds)
+        {
+            if (milliseconds < 0)
+            {
+                return;
+            }
+
+            foreach (var item in samples)
+            {
+                var elapsedMilliseconds = milliseconds - item.OldMilliseconds;
+                item.Update(elapsedMilliseconds);
+                item.OldMilliseconds = milliseconds;
+                item.Draw();
+            }
+        }
+
+        static void RequestAnimationFrame()
+        {
+            var animationBootstrap =
+                "var animate = function(time) {\n" +
+                "    BINDING.call_static_method(" +
+                    $"'[{nameof(Samples)}] {nameof(Samples)}.{nameof(Program)}:{nameof(Loop)}', [time]);\n" +
+                "    window.requestAnimationFrame(animate);\n" +
+                "}\n" +
+                "animate(0);";
+#if DEBUG
+            Console.WriteLine(animationBootstrap);
+#endif
+            Runtime.InvokeJS(animationBootstrap);
         }
     }
 }

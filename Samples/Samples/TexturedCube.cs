@@ -1,45 +1,38 @@
 ﻿using System.Drawing;
 using WaveEngine.Common.Math;
 using WebAssembly;
-using WebGLDotNET;
 
 namespace Samples
 {
     // Based on:
     // https://developer.mozilla.org/es/docs/Web/API/WebGL_API/Tutorial/Wtilizando_texturas_en_WebGL
-    // view-source:https://mdn.github.io/webgl-examples/tutorial/sample6/webgl-demo.js
-    public class TexturedCube : ISample
+    // , more specifically:
+    // https://mdn.github.io/webgl-examples/tutorial/sample6/webgl-demo.js
+    public class TexturedCube : BaseSample
     {
-        static WebGL gl;
-        static float canvasWidth;
-        static float canvasHeight;
-        static Color clearColor;
-        static object shaderProgram;
-        static object positionBuffer;
-        static object textureCoordBuffer;
-        static ushort[] indices;
-        static object indexBuffer;
-        static object texture;
-        static object vertexPositionShader;
-        static object textureCoordShader;
-        static object projectionMatrixShader;
-        static Matrix projectionMatrix;
-        static object modelViewMatrixShader;
-        static Matrix modelViewMatrix;
-        static object samplerShader;
-        static double oldTimeMilliseconds;
-        static double totalElapsedTimeSeconds;
+        object positionBuffer;
+        object textureCoordBuffer;
+        ushort[] indices;
+        object indexBuffer;
+        object texture;
+        object vertexPositionAttribute;
+        object textureCoordAttribute;
+        object projectionMatrixUniform;
+        Matrix projectionMatrix;
+        object modelViewMatrixUniform;
+        Matrix modelViewMatrix;
+        object samplerUniform;
+        double totalElapsedTimeSeconds;
 
-        public string Description => "The image is passed as byte[] in ARGB and Wave Engine's ruling the matrices.";
+        public override string Description => 
+            "The image is passed as byte[] in ARGB and Wave Engine is ruling the matrices.";
 
-        public void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor)
+        public override void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor)
         {
-            gl = WebGL.GetContext(canvas);
-            TexturedCube.canvasWidth = canvasWidth;
-            TexturedCube.canvasHeight = canvasHeight;
-            TexturedCube.clearColor = clearColor;
+            base.Run(canvas, canvasWidth, canvasHeight, clearColor);
 
-            var vertexShaderCode =
+            InitializeShaders(
+                vertexShaderCode:
 @"attribute vec4 aVertexPosition;
 attribute vec2 aTextureCoord;
 
@@ -51,33 +44,21 @@ varying highp vec2 vTextureCoord;
 void main(void) {
     gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
     vTextureCoord = aTextureCoord;
-}";
-            var vertexShader = gl.CreateShader(gl.VertexShader);
-            gl.ShaderSource(vertexShader, vertexShaderCode);
-            gl.CompileShader(vertexShader);
-
-            var fragmentShaderCode =
+}",
+                fragmentShaderCode:
 @"varying highp vec2 vTextureCoord;
 
 uniform sampler2D uSampler;
 
 void main(void) {
     gl_FragColor = texture2D(uSampler, vTextureCoord);
-}";
-            var fragmentShader = gl.CreateShader(gl.FragmentShader);
-            gl.ShaderSource(fragmentShader, fragmentShaderCode);
-            gl.CompileShader(fragmentShader);
+}");
 
-            shaderProgram = gl.CreateProgram();
-            gl.AttachShader(shaderProgram, vertexShader);
-            gl.AttachShader(shaderProgram, fragmentShader);
-            gl.LinkProgram(shaderProgram);
-
-            vertexPositionShader = gl.GetAttribLocation(shaderProgram, "aVertexPosition");
-            textureCoordShader = gl.GetAttribLocation(shaderProgram, "aTextureCoord");
-            projectionMatrixShader = gl.GetUniformLocation(shaderProgram, "uProjectionMatrix");
-            modelViewMatrixShader = gl.GetUniformLocation(shaderProgram, "uModelViewMatrix");
-            samplerShader = gl.GetUniformLocation(shaderProgram, "uSampler");
+            vertexPositionAttribute = gl.GetAttribLocation(shaderProgram, "aVertexPosition");
+            textureCoordAttribute = gl.GetAttribLocation(shaderProgram, "aTextureCoord");
+            projectionMatrixUniform = gl.GetUniformLocation(shaderProgram, "uProjectionMatrix");
+            modelViewMatrixUniform = gl.GetUniformLocation(shaderProgram, "uModelViewMatrix");
+            samplerUniform = gl.GetUniformLocation(shaderProgram, "uSampler");
 
             var positions = new float[]
             {
@@ -112,9 +93,7 @@ void main(void) {
                 -1.0f,  1.0f,  1.0f,
                 -1.0f,  1.0f, -1.0f
             };
-            positionBuffer = gl.CreateBuffer();
-            gl.BindBuffer(gl.ArrayBuffer, positionBuffer);
-            gl.BufferData(gl.ArrayBuffer, positions, gl.StaticDraw);
+            positionBuffer = CreateArrayBuffer(positions);
 
             var textureCoordinates = new float[]
             {
@@ -149,9 +128,7 @@ void main(void) {
                 1.0f, 1.0f,
                 0.0f, 1.0f
             };
-            textureCoordBuffer = gl.CreateBuffer();
-            gl.BindBuffer(gl.ArrayBuffer, textureCoordBuffer);
-            gl.BufferData(gl.ArrayBuffer, textureCoordinates, gl.StaticDraw);
+            textureCoordBuffer = CreateArrayBuffer(textureCoordinates);
 
             indices = new ushort[]
             {
@@ -162,51 +139,28 @@ void main(void) {
                 16, 17, 18,   16, 18, 19,   // right
                 20, 21, 22,   20, 22, 23    // left
             };
-            indexBuffer = gl.CreateBuffer();
-            gl.BindBuffer(gl.ElementArrayBuffer, indexBuffer);
-            gl.BufferData(gl.ElementArrayBuffer, indices, gl.StaticDraw);
+            indexBuffer = CreateElementArrayBuffer(indices);
 
-            texture = gl.CreateTexture();
-            gl.BindTexture(gl.Texture2D, texture);
-            //gl.GenerateMipmap(gl.Texture2D);
-            gl.TexParameteri(gl.Texture2D, gl.TextureWrapS, gl.ClampToEdge);
-            gl.TexParameteri(gl.Texture2D, gl.TextureWrapT, gl.ClampToEdge);
-            gl.TexParameteri(gl.Texture2D, gl.TextureMinFilter, gl.Nearest);
-            var imageData = new ImageData(Image.ARGBColors, Image.Width, Image.Height);
-            gl.TexImage2D(gl.Texture2D, 0, gl.RGB, gl.RGB, gl.UnsignedByte, imageData);
+            texture = CreateTexture();
 
-            gl.VertexAttribPointer(vertexPositionShader, 3, gl.Float, false, 0, 0);
-            gl.EnableVertexAttribArray(vertexPositionShader);
+            gl.VertexAttribPointer(vertexPositionAttribute, 3, gl.Float, false, 0, 0);
+            gl.EnableVertexAttribArray(vertexPositionAttribute);
 
-            gl.EnableVertexAttribArray(textureCoordShader);
-            gl.VertexAttribPointer(textureCoordShader, 2, gl.Float, false, 0, 0);
+            gl.EnableVertexAttribArray(textureCoordAttribute);
+            gl.VertexAttribPointer(textureCoordAttribute, 2, gl.Float, false, 0, 0);
 
             projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
                 MathHelper.ToRadians(45), 
                 canvasWidth / canvasHeight, 
                 0.1f, 
                 100f);
-
-            // Needed for linker preserve
-            Loop(0);
-
-            gl.RequestAnimationFrame(nameof(Loop), GetType());
         }
 
-        static void Loop(double timeMilliseconds)
+        public override void Update(double elapsedTime)
         {
-            var elapsedTimeMilliseconds = timeMilliseconds - oldTimeMilliseconds;
+            base.Update(elapsedTime);
 
-            Update(elapsedTimeMilliseconds);
-
-            oldTimeMilliseconds = timeMilliseconds;
-
-            Draw();
-        }
-
-        static void Update(double elapsedTimeMilliseconds)
-        {
-            var elapsedTimeSeconds = elapsedTimeMilliseconds * 0.001;
+            var elapsedTimeSeconds = elapsedTime * 0.001;
             totalElapsedTimeSeconds += elapsedTimeSeconds;
 
             modelViewMatrix = Matrix.Identity;
@@ -215,34 +169,29 @@ void main(void) {
             modelViewMatrix *= Matrix.CreateTranslation(0f, 0f, -6f);
         }
 
-        static void Draw()
+        public override void Draw()
         {
-            gl.ClearColor(clearColor.R, clearColor.G, clearColor.B, clearColor.A);
             gl.ClearDepth(1.0);
-            gl.Enable(gl.DepthTest);
             gl.DepthFunc(gl.LEqual);
-            gl.Viewport(0, 0, canvasWidth, canvasHeight);
 
-            gl.Clear((int)gl.ColorBufferBit | (int)gl.DepthBufferBit);
+            base.Draw();
 
             gl.BindBuffer(gl.ArrayBuffer, positionBuffer);
-            gl.VertexAttribPointer(vertexPositionShader, 3, gl.Float, false, 0, 0);
-            gl.EnableVertexAttribArray(vertexPositionShader);
+            gl.VertexAttribPointer(vertexPositionAttribute, 3, gl.Float, false, 0, 0);
+            gl.EnableVertexAttribArray(vertexPositionAttribute);
 
             gl.BindBuffer(gl.ArrayBuffer, textureCoordBuffer);
-            gl.VertexAttribPointer(textureCoordShader, 2, gl.Float, false, 0, 0);
-            gl.EnableVertexAttribArray(textureCoordShader);
+            gl.VertexAttribPointer(textureCoordAttribute, 2, gl.Float, false, 0, 0);
+            gl.EnableVertexAttribArray(textureCoordAttribute);
 
             gl.BindBuffer(gl.ElementArrayBuffer, indexBuffer);
 
-            gl.UseProgram(shaderProgram);
-
-            gl.UniformMatrix4fv(projectionMatrixShader, false, projectionMatrix.ToArray());
-            gl.UniformMatrix4fv(modelViewMatrixShader, false, modelViewMatrix.ToArray());
+            gl.UniformMatrix4fv(projectionMatrixUniform, false, projectionMatrix.ToArray());
+            gl.UniformMatrix4fv(modelViewMatrixUniform, false, modelViewMatrix.ToArray());
 
             gl.ActiveTexture(gl.Texture0);
             gl.BindTexture(gl.Texture2D, texture);
-            gl.Uniform1i(samplerShader, 0);
+            gl.Uniform1i(samplerUniform, 0);
 
             gl.DrawElements(gl.Triangles, 36, gl.UnsignedShort, 0);
         }
