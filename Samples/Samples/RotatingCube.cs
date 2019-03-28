@@ -2,19 +2,20 @@
 using System.Drawing;
 using WaveEngine.Common.Math;
 using WebAssembly;
+using WebGLDotNET;
 
 namespace Samples
 {
     public class RotatingCube : BaseSample
     {
-        object vertexBuffer;
+        WebGLBuffer vertexBuffer;
         ushort[] indices;
-        object indexBuffer;
-        object colorBuffer;
+        WebGLBuffer indexBuffer;
+        WebGLBuffer colorBuffer;
 
-        object pMatrixUniform;
-        object vMatrixUniform;
-        object wMatrixUniform;
+        WebGLUniformLocation pMatrixUniform;
+        WebGLUniformLocation vMatrixUniform;
+        WebGLUniformLocation wMatrixUniform;
 
         Matrix projectionMatrix;
         Matrix viewMatrix;
@@ -30,53 +31,118 @@ namespace Samples
 
             var vertices = new float[]
             {
-                -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, 1, -1,
-                -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1, 1,
-                -1, -1, -1, -1, 1, -1, -1, 1, 1, -1, -1, 1,
-                1, -1, -1, 1, 1, -1, 1, 1, 1, 1, -1, 1,
-                -1, -1, -1, -1, -1, 1, 1, -1, 1, 1, -1, -1,
-                -1, 1, -1, -1, 1, 1, 1, 1, 1, 1, 1, -1,
+                -1, -1, -1, 
+                 1, -1, -1, 
+                 1,  1, -1, 
+
+                -1,  1, -1,
+                -1, -1,  1, 
+                 1, -1,  1, 
+
+                 1,  1,  1, 
+                -1,  1,  1,
+                -1, -1, -1, 
+
+                -1,  1, -1, 
+                -1,  1,  1, 
+                -1, -1,  1,
+
+                 1, -1, -1, 
+                 1,  1, -1, 
+                 1,  1,  1, 
+
+                 1, -1,  1,
+                -1, -1, -1, 
+                -1, -1,  1, 
+
+                 1, -1,  1, 
+                 1, -1, -1,
+                -1,  1, -1, 
+
+                -1,  1,  1, 
+                 1,  1,  1, 
+                 1,  1, -1
             };
             vertexBuffer = CreateArrayBuffer(vertices);
 
             indices = new ushort[]
             {
-                0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7,
-                8, 9, 10, 8, 10, 11, 12, 13, 14, 12, 14, 15,
-                16, 17, 18, 16, 18, 19, 20, 21, 22, 20, 22, 23
+                 0,  1,  2, 
+                 0,  2,  3,
+                      
+                 4,  5,  6, 
+                 4,  6,  7,
+
+                 8,  9, 10, 
+                 8, 10, 11, 
+
+                12, 13, 14, 
+                12, 14, 15,
+
+                16, 17, 18, 
+                16, 18, 19, 
+
+                20, 21, 22, 
+                20, 22, 23
             };
             indexBuffer = CreateElementArrayBuffer(indices);
 
             var colors = new float[]
             {
-                5, 3, 7, 5, 3, 7, 5, 3, 7, 5, 3, 7,
-                1, 1, 3, 1, 1, 3, 1, 1, 3, 1, 1, 3,
-                0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
-                1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0,
-                1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 0,
-                0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0
+                1, 0, 0,
+                1, 0, 0,
+                1, 0, 0,
+                1, 0, 0,
+
+                0, 1, 0,
+                0, 1, 0,
+                0, 1, 0,
+                0, 1, 0,
+
+                0, 0, 1,
+                0, 0, 1,
+                0, 0, 1,
+                0, 0, 1,
+
+                1, 1, 0,
+                1, 1, 0,
+                1, 1, 0,
+                1, 1, 0,
+
+                0, 1, 1,
+                0, 1, 1,
+                0, 1, 1,
+                0, 1, 1,
+
+                1, 1, 1,
+                1, 1, 1,
+                1, 1, 1,
+                1, 1, 1
             };
             colorBuffer = CreateArrayBuffer(colors);
 
             InitializeShaders(
                 vertexShaderCode:
 @"attribute vec3 position;
+attribute vec3 color;
+
 uniform mat4 pMatrix;
 uniform mat4 vMatrix;
 uniform mat4 wMatrix;
-attribute vec3 color;
+
 varying vec3 vColor;
 
 void main(void) {
-    gl_Position = pMatrix * vMatrix * wMatrix * vec4(position, 1.);
+    gl_Position = pMatrix * vMatrix * wMatrix * vec4(position, 1.0);
     vColor = color;
 }",
                 fragmentShaderCode:
 @"precision mediump float;
+
 varying vec3 vColor;
 
 void main(void) {
-    gl_FragColor = vec4(vColor, 1.);
+    gl_FragColor = vec4(vColor, 1.0);
 }");
 
             pMatrixUniform = gl.GetUniformLocation(shaderProgram, "pMatrix");
@@ -95,34 +161,34 @@ void main(void) {
 
             projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
                 (float)Math.PI / 4, canvasWidth / canvasHeight, 0.1f, 1000f);
+            gl.UniformMatrix4fv(pMatrixUniform, false, projectionMatrix.ToArray());
+
             viewMatrix = Matrix.CreateLookAt(Vector3.UnitZ * 10, Vector3.Zero, Vector3.Up);
+            gl.UniformMatrix4fv(vMatrixUniform, false, viewMatrix.ToArray());
+
             worldMatrix = Matrix.Identity;
+
+            gl.BindBuffer(gl.ElementArrayBuffer, indexBuffer);
         }
 
-        public override void Update(double elapsedTime)
+        public override void Update(double elapsedMilliseconds)
         {
-            base.Update(elapsedTime);
+            base.Update(elapsedMilliseconds);
 
-            var elapsedTimeFloat = (float)elapsedTime;
+            var elapsedMillisecondsFloat = (float)elapsedMilliseconds;
             var rotation = Quaternion.CreateFromYawPitchRoll(
-                elapsedTimeFloat * 0.003f, 
-                elapsedTimeFloat * 0.002f, 
-                elapsedTimeFloat * 0.005f);
+                elapsedMillisecondsFloat * 2 * 0.001f, 
+                elapsedMillisecondsFloat * 4 * 0.001f, 
+                elapsedMillisecondsFloat * 3 * 0.001f);
             worldMatrix *= Matrix.CreateFromQuaternion(rotation);
         }
 
         public override void Draw()
         {
-            gl.DepthFunc(gl.LEqual);
-            gl.ClearDepth(1.0);
-
             base.Draw();
 
-            gl.UniformMatrix4fv(pMatrixUniform, false, projectionMatrix.ToArray());
-            gl.UniformMatrix4fv(vMatrixUniform, false, viewMatrix.ToArray());
             gl.UniformMatrix4fv(wMatrixUniform, false, worldMatrix.ToArray());
 
-            gl.BindBuffer(gl.ElementArrayBuffer, indexBuffer);
             gl.DrawElements(gl.Triangles, indices.Length, gl.UnsignedShort, 0);
         }
     }

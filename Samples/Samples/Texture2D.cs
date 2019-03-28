@@ -4,7 +4,7 @@ using WebAssembly;
 namespace Samples
 {
     // Based on: https://webglfundamentals.org/webgl/lessons/webgl-image-processing.html
-    public class Draw2DImage : BaseSample
+    public class Texture2D : BaseSample
     {
         public override string Description => "The image is passed as byte[] in ARGB.";
 
@@ -14,20 +14,20 @@ namespace Samples
 
             InitializeShaders(
                 vertexShaderCode:
-@"attribute vec2 a_position;
-attribute vec2 a_texCoord;
+@"attribute vec2 position;
+attribute vec2 textureCoordinate;
 
-uniform vec2 u_resolution;
+uniform vec2 resolution;
 
 varying vec2 v_texCoord;
 
 void main() {
-   vec2 zeroToOne = a_position / u_resolution;
+   vec2 zeroToOne = position / resolution;
    vec2 zeroToTwo = zeroToOne * 2.0;
    vec2 clipSpace = zeroToTwo - 1.0;
-   gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
+   gl_Position = vec4(clipSpace * vec2(1.0, -1.0), 0.0, 1.0);
 
-   v_texCoord = a_texCoord;
+   v_texCoord = textureCoordinate;
 }",
                 fragmentShaderCode:
 @"precision mediump float;
@@ -40,8 +40,8 @@ void main() {
    gl_FragColor = texture2D(u_image, v_texCoord);
 }");
 
-            var positionAttribute = gl.GetAttribLocation(shaderProgram, "a_position");
-            var texCoordAttribute = gl.GetAttribLocation(shaderProgram, "a_texCoord");
+            var positionAttribute = gl.GetAttribLocation(shaderProgram, "position");
+            var textureCoordinateAttribute = gl.GetAttribLocation(shaderProgram, "textureCoordinate");
 
             var x1 = 0;
             var x2 = Image.Width;
@@ -58,29 +58,28 @@ void main() {
             };
             var positionBuffer = CreateArrayBuffer(positions);
 
-            var texCoordBuffer = CreateArrayBuffer(new float[]
+            var textureCoordinateBuffer = CreateArrayBuffer(new float[]
             {
                 0, 0, 
                 0, 1, 
                 1, 0, 
                 1, 0, 
                 0, 1, 
-                1, 1,
+                1, 1
             });
 
             CreateTexture();
 
-            var resolutionUniform = gl.GetUniformLocation(shaderProgram, "u_resolution");
+            var resolutionUniform = gl.GetUniformLocation(shaderProgram, "resolution");
+            gl.Uniform2f(resolutionUniform, canvasWidth, canvasHeight);
 
             gl.EnableVertexAttribArray(positionAttribute);
             gl.BindBuffer(gl.ArrayBuffer, positionBuffer);
             gl.VertexAttribPointer(positionAttribute, 2, gl.Float, false, 0, 0);
 
-            gl.EnableVertexAttribArray(texCoordAttribute);
-            gl.BindBuffer(gl.ArrayBuffer, texCoordBuffer);
-            gl.VertexAttribPointer(texCoordAttribute, 2, gl.Float, false, 0, 0);
-
-            gl.Uniform2f(resolutionUniform, canvasWidth, canvasHeight);
+            gl.EnableVertexAttribArray(textureCoordinateAttribute);
+            gl.BindBuffer(gl.ArrayBuffer, textureCoordinateBuffer);
+            gl.VertexAttribPointer(textureCoordinateAttribute, 2, gl.Float, false, 0, 0);
         }
 
         public override void Draw()

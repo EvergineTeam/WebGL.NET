@@ -6,8 +6,8 @@ namespace Samples
 {
     class Program
     {
-        const int CanvasWidth = 320;
-        const int CanvasHeight = 240;
+        const int CanvasWidth = 640;
+        const int CanvasHeight = 480;
 
         static ISample[] samples;
 
@@ -22,7 +22,7 @@ namespace Samples
             {
                 new Triangle(),
                 new RotatingCube(),
-                new Draw2DImage(),
+                new Texture2D(),
                 new TexturedCube()
             };
 

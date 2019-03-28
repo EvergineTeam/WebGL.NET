@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using WaveEngine.Common.Math;
 using WebAssembly;
+using WebGLDotNET;
 
 namespace Samples
 {
@@ -10,18 +11,18 @@ namespace Samples
     // https://mdn.github.io/webgl-examples/tutorial/sample6/webgl-demo.js
     public class TexturedCube : BaseSample
     {
-        object positionBuffer;
-        object textureCoordBuffer;
+        WebGLBuffer positionBuffer;
+        WebGLBuffer textureCoordBuffer;
         ushort[] indices;
-        object indexBuffer;
-        object texture;
-        object vertexPositionAttribute;
-        object textureCoordAttribute;
-        object projectionMatrixUniform;
+        WebGLBuffer indexBuffer;
+        WebGLTexture texture;
+        int vertexPositionAttribute;
+        int textureCoordAttribute;
+        WebGLUniformLocation projectionMatrixUniform;
         Matrix projectionMatrix;
-        object modelViewMatrixUniform;
+        WebGLUniformLocation modelViewMatrixUniform;
         Matrix modelViewMatrix;
-        object samplerUniform;
+        WebGLUniformLocation samplerUniform;
         double totalElapsedTimeSeconds;
 
         public override string Description => 
@@ -171,9 +172,6 @@ void main(void) {
 
         public override void Draw()
         {
-            gl.ClearDepth(1.0);
-            gl.DepthFunc(gl.LEqual);
-
             base.Draw();
 
             gl.BindBuffer(gl.ArrayBuffer, positionBuffer);

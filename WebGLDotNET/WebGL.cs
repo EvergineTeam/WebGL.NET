@@ -105,11 +105,12 @@ namespace WebGLDotNET
 
         public void ActiveTexture(object texture) => Invoke("activeTexture", texture);
 
-        public void AttachShader(object program, object shader) => Invoke("attachShader", program, shader);
+        public void AttachShader(WebGLProgram program, WebGLShader shader) => 
+            Invoke("attachShader", program?.Handle, shader?.Handle);
 
-        public void BindBuffer(object target, object buffer) => Invoke("bindBuffer", target, buffer);
+        public void BindBuffer(object target, WebGLBuffer buffer) => Invoke("bindBuffer", target, buffer?.Handle);
 
-        public void BindTexture(object target, object texture) => Invoke("bindTexture", target, texture);
+        public void BindTexture(object target, WebGLTexture texture) => Invoke("bindTexture", target, texture?.Handle);
 
         public void BufferData(object target, object srcData, object usage)
         {
@@ -124,15 +125,39 @@ namespace WebGLDotNET
 
         public void ClearDepth(double depth) => Invoke("clearDepth", depth);
 
-        public void CompileShader(object shader) => Invoke("compileShader", shader);
+        public void CompileShader(WebGLShader shader) => Invoke("compileShader", shader?.Handle);
 
-        public object CreateBuffer() => Invoke("createBuffer");
+        public WebGLBuffer CreateBuffer()
+        {
+            var jsObject = (JSObject)Invoke("createBuffer");
+            var wrapper = new WebGLBuffer(jsObject);
 
-        public object CreateProgram() => Invoke("createProgram");
+            return wrapper;
+        }
 
-        public object CreateShader(object type) => Invoke("createShader", type);
+        public WebGLProgram CreateProgram()
+        {
+            var jsObject = (JSObject)Invoke("createProgram");
+            var wrapper = new WebGLProgram(jsObject);
 
-        public object CreateTexture() => Invoke("createTexture");
+            return wrapper;
+        }
+
+        public WebGLShader CreateShader(object type)
+        {
+            var jsObject = (JSObject)Invoke("createShader", type);
+            var wrapper = new WebGLShader(jsObject);
+
+            return wrapper;
+        }
+
+        public WebGLTexture CreateTexture()
+        {
+            var jsObject = (JSObject)Invoke("createTexture");
+            var wrapper = new WebGLTexture(jsObject);
+
+            return wrapper;
+        }
 
         public void DepthFunc(object func) => Invoke("depthFunc", func);
 
@@ -144,19 +169,24 @@ namespace WebGLDotNET
 
         public void Enable(object cap) => Invoke("enable", cap);
 
-        public void EnableVertexAttribArray(object index) => Invoke("enableVertexAttribArray", index);
+        public void EnableVertexAttribArray(int index) => Invoke("enableVertexAttribArray", index);
 
         public void GenerateMipmap(object target) => Invoke("generateMipmap", target);
 
-        public object GetAttribLocation(object program, string name) => 
-            Invoke("getAttribLocation", program, name);
+        public int GetAttribLocation(WebGLProgram program, string name) => 
+            (int)Invoke("getAttribLocation", program?.Handle, name);
 
-        public object GetUniformLocation(object program, string name) =>
-            Invoke("getUniformLocation", program, name);
+        public WebGLUniformLocation GetUniformLocation(WebGLProgram program, string name)
+        {
+            var jsObject = (JSObject)Invoke("getUniformLocation", program?.Handle, name);
+            var wrapper = new WebGLUniformLocation(jsObject);
 
-        public void LinkProgram(object program) => Invoke("linkProgram", program);
+            return wrapper;
+        }
 
-        public void ShaderSource(object shader, string source) => Invoke("shaderSource", shader, source);
+        public void LinkProgram(WebGLProgram program) => Invoke("linkProgram", program?.Handle);
+
+        public void ShaderSource(WebGLShader shader, string source) => Invoke("shaderSource", shader?.Handle, source);
 
         public void TexImage2D(
             object target,
@@ -170,18 +200,18 @@ namespace WebGLDotNET
         public void TexParameteri(object target, object pname, object param) =>
             Invoke("texParameteri", target, pname, param);
 
-        public void Uniform1i(object location, object x) => Invoke("uniform1i", location, x);
+        public void Uniform1i(WebGLUniformLocation location, object x) => Invoke("uniform1i", location?.Handle, x);
 
-        public void Uniform2f(object location, object v0, object v1) =>
-            Invoke("uniform2f", location, v0, v1);
+        public void Uniform2f(WebGLUniformLocation location, object v0, object v1) =>
+            Invoke("uniform2f", location?.Handle, v0, v1);
 
-        public void UniformMatrix4fv(object location, bool transpose, float[] value) =>
-            Invoke("uniformMatrix4fv", location, transpose, value);
+        public void UniformMatrix4fv(WebGLUniformLocation location, bool transpose, float[] value) =>
+            Invoke("uniformMatrix4fv", location?.Handle, transpose, value);
 
-        public void UseProgram(object program) => Invoke("useProgram", program);
+        public void UseProgram(WebGLProgram program) => Invoke("useProgram", program?.Handle);
 
         public void VertexAttribPointer(
-            object index, 
+            int index, 
             int size, 
             object type, 
             bool normalized, 

@@ -1,14 +1,15 @@
 ﻿using System.Drawing;
 using WebAssembly;
+using WebGLDotNET;
 
 namespace Samples
 {
     public class Triangle : BaseSample
     {
-        object vertexBuffer;
+        WebGLBuffer vertexBuffer;
         ushort[] indices;
-        object indexBuffer;
-        object coordinatesAttribute;
+        WebGLBuffer indexBuffer;
+        int positionAttribute;
 
         public override void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor)
         {
@@ -27,28 +28,28 @@ namespace Samples
 
             InitializeShaders(
                 vertexShaderCode: 
-@"attribute vec3 coordinates;
+@"attribute vec3 position;
 
 void main(void) {
-    gl_Position = vec4(coordinates, 1.0);
+    gl_Position = vec4(position, 1.0);
 }",
                 fragmentShaderCode: 
 @"void main(void) {
-    gl_FragColor = vec4(0.0, 0.0, 0.0, 0.1);
+    gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);
 }");
 
-            coordinatesAttribute = gl.GetAttribLocation(shaderProgram, "coordinates");
+            positionAttribute = gl.GetAttribLocation(shaderProgram, "position");
+
+            gl.BindBuffer(gl.ArrayBuffer, vertexBuffer);
+            gl.BindBuffer(gl.ElementArrayBuffer, indexBuffer);
+
+            gl.VertexAttribPointer(positionAttribute, 3, gl.Float, false, 0, 0);
+            gl.EnableVertexAttribArray(positionAttribute);
         }
 
         public override void Draw()
         {
             base.Draw();
-
-            gl.BindBuffer(gl.ArrayBuffer, vertexBuffer);
-            gl.BindBuffer(gl.ElementArrayBuffer, indexBuffer);
-
-            gl.VertexAttribPointer(coordinatesAttribute, 3, gl.Float, false, 0, 0);
-            gl.EnableVertexAttribArray(coordinatesAttribute);
 
             gl.DrawElements(gl.Triangles, indices.Length, gl.UnsignedShort, 0);
         }

@@ -12,9 +12,9 @@ namespace Samples
         Color clearColor;
 
         protected WebGL gl;
-        protected object vertexShader;
-        protected object fragmentShader;
-        protected object shaderProgram;
+        protected WebGLShader vertexShader;
+        protected WebGLShader fragmentShader;
+        protected WebGLProgram shaderProgram;
 
         public virtual string Description => string.Empty;
 
@@ -22,10 +22,10 @@ namespace Samples
 
         public virtual void Draw()
         {
-            gl.ClearColor(clearColor.R, clearColor.G, clearColor.B, clearColor.A);
             gl.Enable(gl.DepthTest);
+
+            gl.ClearColor(clearColor.R, clearColor.G, clearColor.B, clearColor.A);
             gl.Clear(gl.ColorBufferBit);
-            gl.Viewport(0, 0, canvasWidth, canvasHeight);
         }
 
         public virtual void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor)
@@ -40,7 +40,7 @@ namespace Samples
         {
         }
 
-        protected object CreateArrayBuffer(Array items)
+        protected WebGLBuffer CreateArrayBuffer(Array items)
         {
             var arrayBuffer = gl.CreateBuffer();
             gl.BindBuffer(gl.ArrayBuffer, arrayBuffer);
@@ -50,7 +50,7 @@ namespace Samples
             return arrayBuffer;
         }
 
-        protected object CreateElementArrayBuffer(Array items)
+        protected WebGLBuffer CreateElementArrayBuffer(Array items)
         {
             var elementArrayBuffer = gl.CreateBuffer();
             gl.BindBuffer(gl.ElementArrayBuffer, elementArrayBuffer);
@@ -60,7 +60,7 @@ namespace Samples
             return elementArrayBuffer;
         }
 
-        protected object CreateTexture()
+        protected WebGLTexture CreateTexture()
         {
             var texture = gl.CreateTexture();
             gl.BindTexture(gl.Texture2D, texture);
