@@ -1,6 +1,8 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using WaveEngine.Common.Math;
 using WebAssembly;
+using WebAssembly.Host;
 using WebGLDotNET;
 
 namespace Samples
@@ -142,7 +144,22 @@ void main(void) {
             };
             indexBuffer = CreateElementArrayBuffer(indices);
 
-            texture = CreateTexture();
+            texture = gl.CreateTexture();
+
+            var image = new HostObject("Image");
+            var onLoad = new Action<JSObject>(jsObject =>
+            {
+                gl.BindTexture(gl.Texture2D, texture);
+
+                gl.TexParameteri(gl.Texture2D, gl.TextureWrapS, gl.ClampToEdge);
+                gl.TexParameteri(gl.Texture2D, gl.TextureWrapT, gl.ClampToEdge);
+                gl.TexParameteri(gl.Texture2D, gl.TextureMinFilter, gl.Nearest);
+                gl.TexParameteri(gl.Texture2D, gl.TextureMagFilter, gl.Nearest);
+
+                gl.TexImage2D(gl.Texture2D, 0, gl.RGB, gl.RGB, gl.UnsignedByte, image);
+            });
+            image.SetObjectProperty("onload", onLoad);
+            image.SetObjectProperty("src", "spongebob.jpg");
 
             gl.VertexAttribPointer(vertexPositionAttribute, 3, gl.Float, false, 0, 0);
             gl.EnableVertexAttribArray(vertexPositionAttribute);

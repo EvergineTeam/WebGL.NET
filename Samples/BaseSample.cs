@@ -60,22 +60,6 @@ namespace Samples
             return elementArrayBuffer;
         }
 
-        protected WebGLTexture CreateTexture()
-        {
-            var texture = gl.CreateTexture();
-            gl.BindTexture(gl.Texture2D, texture);
-
-            gl.TexParameteri(gl.Texture2D, gl.TextureWrapS, gl.ClampToEdge);
-            gl.TexParameteri(gl.Texture2D, gl.TextureWrapT, gl.ClampToEdge);
-            gl.TexParameteri(gl.Texture2D, gl.TextureMinFilter, gl.Nearest);
-            gl.TexParameteri(gl.Texture2D, gl.TextureMagFilter, gl.Nearest);
-
-            var imageData = new ImageData(Image.ARGBColors, Image.Width, Image.Height);
-            gl.TexImage2D(gl.Texture2D, 0, gl.RGB, gl.RGB, gl.UnsignedByte, imageData);
-
-            return texture;
-        }
-
         protected void InitializeShaders(string vertexShaderCode, string fragmentShaderCode)
         {
             vertexShader = gl.CreateShader(gl.VertexShader);

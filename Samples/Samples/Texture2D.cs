@@ -1,5 +1,6 @@
 ﻿using System.Drawing;
 using WebAssembly;
+using WebGLDotNET;
 
 namespace Samples
 {
@@ -68,7 +69,16 @@ void main() {
                 1, 1
             });
 
-            CreateTexture();
+            var texture = gl.CreateTexture();
+            gl.BindTexture(gl.Texture2D, texture);
+
+            gl.TexParameteri(gl.Texture2D, gl.TextureWrapS, gl.ClampToEdge);
+            gl.TexParameteri(gl.Texture2D, gl.TextureWrapT, gl.ClampToEdge);
+            gl.TexParameteri(gl.Texture2D, gl.TextureMinFilter, gl.Nearest);
+            gl.TexParameteri(gl.Texture2D, gl.TextureMagFilter, gl.Nearest);
+
+            var imageData = new ImageData(Image.ARGBColors, Image.Width, Image.Height);
+            gl.TexImage2D(gl.Texture2D, 0, gl.RGB, gl.RGB, gl.UnsignedByte, imageData);
 
             var resolutionUniform = gl.GetUniformLocation(shaderProgram, "resolution");
             gl.Uniform2f(resolutionUniform, canvasWidth, canvasHeight);

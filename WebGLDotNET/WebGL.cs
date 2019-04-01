@@ -195,6 +195,16 @@ namespace WebGLDotNET
             ImageData pixels) =>
             Invoke("texImage2D", target, level, internalformat, format, type, pixels?.Handle);
 
+        // This overload serves for pixels being HTMLImageElement
+        public void TexImage2D(
+            object target,
+            object level,
+            object internalformat,
+            object format,
+            object type,
+            JSObject pixels) =>
+            Invoke("texImage2D", target, level, internalformat, format, type, pixels);
+
         public void TexParameteri(object target, object pname, object param) =>
             Invoke("texParameteri", target, pname, param);
 
