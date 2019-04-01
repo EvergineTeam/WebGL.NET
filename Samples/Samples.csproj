@@ -4,12 +4,12 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netstandard2.0</TargetFramework>
     <MonoRuntimeDebuggerEnabled>false</MonoRuntimeDebuggerEnabled>
-    <MonoWasmSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/1900/label=ubuntu-1804-amd64/Azure/processDownloadRequest/1900/ubuntu-1804-amd64/sdks/wasm/mono-wasm-5f7db9082e2.zip</MonoWasmSDKUri>
-    <MonoWasmAOTSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/1900/label=ubuntu-1804-amd64/Azure/processDownloadRequest/1900/ubuntu-1804-amd64/wasm-release-Linux-5f7db9082e2684d9890825028528edc8c07d5963.zip</MonoWasmAOTSDKUri>
+    <MonoWasmSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/2495/label=ubuntu-1804-amd64/Azure/processDownloadRequest/2495/ubuntu-1804-amd64/sdks/wasm/mono-wasm-e894d683f9f.zip</MonoWasmSDKUri>
+    <MonoWasmAOTSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/2495/label=ubuntu-1804-amd64/Azure/processDownloadRequest/2495/ubuntu-1804-amd64/wasm-release-Linux-e894d683f9f0a9c7351b513d3f015a5e170449eb.zip</MonoWasmAOTSDKUri>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0-dev.151" />
+    <PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0-dev.242" />
     <PackageReference Include="WaveEngine.Common" Version="2.5.0.39" />
   </ItemGroup>
   
@@ -24,6 +24,8 @@
     <LinkerDescriptor Remove="LinkerConfig.xml" />
     <None Remove="WasmCSS\styles.css" />
     <EmbeddedResource Include="WasmCSS\styles.css" />
+    <None Remove="spongebob.jpg" />
+    <Content Include="spongebob.jpg" />
   </ItemGroup>
   
   <ItemGroup>

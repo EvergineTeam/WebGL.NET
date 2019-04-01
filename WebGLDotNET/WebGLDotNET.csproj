@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Memory" Version="4.5.2" />
+  </ItemGroup>
+  
+  <ItemGroup>
     <Reference Include="WebAssembly.Bindings">
       <HintPath>WebAssembly.Bindings.dll</HintPath>
       <Private>False</Private>

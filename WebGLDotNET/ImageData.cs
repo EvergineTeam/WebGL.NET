@@ -1,4 +1,5 @@
 ﻿using WebAssembly;
+using WebAssembly.Core;
 
 namespace WebGLDotNET
 {
@@ -6,10 +7,10 @@ namespace WebGLDotNET
     {
         public ImageData(byte[] image, int imageWidth, int imageHeight)
         {
-            var uint8ClampedArray = (JSObject)Runtime.GetGlobalObject("Uint8ClampedArray");
-            var imageNativeArray = Runtime.NewJSObject(uint8ClampedArray, image);
+            var uint8ClampedArray = new Uint8ClampedArray(image.Length);
+            uint8ClampedArray.CopyFrom(image);
             var imageDataObject = (JSObject)Runtime.GetGlobalObject("ImageData");
-            Handle = Runtime.NewJSObject(imageDataObject, imageNativeArray, imageWidth, imageHeight);
+            Handle = Runtime.NewJSObject(imageDataObject, uint8ClampedArray, imageWidth, imageHeight);
         }
 
         public object Handle { get; }

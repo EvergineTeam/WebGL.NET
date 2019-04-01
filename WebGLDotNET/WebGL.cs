@@ -8,6 +8,7 @@
 
 using System;
 using WebAssembly;
+using WebAssembly.Core;
 
 namespace WebGLDotNET
 {
@@ -27,27 +28,24 @@ namespace WebGLDotNET
             return instance;
         }
 
-        public JSObject CastNativeArray(object managedArray)
+        public ITypedArray CastNativeArray(object managedArray)
         {
             var arrayType = managedArray.GetType();
-            JSObject array;
+            ITypedArray array;
 
             // Here are listed some JavaScript array types:
             // https://github.com/mono/mono/blob/a7f5952c69ae76015ccaefd4dfa8be2274498a21/sdks/wasm/bindings-test.cs
             if (arrayType == typeof(byte[]))
             {
-                var uint8Array = (JSObject)Runtime.GetGlobalObject("Uint8Array");
-                array = Runtime.NewJSObject(uint8Array, managedArray);
+                array = Uint8Array.From((byte[])managedArray);
             }
             else if (arrayType == typeof(float[]))
             {
-                var float32Array = (JSObject)Runtime.GetGlobalObject("Float32Array");
-                array = Runtime.NewJSObject(float32Array, managedArray);
+                array = Float32Array.From((float[])managedArray);
             }
             else if (arrayType == typeof(ushort[]))
             {
-                var uint16Array = (JSObject)Runtime.GetGlobalObject("Uint16Array");
-                array = Runtime.NewJSObject(uint16Array, managedArray);
+                array = Uint16Array.From((ushort[])managedArray);
             }
             else
             {
@@ -195,7 +193,7 @@ namespace WebGLDotNET
             object format,
             object type,
             ImageData pixels) =>
-            Invoke("texImage2D", target, level, internalformat, format, type, pixels.Handle);
+            Invoke("texImage2D", target, level, internalformat, format, type, pixels?.Handle);
 
         public void TexParameteri(object target, object pname, object param) =>
             Invoke("texParameteri", target, pname, param);
@@ -205,8 +203,11 @@ namespace WebGLDotNET
         public void Uniform2f(WebGLUniformLocation location, object v0, object v1) =>
             Invoke("uniform2f", location?.Handle, v0, v1);
 
-        public void UniformMatrix4fv(WebGLUniformLocation location, bool transpose, float[] value) =>
-            Invoke("uniformMatrix4fv", location?.Handle, transpose, value);
+        public void UniformMatrix4fv(WebGLUniformLocation location, bool transpose, float[] value)
+        {
+            var array = CastNativeArray(value);
+            Invoke("uniformMatrix4fv", location?.Handle, transpose, array);
+        }
 
         public void UseProgram(WebGLProgram program) => Invoke("useProgram", program?.Handle);
 
