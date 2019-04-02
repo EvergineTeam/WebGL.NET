@@ -112,8 +112,9 @@ namespace WebGLDotNET
 
         public void BufferData(object target, object srcData, object usage)
         {
-            var array = CastNativeArray(srcData);
-            Invoke("bufferData", target, array, usage);
+            // We will dispose of the buffer array after we pass it.
+            using (IDisposable array = (IDisposable)CastNativeArray(srcData))
+                Invoke("bufferData", target, array, usage);
         }
 
         public void Clear(object mask) => Invoke("clear", mask);
@@ -213,11 +214,16 @@ namespace WebGLDotNET
         public void Uniform2f(WebGLUniformLocation location, object v0, object v1) =>
             Invoke("uniform2f", location?.Handle, v0, v1);
 
+        Float32Array transposeMatrix = null;  // Let's keep one around instead of always allocating a new one.
         public void UniformMatrix4fv(WebGLUniformLocation location, bool transpose, float[] value)
         {
-            var array = CastNativeArray(value);
-            Invoke("uniformMatrix4fv", location?.Handle, transpose, array);
+            if (transposeMatrix == null)
+                transposeMatrix = Float32Array.From(value);
+            else
+                transposeMatrix.CopyFrom(value);
+            Invoke("uniformMatrix4fv", location?.Handle, transpose, transposeMatrix);
         }
+
 
         public void UseProgram(WebGLProgram program) => Invoke("useProgram", program?.Handle);
 
