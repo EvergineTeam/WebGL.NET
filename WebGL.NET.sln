@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Samples", "Samples\Samples.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageToRGBA", "ImageToRGBA\ImageToRGBA.csproj", "{25C96659-0EE5-4DF3-9CAD-162C857DE69D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebIDLToCSharp", "WebIDLToCSharp\WebIDLToCSharp.csproj", "{4AAF8652-93B2-44B6-8F81-358F88FE400D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,5 +27,9 @@ Global
 		{25C96659-0EE5-4DF3-9CAD-162C857DE69D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{25C96659-0EE5-4DF3-9CAD-162C857DE69D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{25C96659-0EE5-4DF3-9CAD-162C857DE69D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AAF8652-93B2-44B6-8F81-358F88FE400D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AAF8652-93B2-44B6-8F81-358F88FE400D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AAF8652-93B2-44B6-8F81-358F88FE400D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AAF8652-93B2-44B6-8F81-358F88FE400D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
