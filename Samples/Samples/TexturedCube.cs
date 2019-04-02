@@ -159,7 +159,7 @@ void main(void) {
                 gl.TexImage2D(gl.Texture2D, 0, gl.RGB, gl.RGB, gl.UnsignedByte, image);
             });
             image.SetObjectProperty("onload", onLoad);
-            image.SetObjectProperty("src", "spongebob.jpg");
+            image.SetObjectProperty("src", "Assets/spongebob.jpg");
 
             gl.VertexAttribPointer(vertexPositionAttribute, 3, gl.Float, false, 0, 0);
             gl.EnableVertexAttribArray(vertexPositionAttribute);

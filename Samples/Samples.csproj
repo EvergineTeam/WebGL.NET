@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0006" />
     <PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0-dev.242" />
     <PackageReference Include="WaveEngine.Common" Version="2.5.0.39" />
   </ItemGroup>
@@ -19,14 +20,28 @@
       <HintPath>..\WebGLDotNET\WebAssembly.Bindings.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="WebAssembly.Net.Http">
+      <HintPath>..\WebGLDotNET\WebAssembly.Net.Http.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   
   <ItemGroup>
     <LinkerDescriptor Remove="LinkerConfig.xml" />
+    <None Remove="Assets\spongebob.bmp" />
+    <None Remove="Assets\spongebob.jpg" />
+    <None Remove="Assets\spongebob.png" />
     <None Remove="WasmCSS\styles.css" />
     <EmbeddedResource Include="WasmCSS\styles.css" />
-    <None Remove="spongebob.jpg" />
-    <Content Include="spongebob.jpg" />
+    <Content Include="Assets\spongebob.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\spongebob.bmp">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\spongebob.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   
   <ItemGroup>
