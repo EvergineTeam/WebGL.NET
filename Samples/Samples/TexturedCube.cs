@@ -18,8 +18,8 @@ namespace Samples
         ushort[] indices;
         WebGLBuffer indexBuffer;
         WebGLTexture texture;
-        int vertexPositionAttribute;
-        int textureCoordAttribute;
+        uint vertexPositionAttribute;
+        uint textureCoordAttribute;
         WebGLUniformLocation projectionMatrixUniform;
         Matrix projectionMatrix;
         WebGLUniformLocation modelViewMatrixUniform;
@@ -57,8 +57,8 @@ void main(void) {
     gl_FragColor = texture2D(uSampler, vTextureCoord);
 }");
 
-            vertexPositionAttribute = gl.GetAttribLocation(shaderProgram, "aVertexPosition");
-            textureCoordAttribute = gl.GetAttribLocation(shaderProgram, "aTextureCoord");
+            vertexPositionAttribute = (uint)gl.GetAttribLocation(shaderProgram, "aVertexPosition");
+            textureCoordAttribute = (uint)gl.GetAttribLocation(shaderProgram, "aTextureCoord");
             projectionMatrixUniform = gl.GetUniformLocation(shaderProgram, "uProjectionMatrix");
             modelViewMatrixUniform = gl.GetUniformLocation(shaderProgram, "uModelViewMatrix");
             samplerUniform = gl.GetUniformLocation(shaderProgram, "uSampler");
@@ -149,23 +149,42 @@ void main(void) {
             var image = new HostObject("Image");
             var onLoad = new Action<JSObject>(jsObject =>
             {
-                gl.BindTexture(gl.Texture2D, texture);
+                gl.BindTexture(WebGLRenderingContextBase.TEXTURE_2D, texture);
 
-                gl.TexParameteri(gl.Texture2D, gl.TextureWrapS, gl.ClampToEdge);
-                gl.TexParameteri(gl.Texture2D, gl.TextureWrapT, gl.ClampToEdge);
-                gl.TexParameteri(gl.Texture2D, gl.TextureMinFilter, gl.Nearest);
-                gl.TexParameteri(gl.Texture2D, gl.TextureMagFilter, gl.Nearest);
+                gl.TexParameteri(
+                    WebGLRenderingContextBase.TEXTURE_2D,
+                    WebGLRenderingContextBase.TEXTURE_WRAP_S,
+                    (int)WebGLRenderingContextBase.CLAMP_TO_EDGE);
+                gl.TexParameteri(
+                    WebGLRenderingContextBase.TEXTURE_2D,
+                    WebGLRenderingContextBase.TEXTURE_WRAP_T,
+                    (int)WebGLRenderingContextBase.CLAMP_TO_EDGE);
+                gl.TexParameteri(
+                    WebGLRenderingContextBase.TEXTURE_2D,
+                    WebGLRenderingContextBase.TEXTURE_MIN_FILTER,
+                    (int)WebGLRenderingContextBase.NEAREST);
+                gl.TexParameteri(
+                    WebGLRenderingContextBase.TEXTURE_2D,
+                    WebGLRenderingContextBase.TEXTURE_MAG_FILTER,
+                    (int)WebGLRenderingContextBase.NEAREST);
 
-                gl.TexImage2D(gl.Texture2D, 0, gl.RGB, gl.RGB, gl.UnsignedByte, image);
+                var imageData = new ImageData(Image.ARGBColors, Image.Width, Image.Height);
+                gl.TexImage2D(
+                    WebGLRenderingContextBase.TEXTURE_2D,
+                    0,
+                    WebGLRenderingContextBase.RGB,
+                    WebGLRenderingContextBase.RGB,
+                    WebGLRenderingContextBase.UNSIGNED_BYTE,
+                    image);
             });
             image.SetObjectProperty("onload", onLoad);
             image.SetObjectProperty("src", "spongebob.jpg");
 
-            gl.VertexAttribPointer(vertexPositionAttribute, 3, gl.Float, false, 0, 0);
+            gl.VertexAttribPointer(vertexPositionAttribute, 3, WebGLRenderingContextBase.FLOAT, false, 0, 0);
             gl.EnableVertexAttribArray(vertexPositionAttribute);
 
             gl.EnableVertexAttribArray(textureCoordAttribute);
-            gl.VertexAttribPointer(textureCoordAttribute, 2, gl.Float, false, 0, 0);
+            gl.VertexAttribPointer(textureCoordAttribute, 2, WebGLRenderingContextBase.FLOAT, false, 0, 0);
 
             projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
                 MathHelper.ToRadians(45), 
@@ -191,24 +210,24 @@ void main(void) {
         {
             base.Draw();
 
-            gl.BindBuffer(gl.ArrayBuffer, positionBuffer);
-            gl.VertexAttribPointer(vertexPositionAttribute, 3, gl.Float, false, 0, 0);
+            gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, positionBuffer);
+            gl.VertexAttribPointer(vertexPositionAttribute, 3, WebGLRenderingContextBase.FLOAT, false, 0, 0);
             gl.EnableVertexAttribArray(vertexPositionAttribute);
 
-            gl.BindBuffer(gl.ArrayBuffer, textureCoordBuffer);
-            gl.VertexAttribPointer(textureCoordAttribute, 2, gl.Float, false, 0, 0);
+            gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, textureCoordBuffer);
+            gl.VertexAttribPointer(textureCoordAttribute, 2, WebGLRenderingContextBase.FLOAT, false, 0, 0);
             gl.EnableVertexAttribArray(textureCoordAttribute);
 
-            gl.BindBuffer(gl.ElementArrayBuffer, indexBuffer);
+            gl.BindBuffer(WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER, indexBuffer);
 
             gl.UniformMatrix4fv(projectionMatrixUniform, false, projectionMatrix.ToArray());
             gl.UniformMatrix4fv(modelViewMatrixUniform, false, modelViewMatrix.ToArray());
 
-            gl.ActiveTexture(gl.Texture0);
-            gl.BindTexture(gl.Texture2D, texture);
+            gl.ActiveTexture(WebGLRenderingContextBase.TEXTURE0);
+            gl.BindTexture(WebGLRenderingContextBase.TEXTURE_2D, texture);
             gl.Uniform1i(samplerUniform, 0);
 
-            gl.DrawElements(gl.Triangles, 36, gl.UnsignedShort, 0);
+            gl.DrawElements(WebGLRenderingContextBase.TRIANGLES, 36, WebGLRenderingContextBase.UNSIGNED_SHORT, 0);
         }
     }
 }

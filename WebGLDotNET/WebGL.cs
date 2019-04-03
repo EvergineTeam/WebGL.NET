@@ -2,7 +2,7 @@ using WebAssembly.Core;
 
 namespace WebGLDotNET
 {
-    public class WebGLContextAttributes
+    public partial class WebGLContextAttributes
     {
         public bool Alpha { get; set; } = true;
 
@@ -660,11 +660,11 @@ namespace WebGLDotNET
 
         public WebGLContextAttributes GetContextAttributes() => Invoke<WebGLContextAttributes>("getContextAttributes");
 
-        public bool IsContextLost() => Invoke<bool>("isContextLost");
+        public bool IsContextLost() => InvokeForBasicType<bool>("isContextLost");
 
-        public string[] GetSupportedExtensions() => Invoke<string[]>("getSupportedExtensions");
+        public string[] GetSupportedExtensions() => InvokeForArray<string>("getSupportedExtensions");
 
-        public object GetExtension(string name) => Invoke<object>("getExtension", name);
+        public object GetExtension(string name) => Invoke("getExtension", name);
 
         public void ActiveTexture(uint texture) => Invoke("activeTexture", texture);
 
@@ -692,11 +692,11 @@ namespace WebGLDotNET
 
         public void BufferData(uint target, ulong size, uint usage) => Invoke("bufferData", target, size, usage);
 
-        public void BufferData(uint target, object data, uint usage) => Invoke("bufferData", target, data, usage);
+        public void BufferData(uint target, System.Array data, uint usage) => Invoke("bufferData", target, data, usage);
 
-        public void BufferSubData(uint target, uint offset, object data) => Invoke("bufferSubData", target, offset, data);
+        public void BufferSubData(uint target, uint offset, System.Array data) => Invoke("bufferSubData", target, offset, data);
 
-        public uint CheckFramebufferStatus(uint target) => Invoke<uint>("checkFramebufferStatus", target);
+        public uint CheckFramebufferStatus(uint target) => InvokeForBasicType<uint>("checkFramebufferStatus", target);
 
         public void Clear(uint mask) => Invoke("clear", mask);
 
@@ -780,57 +780,57 @@ namespace WebGLDotNET
 
         public WebGLActiveInfo GetActiveUniform(WebGLProgram program, uint index) => Invoke<WebGLActiveInfo>("getActiveUniform", program, index);
 
-        public WebGLShader[] GetAttachedShaders(WebGLProgram program) => Invoke<WebGLShader[]>("getAttachedShaders", program);
+        public WebGLShader[] GetAttachedShaders(WebGLProgram program) => InvokeForArray<WebGLShader>("getAttachedShaders", program);
 
-        public int GetAttribLocation(WebGLProgram program, string name) => Invoke<int>("getAttribLocation", program, name);
+        public int GetAttribLocation(WebGLProgram program, string name) => InvokeForBasicType<int>("getAttribLocation", program, name);
 
-        public object GetBufferParameter(uint target, uint pname) => Invoke<object>("getBufferParameter", target, pname);
+        public object GetBufferParameter(uint target, uint pname) => Invoke("getBufferParameter", target, pname);
 
-        public object GetParameter(uint pname) => Invoke<object>("getParameter", pname);
+        public object GetParameter(uint pname) => Invoke("getParameter", pname);
 
-        public uint GetError() => Invoke<uint>("getError");
+        public uint GetError() => InvokeForBasicType<uint>("getError");
 
-        public object GetFramebufferAttachmentParameter(uint target, uint attachment, uint pname) => Invoke<object>("getFramebufferAttachmentParameter", target, attachment, pname);
+        public object GetFramebufferAttachmentParameter(uint target, uint attachment, uint pname) => Invoke("getFramebufferAttachmentParameter", target, attachment, pname);
 
-        public object GetProgramParameter(WebGLProgram program, uint pname) => Invoke<object>("getProgramParameter", program, pname);
+        public object GetProgramParameter(WebGLProgram program, uint pname) => Invoke("getProgramParameter", program, pname);
 
-        public string GetProgramInfoLog(WebGLProgram program) => Invoke<string>("getProgramInfoLog", program);
+        public string GetProgramInfoLog(WebGLProgram program) => InvokeForBasicType<string>("getProgramInfoLog", program);
 
-        public object GetRenderbufferParameter(uint target, uint pname) => Invoke<object>("getRenderbufferParameter", target, pname);
+        public object GetRenderbufferParameter(uint target, uint pname) => Invoke("getRenderbufferParameter", target, pname);
 
-        public object GetShaderParameter(WebGLShader shader, uint pname) => Invoke<object>("getShaderParameter", shader, pname);
+        public object GetShaderParameter(WebGLShader shader, uint pname) => Invoke("getShaderParameter", shader, pname);
 
         public WebGLShaderPrecisionFormat GetShaderPrecisionFormat(uint shadertype, uint precisiontype) => Invoke<WebGLShaderPrecisionFormat>("getShaderPrecisionFormat", shadertype, precisiontype);
 
-        public string GetShaderInfoLog(WebGLShader shader) => Invoke<string>("getShaderInfoLog", shader);
+        public string GetShaderInfoLog(WebGLShader shader) => InvokeForBasicType<string>("getShaderInfoLog", shader);
 
-        public string GetShaderSource(WebGLShader shader) => Invoke<string>("getShaderSource", shader);
+        public string GetShaderSource(WebGLShader shader) => InvokeForBasicType<string>("getShaderSource", shader);
 
-        public object GetTexParameter(uint target, uint pname) => Invoke<object>("getTexParameter", target, pname);
+        public object GetTexParameter(uint target, uint pname) => Invoke("getTexParameter", target, pname);
 
-        public object GetUniform(WebGLProgram program, WebGLUniformLocation location) => Invoke<object>("getUniform", program, location);
+        public object GetUniform(WebGLProgram program, WebGLUniformLocation location) => Invoke("getUniform", program, location);
 
         public WebGLUniformLocation GetUniformLocation(WebGLProgram program, string name) => Invoke<WebGLUniformLocation>("getUniformLocation", program, name);
 
-        public object GetVertexAttrib(uint index, uint pname) => Invoke<object>("getVertexAttrib", index, pname);
+        public object GetVertexAttrib(uint index, uint pname) => Invoke("getVertexAttrib", index, pname);
 
-        public ulong GetVertexAttribOffset(uint index, uint pname) => Invoke<ulong>("getVertexAttribOffset", index, pname);
+        public ulong GetVertexAttribOffset(uint index, uint pname) => InvokeForBasicType<ulong>("getVertexAttribOffset", index, pname);
 
         public void Hint(uint target, uint mode) => Invoke("hint", target, mode);
 
-        public bool IsBuffer(WebGLBuffer buffer) => Invoke<bool>("isBuffer", buffer);
+        public bool IsBuffer(WebGLBuffer buffer) => InvokeForBasicType<bool>("isBuffer", buffer);
 
-        public bool IsEnabled(uint cap) => Invoke<bool>("isEnabled", cap);
+        public bool IsEnabled(uint cap) => InvokeForBasicType<bool>("isEnabled", cap);
 
-        public bool IsFramebuffer(WebGLFramebuffer framebuffer) => Invoke<bool>("isFramebuffer", framebuffer);
+        public bool IsFramebuffer(WebGLFramebuffer framebuffer) => InvokeForBasicType<bool>("isFramebuffer", framebuffer);
 
-        public bool IsProgram(WebGLProgram program) => Invoke<bool>("isProgram", program);
+        public bool IsProgram(WebGLProgram program) => InvokeForBasicType<bool>("isProgram", program);
 
-        public bool IsRenderbuffer(WebGLRenderbuffer renderbuffer) => Invoke<bool>("isRenderbuffer", renderbuffer);
+        public bool IsRenderbuffer(WebGLRenderbuffer renderbuffer) => InvokeForBasicType<bool>("isRenderbuffer", renderbuffer);
 
-        public bool IsShader(WebGLShader shader) => Invoke<bool>("isShader", shader);
+        public bool IsShader(WebGLShader shader) => InvokeForBasicType<bool>("isShader", shader);
 
-        public bool IsTexture(WebGLTexture texture) => Invoke<bool>("isTexture", texture);
+        public bool IsTexture(WebGLTexture texture) => InvokeForBasicType<bool>("isTexture", texture);
 
         public void LineWidth(float width) => Invoke("lineWidth", width);
 

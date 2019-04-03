@@ -149,14 +149,14 @@ void main(void) {
             vMatrixUniform = gl.GetUniformLocation(shaderProgram, "vMatrix");
             wMatrixUniform = gl.GetUniformLocation(shaderProgram, "wMatrix");
 
-            gl.BindBuffer(gl.ArrayBuffer, vertexBuffer);
-            var positionAttribute = gl.GetAttribLocation(shaderProgram, "position");
-            gl.VertexAttribPointer(positionAttribute, 3, gl.Float, false, 0, 0);
+            gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, vertexBuffer);
+            var positionAttribute = (uint)gl.GetAttribLocation(shaderProgram, "position");
+            gl.VertexAttribPointer(positionAttribute, 3, WebGLRenderingContextBase.FLOAT, false, 0, 0);
             gl.EnableVertexAttribArray(positionAttribute);
 
-            gl.BindBuffer(gl.ArrayBuffer, colorBuffer);
-            var colorAttribute = gl.GetAttribLocation(shaderProgram, "color");
-            gl.VertexAttribPointer(colorAttribute, 3, gl.Float, false, 0, 0);
+            gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, colorBuffer);
+            var colorAttribute = (uint)gl.GetAttribLocation(shaderProgram, "color");
+            gl.VertexAttribPointer(colorAttribute, 3, WebGLRenderingContextBase.FLOAT, false, 0, 0);
             gl.EnableVertexAttribArray(colorAttribute);
 
             projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
@@ -168,7 +168,7 @@ void main(void) {
 
             worldMatrix = Matrix.Identity;
 
-            gl.BindBuffer(gl.ElementArrayBuffer, indexBuffer);
+            gl.BindBuffer(WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER, indexBuffer);
         }
 
         public override void Update(double elapsedMilliseconds)
@@ -189,7 +189,11 @@ void main(void) {
 
             gl.UniformMatrix4fv(wMatrixUniform, false, worldMatrix.ToArray());
 
-            gl.DrawElements(gl.Triangles, indices.Length, gl.UnsignedShort, 0);
+            gl.DrawElements(
+                WebGLRenderingContextBase.TRIANGLES, 
+                indices.Length, 
+                WebGLRenderingContextBase.UNSIGNED_SHORT, 
+                0);
         }
     }
 }

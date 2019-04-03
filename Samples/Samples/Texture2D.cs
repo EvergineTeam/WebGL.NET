@@ -41,8 +41,8 @@ void main() {
    gl_FragColor = texture2D(u_image, v_texCoord);
 }");
 
-            var positionAttribute = gl.GetAttribLocation(shaderProgram, "position");
-            var textureCoordinateAttribute = gl.GetAttribLocation(shaderProgram, "textureCoordinate");
+            var positionAttribute = (uint)gl.GetAttribLocation(shaderProgram, "position");
+            var textureCoordinateAttribute = (uint)gl.GetAttribLocation(shaderProgram, "textureCoordinate");
 
             var x1 = 0;
             var x2 = Image.Width;
@@ -70,33 +70,51 @@ void main() {
             });
 
             var texture = gl.CreateTexture();
-            gl.BindTexture(gl.Texture2D, texture);
+            gl.BindTexture(WebGLRenderingContextBase.TEXTURE_2D, texture);
 
-            gl.TexParameteri(gl.Texture2D, gl.TextureWrapS, gl.ClampToEdge);
-            gl.TexParameteri(gl.Texture2D, gl.TextureWrapT, gl.ClampToEdge);
-            gl.TexParameteri(gl.Texture2D, gl.TextureMinFilter, gl.Nearest);
-            gl.TexParameteri(gl.Texture2D, gl.TextureMagFilter, gl.Nearest);
+            gl.TexParameteri(
+                WebGLRenderingContextBase.TEXTURE_2D, 
+                WebGLRenderingContextBase.TEXTURE_WRAP_S, 
+                (int)WebGLRenderingContextBase.CLAMP_TO_EDGE);
+            gl.TexParameteri(
+                WebGLRenderingContextBase.TEXTURE_2D, 
+                WebGLRenderingContextBase.TEXTURE_WRAP_T,
+                (int)WebGLRenderingContextBase.CLAMP_TO_EDGE);
+            gl.TexParameteri(
+                WebGLRenderingContextBase.TEXTURE_2D, 
+                WebGLRenderingContextBase.TEXTURE_MIN_FILTER,
+                (int)WebGLRenderingContextBase.NEAREST);
+            gl.TexParameteri(
+                WebGLRenderingContextBase.TEXTURE_2D, 
+                WebGLRenderingContextBase.TEXTURE_MAG_FILTER,
+                (int)WebGLRenderingContextBase.NEAREST);
 
             var imageData = new ImageData(Image.ARGBColors, Image.Width, Image.Height);
-            gl.TexImage2D(gl.Texture2D, 0, gl.RGB, gl.RGB, gl.UnsignedByte, imageData);
+            gl.TexImage2D(
+                WebGLRenderingContextBase.TEXTURE_2D, 
+                0,
+                WebGLRenderingContextBase.RGB,
+                WebGLRenderingContextBase.RGB,
+                WebGLRenderingContextBase.UNSIGNED_BYTE, 
+                imageData);
 
             var resolutionUniform = gl.GetUniformLocation(shaderProgram, "resolution");
             gl.Uniform2f(resolutionUniform, canvasWidth, canvasHeight);
 
             gl.EnableVertexAttribArray(positionAttribute);
-            gl.BindBuffer(gl.ArrayBuffer, positionBuffer);
-            gl.VertexAttribPointer(positionAttribute, 2, gl.Float, false, 0, 0);
+            gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, positionBuffer);
+            gl.VertexAttribPointer(positionAttribute, 2, WebGLRenderingContextBase.FLOAT, false, 0, 0);
 
             gl.EnableVertexAttribArray(textureCoordinateAttribute);
-            gl.BindBuffer(gl.ArrayBuffer, textureCoordinateBuffer);
-            gl.VertexAttribPointer(textureCoordinateAttribute, 2, gl.Float, false, 0, 0);
+            gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, textureCoordinateBuffer);
+            gl.VertexAttribPointer(textureCoordinateAttribute, 2, WebGLRenderingContextBase.FLOAT, false, 0, 0);
         }
 
         public override void Draw()
         {
             base.Draw();
 
-            gl.DrawArrays(gl.Triangles, 0, 6);
+            gl.DrawArrays(WebGLRenderingContextBase.TRIANGLES, 0, 6);
         }
     }
 }

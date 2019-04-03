@@ -1,9 +1,35 @@
 ﻿using System;
+using System.Linq;
 using WebAssembly;
 using WebAssembly.Core;
 
 namespace WebGLDotNET
 {
+    public partial class WebGLContextAttributes : WebGLObject
+    {
+    }
+
+    public partial class WebGLObject
+    {
+        internal JSObject Handle { get; set; }
+    }
+
+    public partial class WebGLShader : WebGLObject
+    {
+    }
+
+    public partial class WebGLUniformLocation : WebGLObject
+    {
+    }
+
+    public partial class WebGLActiveInfo : WebGLObject
+    {
+    }
+
+    public partial class WebGLShaderPrecisionFormat : WebGLObject
+    {
+    }
+
     public partial class WebGLRenderingContextBase
     {
         private JSObject gl;
@@ -47,8 +73,61 @@ namespace WebGLDotNET
             return array;
         }
 
-        private void Invoke(string method, params object[] args) => Invoke<object>(method, args);
+        private object Invoke(string method, params object[] args)
+        {
+            var actualArgs = new object[args.Length];
 
-        private T Invoke<T>(string method, params object[] args) => (T)gl.Invoke(method, args);
+            for (int i = 0; i < actualArgs.Length; i++)
+            {
+                var arg = args[i];
+
+                if (arg == null)
+                {
+                    actualArgs[i] = null;
+                    continue;
+                }
+
+                if (arg is WebGLObject webGLObject)
+                {
+                    arg = webGLObject.Handle;
+                }
+                else if (arg is System.Array array)
+                {
+                    arg = CastNativeArray(array);
+                }
+
+                actualArgs[i] = arg;
+
+                //Console.WriteLine($"{args[i].GetType()} vs. {arg.GetType()}");
+            }
+
+            var result = gl.Invoke(method, actualArgs);
+
+            return result;
+        }
+
+        private T Invoke<T>(string method, params object[] args)
+            where T : WebGLObject, new()
+        {
+            var rawResult = gl.Invoke(method, args);
+
+#if DEBUG
+            Console.WriteLine($"{nameof(Invoke)}<{typeof(T)}>(): {rawResult}");
+#endif
+
+            var result = new T();
+            result.Handle = (JSObject)rawResult;
+
+            return result;
+        }
+
+        private T[] InvokeForArray<T>(string method, params object[] args) =>
+            ((object[])gl.Invoke(method, args))
+                .Cast<T>()
+                .ToArray();
+
+        private T InvokeForBasicType<T>(string method, params object[] args)
+            where T : IConvertible =>
+            (T)Invoke(method, args);
     }
 }

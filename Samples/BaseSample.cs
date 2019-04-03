@@ -11,7 +11,7 @@ namespace Samples
         float canvasHeight;
         Color clearColor;
 
-        protected WebGL gl;
+        protected WebGLRenderingContextBase gl;
         protected WebGLShader vertexShader;
         protected WebGLShader fragmentShader;
         protected WebGLProgram shaderProgram;
@@ -22,15 +22,15 @@ namespace Samples
 
         public virtual void Draw()
         {
-            gl.Enable(gl.DepthTest);
+            gl.Enable(WebGLRenderingContextBase.DEPTH_TEST);
 
             gl.ClearColor(clearColor.R, clearColor.G, clearColor.B, clearColor.A);
-            gl.Clear(gl.ColorBufferBit);
+            gl.Clear(WebGLRenderingContextBase.COLOR_BUFFER_BIT);
         }
 
         public virtual void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor)
         {
-            gl = WebGL.GetContext(canvas);
+            gl = WebGLRenderingContextBase.GetContext(canvas);
             this.canvasWidth = canvasWidth;
             this.canvasHeight = canvasHeight;
             this.clearColor = clearColor;
@@ -43,9 +43,9 @@ namespace Samples
         protected WebGLBuffer CreateArrayBuffer(Array items)
         {
             var arrayBuffer = gl.CreateBuffer();
-            gl.BindBuffer(gl.ArrayBuffer, arrayBuffer);
-            gl.BufferData(gl.ArrayBuffer, items, gl.StaticDraw);
-            gl.BindBuffer(gl.ArrayBuffer, null);
+            gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, arrayBuffer);
+            gl.BufferData(WebGLRenderingContextBase.ARRAY_BUFFER, items, WebGLRenderingContextBase.STATIC_DRAW);
+            gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, null);
 
             return arrayBuffer;
         }
@@ -53,20 +53,20 @@ namespace Samples
         protected WebGLBuffer CreateElementArrayBuffer(Array items)
         {
             var elementArrayBuffer = gl.CreateBuffer();
-            gl.BindBuffer(gl.ElementArrayBuffer, elementArrayBuffer);
-            gl.BufferData(gl.ElementArrayBuffer, items, gl.StaticDraw);
-            gl.BindBuffer(gl.ElementArrayBuffer, null);
+            gl.BindBuffer(WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER, elementArrayBuffer);
+            gl.BufferData(WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER, items, WebGLRenderingContextBase.STATIC_DRAW);
+            gl.BindBuffer(WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER, null);
 
             return elementArrayBuffer;
         }
 
         protected void InitializeShaders(string vertexShaderCode, string fragmentShaderCode)
         {
-            vertexShader = gl.CreateShader(gl.VertexShader);
+            vertexShader = gl.CreateShader(WebGLRenderingContextBase.VERTEX_SHADER);
             gl.ShaderSource(vertexShader, vertexShaderCode);
             gl.CompileShader(vertexShader);
 
-            fragmentShader = gl.CreateShader(gl.FragmentShader);
+            fragmentShader = gl.CreateShader(WebGLRenderingContextBase.FRAGMENT_SHADER);
             gl.ShaderSource(fragmentShader, fragmentShaderCode);
             gl.CompileShader(fragmentShader);
 

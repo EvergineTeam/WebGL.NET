@@ -70,7 +70,7 @@ namespace WebIDLToCSharp
                     { "GLsizeiptr", "ulong" },
                     { "GLuint", "uint" },
                     // TODO workaround to bypass commented typedefs with "or"
-                    { "BufferDataSource", "object" },
+                    { "BufferDataSource", "System.Array" },
                     { "TexImageSource", "object" }
                 };
             }
@@ -90,7 +90,7 @@ namespace WebIDLToCSharp
             {
                 base.EnterDictionary(context);
 
-                outputStream.WriteLine($"    public class {context.IDENTIFIER_WEBIDL().GetText()}");
+                outputStream.WriteLine($"    public partial class {context.IDENTIFIER_WEBIDL().GetText()}");
                 outputStream.WriteLine( "    {");
             }
 
@@ -169,11 +169,28 @@ namespace WebIDLToCSharp
             {
                 base.ExitOperation(context);
 
-                outputStream.Write(") => Invoke");
+                outputStream.Write(") => ");
 
-                if (returnType != "void")
+                if (typesDictionary.ContainsValue(returnType) && returnType != "object")
                 {
-                    outputStream.Write($"<{returnType}>");
+                    outputStream.Write("InvokeForBasicType");
+                }
+                else
+                {
+                    outputStream.Write("Invoke");
+                }
+
+                if (returnType != "void" && returnType != "object")
+                {
+                    var finalReturnType = returnType;
+
+                    if (finalReturnType.EndsWith("[]", System.StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        finalReturnType = finalReturnType.Substring(0, finalReturnType.Length - 2);
+                        outputStream.Write("ForArray");
+                    }
+
+                    outputStream.Write($"<{finalReturnType}>");
                 }
 
                 outputStream.Write($"(\"{rawMethodName}\"{@params});");

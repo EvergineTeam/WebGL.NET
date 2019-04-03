@@ -9,7 +9,7 @@ namespace Samples
         WebGLBuffer vertexBuffer;
         ushort[] indices;
         WebGLBuffer indexBuffer;
-        int positionAttribute;
+        uint positionAttribute;
 
         public override void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor)
         {
@@ -38,12 +38,12 @@ void main(void) {
     gl_FragColor = vec4(0.0, 0.0, 1.0, 1.0);
 }");
 
-            positionAttribute = gl.GetAttribLocation(shaderProgram, "position");
+            positionAttribute = (uint)gl.GetAttribLocation(shaderProgram, "position");
 
-            gl.BindBuffer(gl.ArrayBuffer, vertexBuffer);
-            gl.BindBuffer(gl.ElementArrayBuffer, indexBuffer);
+            gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, vertexBuffer);
+            gl.BindBuffer(WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER, indexBuffer);
 
-            gl.VertexAttribPointer(positionAttribute, 3, gl.Float, false, 0, 0);
+            gl.VertexAttribPointer(positionAttribute, 3, WebGLRenderingContextBase.FLOAT, false, 0, 0);
             gl.EnableVertexAttribArray(positionAttribute);
         }
 
@@ -51,7 +51,11 @@ void main(void) {
         {
             base.Draw();
 
-            gl.DrawElements(gl.Triangles, indices.Length, gl.UnsignedShort, 0);
+            gl.DrawElements(
+                WebGLRenderingContextBase.TRIANGLES, 
+                indices.Length, 
+                WebGLRenderingContextBase.UNSIGNED_SHORT, 
+                0);
         }
     }
 }
