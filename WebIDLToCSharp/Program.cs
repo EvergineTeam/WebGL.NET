@@ -1,6 +1,5 @@
 ﻿// https://astexplorer.net/
 
-using System;
 using System.IO;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
@@ -21,12 +20,12 @@ namespace WebIDLToCSharp
             var parser = new WebIDLParser(tokenStream);
             var contextSyntaxTree = parser.webIDL();
 
-            using (var outputStream = File.CreateText("bin/Debug/netcoreapp2.1/WebGL.cs"))
+            using (var outputStream = File.CreateText("WebGL.cs"))
             {
                 outputStream.WriteLine("namespace WebGLDotNET");
                 outputStream.WriteLine("{");
 
-                var listener = new WebIDLListener(tokenStream, outputStream);
+                var listener = new WebIDLListener(outputStream);
                 ParseTreeWalker.Default.Walk(listener, contextSyntaxTree);
 
                 outputStream.WriteLine("}");
@@ -35,18 +34,32 @@ namespace WebIDLToCSharp
 
         class WebIDLListener : WebIDLBaseListener
         {
-            readonly CommonTokenStream tokenStream;
             readonly StreamWriter outputStream;
             readonly Dictionary<string, string> typesDictionary;
 
-            public WebIDLListener(CommonTokenStream tokenStream, StreamWriter outputStream)
+            string rawMethodName;
+            string @params;
+
+            public WebIDLListener(StreamWriter outputStream)
             {
-                this.tokenStream = tokenStream;
                 this.outputStream = outputStream;
 
-                typesDictionary = new Dictionary<string, string>();
-                typesDictionary.Add("GLboolean", "bool");
-                typesDictionary.Add("GLenum", "ulong");
+                typesDictionary = new Dictionary<string, string>
+                {
+                    { "any", "object" },
+                    { "boolean", "bool" },
+                    { "DOMString", "string" },
+                    { "GLbitfield", "uint" },
+                    { "GLboolean", "bool" },
+                    { "GLclampf", "float" },
+                    { "GLenum", "uint" },
+                    { "GLfloat", "float" },
+                    { "GLint", "int" },
+                    { "GLsizei", "int" },
+                    { "GLsizeiptr", "ulong" },
+                    { "GLuint", "uint" },
+                    { "sequence<DOMString>", "string[]" }
+                };
             }
 
             public override void ExitConst_([NotNull] WebIDLParser.Const_Context context)
@@ -81,8 +94,14 @@ namespace WebIDLToCSharp
 
                 var type = typesDictionary[context.type().GetText()];
                 var name = CSharpify(context.IDENTIFIER_WEBIDL().GetText());
-                var value = context.default_().defaultValue().GetText();
-                outputStream.WriteLine($"        public {type} {name} {{ get; set; }} = {value};");
+                var value = context.default_().defaultValue()?.GetText();
+                outputStream.Write($"        public {type} {name} {{ get; set; }}");
+
+                if (value != null)
+                {
+                    outputStream.WriteLine($" = {value};");
+                }
+
                 outputStream.WriteLine();
             }
 
@@ -119,35 +138,58 @@ namespace WebIDLToCSharp
                 outputStream.WriteLine();
             }
 
+            public override void EnterOperation([NotNull] WebIDLParser.OperationContext context)
+            {
+                base.EnterOperation(context);
+
+                var returnType = TranslateType(context.returnType().GetText());
+                rawMethodName = context.operationRest().optionalIdentifier().GetText();
+                var methodName = CSharpify(rawMethodName);
+                outputStream.Write($"        public {returnType} {methodName}(");
+
+                @params = string.Empty;
+            }
+
             public override void ExitOperation([NotNull] WebIDLParser.OperationContext context)
             {
                 base.ExitOperation(context);
 
-                var returnType = context.returnType().GetText();
-                returnType = returnType.TrimEnd('?');
-                var methodName = context.operationRest().optionalIdentifier().GetText();
-                var arguments = context.operationRest().argumentList().GetText();
-                outputStream.WriteLine(
-                    $"        public {returnType} {methodName}({arguments}) => Invoke(\"{methodName}\", texture);");
+                outputStream.Write($") => Invoke(\"{rawMethodName}\"{@params});");
+                outputStream.WriteLine();
+                outputStream.WriteLine();
             }
 
-            public override void ExitTypedef([NotNull] WebIDLParser.TypedefContext context)
+            public override void ExitOptionalOrRequiredArgument([NotNull] WebIDLParser.OptionalOrRequiredArgumentContext context)
             {
-                base.ExitTypedef(context);
+                base.ExitOptionalOrRequiredArgument(context);
 
-                // Here we get every WebGL type equivalence: i.e. GLenum -> unsigned long
-                //typesDictionary.Add(context.IDENTIFIER_WEBIDL().GetText(), context.type().GetText());
+                var type = TranslateType(context.type().GetText());
+                var argument = context.argumentName().GetText();
+                outputStream.Write($"{type} {argument}");
+
+                @params += $", {argument}";
+
+                if ((context.Parent.Parent is WebIDLParser.ArgumentsContext arguments && 
+                    arguments != null &&
+                    arguments.arguments().ChildCount > 0) ||
+                    (context.Parent.Parent is WebIDLParser.ArgumentListContext argumentList && 
+                    argumentList != null &&
+                    argumentList.arguments().arguments() != null))
+                {
+                    outputStream.Write(", ");
+                }
             }
 
             static string CSharpify(string value)
             {
-                var result = value.ToLowerInvariant();
+                var result = value;
 
                 if (result.Contains("_"))
                 {
                     result = result
+                        .ToLowerInvariant()
                         .Split('_')
-                        .Aggregate((aggregated, item) => 
+                        .Aggregate((aggregated, item) =>
                             aggregated + item[0].ToString().ToUpperInvariant() + item.Substring(1));
                 }
 
@@ -159,6 +201,18 @@ namespace WebIDLToCSharp
                 }
 
                 return result;
+            }
+
+            string TranslateType(string rawType)
+            {
+                var returnType = rawType.TrimEnd('?');
+
+                if (typesDictionary.ContainsKey(returnType))
+                {
+                    returnType = typesDictionary[returnType];
+                }
+
+                return returnType;
             }
         }
     }

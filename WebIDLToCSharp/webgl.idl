@@ -519,7 +519,7 @@ interface WebGLRenderingContextBase
     void blendFuncSeparate(GLenum srcRGB, GLenum dstRGB, 
                            GLenum srcAlpha, GLenum dstAlpha);
 
-    typedef (ArrayBuffer or ArrayBufferView) BufferDataSource;
+    //typedef (ArrayBuffer or ArrayBufferView) BufferDataSource;
     void bufferData(GLenum target, GLsizeiptr size, GLenum usage);
     void bufferData(GLenum target, BufferDataSource? data, GLenum usage);
     void bufferSubData(GLenum target, GLintptr offset, BufferDataSource? data);
@@ -646,10 +646,10 @@ interface WebGLRenderingContextBase
     void stencilOp(GLenum fail, GLenum zfail, GLenum zpass);
     void stencilOpSeparate(GLenum face, GLenum fail, GLenum zfail, GLenum zpass);
 
-    typedef (ImageData or
+    /*typedef (ImageData or
              HTMLImageElement or
              HTMLCanvasElement or
-             HTMLVideoElement) TexImageSource;
+             HTMLVideoElement) TexImageSource;*/
     void texImage2D(GLenum target, GLint level, GLenum internalformat, 
                     GLsizei width, GLsizei height, GLint border, GLenum format, 
                     GLenum type, ArrayBufferView? pixels);
