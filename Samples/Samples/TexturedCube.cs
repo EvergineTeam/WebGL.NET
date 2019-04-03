@@ -28,7 +28,7 @@ namespace Samples
         double totalElapsedTimeSeconds;
 
         public override string Description => 
-            "The image is loaded from <a href=\"spongebob.jpg\">here</a>.";
+            "The image is loaded from <a href=\"Assets/spongebob.jpg\">here</a>.";
 
         public override void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor)
         {
@@ -159,7 +159,7 @@ void main(void) {
                 gl.TexImage2D(gl.Texture2D, 0, gl.RGB, gl.RGB, gl.UnsignedByte, image);
             });
             image.SetObjectProperty("onload", onLoad);
-            image.SetObjectProperty("src", "spongebob.jpg");
+            image.SetObjectProperty("src", "Assets/spongebob.jpg");
 
             gl.VertexAttribPointer(vertexPositionAttribute, 3, gl.Float, false, 0, 0);
             gl.EnableVertexAttribArray(vertexPositionAttribute);

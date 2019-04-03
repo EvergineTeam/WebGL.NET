@@ -23,7 +23,8 @@ namespace Samples
                 new Triangle(),
                 new RotatingCube(),
                 new Texture2D(),
-                new TexturedCube()
+                new TexturedCube(),
+                new TexturedCubeFromAssets(),
             };
 
             // Needed for linker preserve
