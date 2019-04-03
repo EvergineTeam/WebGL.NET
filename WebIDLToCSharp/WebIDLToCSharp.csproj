@@ -15,7 +15,7 @@
     </None>
   </ItemGroup>
   
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+  <!--<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <CustomCommands>
       <CustomCommands>
         <Command>
@@ -25,6 +25,6 @@
         </Command>
       </CustomCommands>
     </CustomCommands>
-  </PropertyGroup>
+  </PropertyGroup>-->
   
 </Project>
