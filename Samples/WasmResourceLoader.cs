@@ -2,7 +2,6 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using WebAssembly;
-using WebAssembly.Net.Http.HttpClient;
 
 namespace Samples
 {
@@ -19,7 +18,7 @@ namespace Samples
 
         public static async Task<byte[]> LoadResource(string file, string baseAddress)
         {
-            var httpClient = new HttpClient(new WasmHttpMessageHandler()) { BaseAddress = new Uri(baseAddress) };
+            var httpClient = new HttpClient() { BaseAddress = new Uri(baseAddress) };
 
             try
             {
