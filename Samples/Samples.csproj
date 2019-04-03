@@ -1,18 +1,26 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
+    
     <OutputType>Exe</OutputType>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <MonoRuntimeDebuggerEnabled>false</MonoRuntimeDebuggerEnabled>
-    <MonoWasmSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/2495/label=ubuntu-1804-amd64/Azure/processDownloadRequest/2495/ubuntu-1804-amd64/sdks/wasm/mono-wasm-e894d683f9f.zip</MonoWasmSDKUri>
-    <MonoWasmAOTSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/2495/label=ubuntu-1804-amd64/Azure/processDownloadRequest/2495/ubuntu-1804-amd64/wasm-release-Linux-e894d683f9f0a9c7351b513d3f015a5e170449eb.zip</MonoWasmAOTSDKUri>
+	
+    <WasmShellMonoRuntimeExecutionMode>Interpreter</WasmShellMonoRuntimeExecutionMode>
+    <WasmShellGenerateCompressedFiles>false</WasmShellGenerateCompressedFiles>
     <WasmShellILLinkerEnabled>false</WasmShellILLinkerEnabled>
+	<MonoRuntimeDebuggerEnabled>false</MonoRuntimeDebuggerEnabled>
+	
+    <!-- Grab latest MonoWasm drops from here: https://jenkins.mono-project.com/job/test-mono-mainline-wasm/label=ubuntu-1804-amd64/lastSuccessfulBuild/Azure/ -->
+    <MonoWasmSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/label=ubuntu-1804-amd64/lastSuccessfulBuild/Azure/processDownloadRequest/2518/ubuntu-1804-amd64/sdks/wasm/mono-wasm-180915ffa6b.zip</MonoWasmSDKUri>
+    <MonoWasmAOTSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/label=ubuntu-1804-amd64/lastSuccessfulBuild/Azure/processDownloadRequest/2518/ubuntu-1804-amd64/wasm-release-Linux-180915ffa6bea6712109d40ec6bd3666415f511b.zip</MonoWasmAOTSDKUri>
+	
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0006" />
-    <PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0-dev.242" />
     <PackageReference Include="WaveEngine.Common" Version="2.5.0.39" />
+    <PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0-dev.242" />
+    <DotNetCliToolReference Include="Uno.Wasm.Bootstrap.Cli" Version="1.0.0-dev.242" />
   </ItemGroup>
   
   <ItemGroup>

@@ -27,9 +27,6 @@ namespace Samples
                 new TexturedCubeFromAssets(),
             };
 
-            // Needed for linker preserve
-            Loop(-1);
-
             foreach (var item in samples)
             {
                 AddHeader2(item.GetType().Name);
@@ -92,7 +89,6 @@ namespace Samples
             }
         }
 
-
         static void AnimateLoop(double milliseconds)
         {
             if (milliseconds < 0)
@@ -118,18 +114,6 @@ namespace Samples
             if (window == null)
                 window = (JSObject)Runtime.GetGlobalObject();
             window.Invoke("requestAnimationFrame", animate);
-
-//            var animationBootstrap =
-//                    "var animate = function(time) {\n" +
-//                    "    BINDING.call_static_method(" +
-//                        $"'[{nameof(Samples)}] {nameof(Samples)}.{nameof(Program)}:{nameof(Loop)}', [time]);\n" +
-//                    "    window.requestAnimationFrame(animate);\n" +
-//                    "}\n" +
-//                    "animate(0);";
-//#if DEBUG
-//            Console.WriteLine(animationBootstrap);
-//#endif
-            //Runtime.InvokeJS(animationBootstrap);
         }
     }
 }
