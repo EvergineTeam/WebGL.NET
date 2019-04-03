@@ -11,6 +11,10 @@ namespace WebIDLToCSharp
 {
     class Program
     {
+        const string OutputFile =
+            //"WebGL.cs";
+            "../../../../WebGLDotNET/WebGL.cs";
+
         static void Main(string[] args)
         {
             var input = File.ReadAllText("webgl.idl");
@@ -20,8 +24,10 @@ namespace WebIDLToCSharp
             var parser = new WebIDLParser(tokenStream);
             var contextSyntaxTree = parser.webIDL();
 
-            using (var outputStream = File.CreateText("WebGL.cs"))
+            using (var outputStream = File.CreateText(OutputFile))
             {
+                outputStream.WriteLine("using WebAssembly.Core;");
+                outputStream.WriteLine();
                 outputStream.WriteLine("namespace WebGLDotNET");
                 outputStream.WriteLine("{");
 
@@ -34,9 +40,12 @@ namespace WebIDLToCSharp
 
         class WebIDLListener : WebIDLBaseListener
         {
+            const string SequencePrefix = "sequence<";
+
             readonly StreamWriter outputStream;
             readonly Dictionary<string, string> typesDictionary;
 
+            string returnType;
             string rawMethodName;
             string @params;
 
@@ -47,6 +56,7 @@ namespace WebIDLToCSharp
                 typesDictionary = new Dictionary<string, string>
                 {
                     { "any", "object" },
+                    { "ArrayBufferView", "ITypedArray"},
                     { "boolean", "bool" },
                     { "DOMString", "string" },
                     { "GLbitfield", "uint" },
@@ -55,10 +65,13 @@ namespace WebIDLToCSharp
                     { "GLenum", "uint" },
                     { "GLfloat", "float" },
                     { "GLint", "int" },
+                    { "GLintptr", "uint" },
                     { "GLsizei", "int" },
                     { "GLsizeiptr", "ulong" },
                     { "GLuint", "uint" },
-                    { "sequence<DOMString>", "string[]" }
+                    // TODO workaround to bypass commented typedefs with "or"
+                    { "BufferDataSource", "object" },
+                    { "TexImageSource", "object" }
                 };
             }
 
@@ -66,9 +79,10 @@ namespace WebIDLToCSharp
             {
                 base.ExitConst_(context);
 
-                var type = typesDictionary[context.constType().GetText()];
-                var name = CSharpify(context.IDENTIFIER_WEBIDL().GetText());
-                outputStream.WriteLine($"        public const {type} {name} = {context.constValue().GetText()};");
+                var type = TranslateType(context.constType().GetText());
+                var rawName = context.IDENTIFIER_WEBIDL().GetText();
+                //var name = CSharpify(rawName);
+                outputStream.WriteLine($"        public const {type} {rawName} = {context.constValue().GetText()};");
                 outputStream.WriteLine();
             }
 
@@ -92,7 +106,7 @@ namespace WebIDLToCSharp
             {
                 base.EnterDictionaryMember(context);
 
-                var type = typesDictionary[context.type().GetText()];
+                var type = TranslateType(context.type().GetText());
                 var name = CSharpify(context.IDENTIFIER_WEBIDL().GetText());
                 var value = context.default_().defaultValue()?.GetText();
                 outputStream.Write($"        public {type} {name} {{ get; set; }}");
@@ -114,7 +128,8 @@ namespace WebIDLToCSharp
             {
                 base.EnterInterface_(context);
 
-                outputStream.Write($"    public class {context.IDENTIFIER_WEBIDL().GetText()}");
+                // partial because WebGLRenderingContextBase is backed with additional glue outside
+                outputStream.Write($"    public partial class {context.IDENTIFIER_WEBIDL().GetText()}");
 
                 var inheritance = context.inheritance().IDENTIFIER_WEBIDL();
 
@@ -142,7 +157,7 @@ namespace WebIDLToCSharp
             {
                 base.EnterOperation(context);
 
-                var returnType = TranslateType(context.returnType().GetText());
+                returnType = TranslateType(context.returnType().GetText());
                 rawMethodName = context.operationRest().optionalIdentifier().GetText();
                 var methodName = CSharpify(rawMethodName);
                 outputStream.Write($"        public {returnType} {methodName}(");
@@ -154,7 +169,14 @@ namespace WebIDLToCSharp
             {
                 base.ExitOperation(context);
 
-                outputStream.Write($") => Invoke(\"{rawMethodName}\"{@params});");
+                outputStream.Write(") => Invoke");
+
+                if (returnType != "void")
+                {
+                    outputStream.Write($"<{returnType}>");
+                }
+
+                outputStream.Write($"(\"{rawMethodName}\"{@params});");
                 outputStream.WriteLine();
                 outputStream.WriteLine();
             }
@@ -165,6 +187,12 @@ namespace WebIDLToCSharp
 
                 var type = TranslateType(context.type().GetText());
                 var argument = context.argumentName().GetText();
+
+                if (argument == "ref")
+                {
+                    argument = argument.Insert(0, "@");
+                }
+
                 outputStream.Write($"{type} {argument}");
 
                 @params += $", {argument}";
@@ -206,10 +234,24 @@ namespace WebIDLToCSharp
             string TranslateType(string rawType)
             {
                 var returnType = rawType.TrimEnd('?');
+                var isSequence = false;
+
+                if (rawType.StartsWith(SequencePrefix, System.StringComparison.InvariantCulture))
+                {
+                    returnType = returnType.Substring(
+                        SequencePrefix.Length, 
+                        returnType.Length - SequencePrefix.Length - 1);
+                    isSequence = true;
+                }
 
                 if (typesDictionary.ContainsKey(returnType))
                 {
                     returnType = typesDictionary[returnType];
+                }
+
+                if (isSequence)
+                {
+                    returnType += "[]";
                 }
 
                 return returnType;

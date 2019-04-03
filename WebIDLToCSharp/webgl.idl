@@ -730,7 +730,7 @@ interface WebGLRenderingContext
 WebGLRenderingContext implements WebGLRenderingContextBase;
 
 
-[Constructor(DOMString type, optional WebGLContextEventInit eventInit)]
+/*[Constructor(DOMString type, optional WebGLContextEventInit eventInit)]
 interface WebGLContextEvent : Event {
     readonly attribute DOMString statusMessage;
 };
@@ -738,4 +738,4 @@ interface WebGLContextEvent : Event {
 // EventInit is defined in the DOM4 specification.
 dictionary WebGLContextEventInit : EventInit {
     DOMString statusMessage;
-};
+};*/
