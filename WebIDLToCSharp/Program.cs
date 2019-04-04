@@ -1,11 +1,11 @@
 ﻿// https://astexplorer.net/
 
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Antlr4.Runtime;
 using Antlr4.Runtime.Misc;
 using Antlr4.Runtime.Tree;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace WebIDLToCSharp
 {
@@ -69,7 +69,7 @@ namespace WebIDLToCSharp
                     { "GLsizei", "int" },
                     { "GLsizeiptr", "ulong" },
                     { "GLuint", "uint" },
-                    // TODO workaround to bypass commented typedefs with "or"
+                    // Workarounds to bypass commented typedefs with "or"
                     { "BufferDataSource", "System.Array" },
                     { "TexImageSource", "object" }
                 };
@@ -128,7 +128,7 @@ namespace WebIDLToCSharp
             {
                 base.EnterInterface_(context);
 
-                // partial because WebGLRenderingContextBase is backed with additional glue outside
+                // partial because can be backed with additional glue outside
                 outputStream.Write($"    public partial class {context.IDENTIFIER_WEBIDL().GetText()}");
 
                 var inheritance = context.inheritance().IDENTIFIER_WEBIDL();
@@ -171,26 +171,28 @@ namespace WebIDLToCSharp
 
                 outputStream.Write(") => ");
 
-                if (typesDictionary.ContainsValue(returnType) && returnType != "object")
+                var isArray = returnType.EndsWith("[]", System.StringComparison.InvariantCultureIgnoreCase);
+                var isReturnTypeBasic = typesDictionary.ContainsValue(returnType) && returnType != "object";
+
+                if (isArray)
                 {
-                    outputStream.Write("InvokeForBasicType");
+                    var finalReturnType = returnType.Substring(0, returnType.Length - 2);
+                    outputStream.Write($"InvokeForArray<{finalReturnType}>");
+                }
+                else if (isReturnTypeBasic)
+                {
+                    outputStream.Write($"InvokeForBasicType<{returnType}>");
                 }
                 else
                 {
                     outputStream.Write("Invoke");
-                }
 
-                if (returnType != "void" && returnType != "object")
-                {
-                    var finalReturnType = returnType;
+                    var isGenericNeeded = returnType != "void" && returnType != "object";
 
-                    if (finalReturnType.EndsWith("[]", System.StringComparison.InvariantCultureIgnoreCase))
+                    if (isGenericNeeded)
                     {
-                        finalReturnType = finalReturnType.Substring(0, finalReturnType.Length - 2);
-                        outputStream.Write("ForArray");
+                        outputStream.Write($"<{returnType}>");
                     }
-
-                    outputStream.Write($"<{finalReturnType}>");
                 }
 
                 outputStream.Write($"(\"{rawMethodName}\"{@params});");
@@ -214,12 +216,15 @@ namespace WebIDLToCSharp
 
                 @params += $", {argument}";
 
-                if ((context.Parent.Parent is WebIDLParser.ArgumentsContext arguments && 
+                var areThereMoreParams =
+                    (context.Parent.Parent is WebIDLParser.ArgumentsContext arguments &&
                     arguments != null &&
                     arguments.arguments().ChildCount > 0) ||
-                    (context.Parent.Parent is WebIDLParser.ArgumentListContext argumentList && 
+                    (context.Parent.Parent is WebIDLParser.ArgumentListContext argumentList &&
                     argumentList != null &&
-                    argumentList.arguments().arguments() != null))
+                    argumentList.arguments().arguments() != null);
+
+                if (areThereMoreParams)
                 {
                     outputStream.Write(", ");
                 }
@@ -250,28 +255,28 @@ namespace WebIDLToCSharp
 
             string TranslateType(string rawType)
             {
-                var returnType = rawType.TrimEnd('?');
+                var type = rawType.TrimEnd('?');
                 var isSequence = false;
 
                 if (rawType.StartsWith(SequencePrefix, System.StringComparison.InvariantCulture))
                 {
-                    returnType = returnType.Substring(
+                    type = type.Substring(
                         SequencePrefix.Length, 
-                        returnType.Length - SequencePrefix.Length - 1);
+                        type.Length - SequencePrefix.Length - 1);
                     isSequence = true;
                 }
 
-                if (typesDictionary.ContainsKey(returnType))
+                if (typesDictionary.ContainsKey(type))
                 {
-                    returnType = typesDictionary[returnType];
+                    type = typesDictionary[type];
                 }
 
                 if (isSequence)
                 {
-                    returnType += "[]";
+                    type += "[]";
                 }
 
-                return returnType;
+                return type;
             }
         }
     }
