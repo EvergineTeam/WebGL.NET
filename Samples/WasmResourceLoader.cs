@@ -7,34 +7,52 @@ namespace Samples
 {
     public static class WasmResourceLoader
     {
-        public static string GetBaseAddress()
+        public static string GetLocalAddress()
         {
             using (var window = (JSObject)Runtime.GetGlobalObject("window"))
             using (var location = (JSObject)window.GetObjectProperty("location"))
             {
-                return (string)location.GetObjectProperty("origin");
+                var address = (string)location.GetObjectProperty("href");
+
+                if (address.Contains("/"))
+                {
+                    address = address.Substring(0, address.LastIndexOf('/'));
+                }
+
+                return address;
             }
         }
 
-        public static async Task<byte[]> LoadResource(string file, string baseAddress)
+        public static async Task<byte[]> LoadAsync(string relativePath, string baseAddress)
         {
-            var httpClient = new HttpClient() { BaseAddress = new Uri(baseAddress) };
+            var httpClient = new HttpClient { BaseAddress = new Uri(baseAddress) };
+            byte[] content;
+
+#if DEBUG
+            Console.WriteLine($"Requesting '{relativePath}' at '{baseAddress}'...");
+#endif
 
             try
             {
-                var rspMsg = await httpClient.GetAsync(file);
-                if (rspMsg.IsSuccessStatusCode)
-                {
-                    var content = await rspMsg.Content.ReadAsByteArrayAsync();
-                    return content;
-                }
+                var response = await httpClient.GetAsync(relativePath);
+                response.EnsureSuccessStatusCode();
+                content = await response.Content.ReadAsByteArrayAsync();
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                Console.WriteLine($"Exception: {ex.ToString()}");
+                content = null;
+
+                Console.WriteLine($"[Error] {nameof(WasmResourceLoader)}.{nameof(LoadAsync)}(): {exception}");
             }
 
-            return null;
+#if DEBUG
+            if (content != null)
+            {
+                Console.WriteLine($"Content length: {content.Length} B");
+            }
+#endif
+
+            return content;
         }
     }
 }

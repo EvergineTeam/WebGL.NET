@@ -45,9 +45,9 @@ void main() {
             var textureCoordinateAttribute = (uint)gl.GetAttribLocation(shaderProgram, "textureCoordinate");
 
             var x1 = 0;
-            var x2 = Image.Width;
+            var x2 = DemoImage.Width;
             var y1 = 0;
-            var y2 = Image.Height;
+            var y2 = DemoImage.Height;
             var positions = new float[]
             {
                 x1, y1,
@@ -89,7 +89,7 @@ void main() {
                 WebGLRenderingContextBase.TEXTURE_MAG_FILTER,
                 (int)WebGLRenderingContextBase.NEAREST);
 
-            var imageData = new ImageData(Image.ARGBColors, Image.Width, Image.Height);
+            var imageData = new ImageData(DemoImage.ARGBColors, DemoImage.Width, DemoImage.Height);
             gl.TexImage2D(
                 WebGLRenderingContextBase.TEXTURE_2D, 
                 0,

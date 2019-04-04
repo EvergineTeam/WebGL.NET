@@ -36,7 +36,7 @@ namespace Samples
                     WebGLRenderingContextBase.TEXTURE_MAG_FILTER,
                     (int)WebGLRenderingContextBase.NEAREST);
 
-                var imageData = new ImageData(Image.ARGBColors, Image.Width, Image.Height);
+                var imageData = new ImageData(DemoImage.ARGBColors, DemoImage.Width, DemoImage.Height);
                 gl.TexImage2D(
                     WebGLRenderingContextBase.TEXTURE_2D,
                     0,

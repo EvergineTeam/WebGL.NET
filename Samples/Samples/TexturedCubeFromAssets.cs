@@ -17,10 +17,16 @@ namespace Samples
 
         protected override async void LoadImage()
         {
-            var img = await GetImageFromAssets(AssetPath);
-            var colors = GetRGBAColors(img);
+            var image = await GetImageFromAssetsAsync(AssetPath);
 
-            var imageData = new ImageData(colors, img.Width, img.Height);
+            if (image == null)
+            {
+                return;
+            }
+
+            var colors = GetRGBAColors(image);
+
+            var imageData = new ImageData(colors, image.Width, image.Height);
 
             gl.BindTexture(WebGLRenderingContextBase.TEXTURE_2D, texture);
 
@@ -50,21 +56,19 @@ namespace Samples
                 imageData);
         }
 
-        private async Task<Image<Rgba32>> GetImageFromAssets(string filename)
+        private async Task<Image<Rgba32>> GetImageFromAssetsAsync(string path)
         {
-            var content = await WasmResourceLoader.LoadResource(
-                filename,
-                WasmResourceLoader.GetBaseAddress());
+            var content = await WasmResourceLoader.LoadAsync(path, WasmResourceLoader.GetLocalAddress());
 
             var stopwatch = Stopwatch.StartNew();
-            var img = SixLabors.ImageSharp.Image.Load(content);
+            var image = Image.Load(content);
             stopwatch.Stop();
 
 #if DEBUG
-            Console.WriteLine($"Image.Load elapsed: {stopwatch.Elapsed}");
+            Console.WriteLine($"Image.Load() elapsed: {stopwatch.Elapsed}");
 #endif
 
-            return img;
+            return image;
         }
 
         private byte[] GetRGBAColors(Image<Rgba32> img)

@@ -95,9 +95,7 @@ namespace WebGLDotNET
             var rawResult = gl.Invoke(method, actualArgs);
             DisposeTypedArrays(actualArgs);
 
-#if DEBUG
-            Console.WriteLine($"{nameof(Invoke)}<{typeof(T)}>(): {rawResult}");
-#endif
+            //Console.WriteLine($"{nameof(Invoke)}<{typeof(T)}>(): {rawResult}");
 
             var result = new T();
             result.Handle = (JSObject)rawResult;
