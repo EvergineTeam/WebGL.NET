@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageToRGBA", "ImageToRGBA\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebIDLToCSharp", "WebIDLToCSharp\WebIDLToCSharp.csproj", "{4AAF8652-93B2-44B6-8F81-358F88FE400D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{683DF9ED-39AD-4149-8485-6235FE075FA6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,5 +33,9 @@ Global
 		{4AAF8652-93B2-44B6-8F81-358F88FE400D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AAF8652-93B2-44B6-8F81-358F88FE400D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AAF8652-93B2-44B6-8F81-358F88FE400D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{25C96659-0EE5-4DF3-9CAD-162C857DE69D} = {683DF9ED-39AD-4149-8485-6235FE075FA6}
+		{4AAF8652-93B2-44B6-8F81-358F88FE400D} = {683DF9ED-39AD-4149-8485-6235FE075FA6}
 	EndGlobalSection
 EndGlobal
