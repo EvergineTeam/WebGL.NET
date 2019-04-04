@@ -5,28 +5,20 @@ using WebAssembly.Core;
 
 namespace WebGLDotNET
 {
-    public partial class WebGLContextAttributes : WebGLObject
-    {
-    }
-
-    public partial class WebGLObject
+    public abstract class JSHandler
     {
         internal JSObject Handle { get; set; }
     }
 
-    public partial class WebGLShader : WebGLObject
+    public partial class WebGLActiveInfo : JSHandler
     {
     }
 
-    public partial class WebGLUniformLocation : WebGLObject
+    public partial class WebGLContextAttributes : JSHandler
     {
     }
 
-    public partial class WebGLActiveInfo : WebGLObject
-    {
-    }
-
-    public partial class WebGLShaderPrecisionFormat : WebGLObject
+    public partial class WebGLObject : JSHandler
     {
     }
 
@@ -75,41 +67,17 @@ namespace WebGLDotNET
 
         private object Invoke(string method, params object[] args)
         {
-            var actualArgs = new object[args.Length];
-
-            for (int i = 0; i < actualArgs.Length; i++)
-            {
-                var arg = args[i];
-
-                if (arg == null)
-                {
-                    actualArgs[i] = null;
-                    continue;
-                }
-
-                if (arg is WebGLObject webGLObject)
-                {
-                    arg = webGLObject.Handle;
-                }
-                else if (arg is System.Array array)
-                {
-                    arg = CastNativeArray(array);
-                }
-
-                actualArgs[i] = arg;
-
-                //Console.WriteLine($"{args[i].GetType()} vs. {arg.GetType()}");
-            }
-
+            var actualArgs = Translate(args);
             var result = gl.Invoke(method, actualArgs);
 
             return result;
         }
 
         private T Invoke<T>(string method, params object[] args)
-            where T : WebGLObject, new()
+            where T : JSHandler, new()
         {
-            var rawResult = gl.Invoke(method, args);
+            var actualArgs = Translate(args);
+            var rawResult = gl.Invoke(method, actualArgs);
 
 #if DEBUG
             Console.WriteLine($"{nameof(Invoke)}<{typeof(T)}>(): {rawResult}");
@@ -129,5 +97,44 @@ namespace WebGLDotNET
         private T InvokeForBasicType<T>(string method, params object[] args)
             where T : IConvertible =>
             (T)Invoke(method, args);
+
+        private object[] Translate(object[] args)
+        {
+            var actualArgs = new object[args.Length];
+
+            for (int i = 0; i < actualArgs.Length; i++)
+            {
+                var arg = args[i];
+
+                if (arg == null)
+                {
+                    actualArgs[i] = null;
+                    continue;
+                }
+
+                if (arg is JSHandler jsHandler)
+                {
+                    arg = jsHandler.Handle;
+                }
+                else if (arg is System.Array array)
+                {
+                    arg = CastNativeArray(array);
+                }
+
+                actualArgs[i] = arg;
+
+                //Console.WriteLine($"{args[i].GetType()} vs. {arg.GetType()}");
+            }
+
+            return actualArgs;
+        }
+    }
+
+    public partial class WebGLShaderPrecisionFormat : JSHandler
+    {
+    }
+
+    public partial class WebGLUniformLocation : JSHandler
+    {
     }
 }

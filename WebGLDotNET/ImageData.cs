@@ -3,7 +3,7 @@ using WebAssembly.Core;
 
 namespace WebGLDotNET
 {
-    public class ImageData
+    public class ImageData : JSHandler
     {
         public ImageData(byte[] image, int imageWidth, int imageHeight)
         {
@@ -12,7 +12,5 @@ namespace WebGLDotNET
             var imageDataObject = (JSObject)Runtime.GetGlobalObject("ImageData");
             Handle = Runtime.NewJSObject(imageDataObject, uint8ClampedArray, imageWidth, imageHeight);
         }
-
-        public object Handle { get; }
     }
 }
