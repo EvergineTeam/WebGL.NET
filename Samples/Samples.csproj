@@ -5,22 +5,25 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netstandard2.0</TargetFramework>
 	
-    <WasmShellMonoRuntimeExecutionMode>Interpreter</WasmShellMonoRuntimeExecutionMode>
+    <MonoRuntimeDebuggerEnabled>false</MonoRuntimeDebuggerEnabled>
     <WasmShellGenerateCompressedFiles>false</WasmShellGenerateCompressedFiles>
     <WasmShellILLinkerEnabled>false</WasmShellILLinkerEnabled>
-	<MonoRuntimeDebuggerEnabled>false</MonoRuntimeDebuggerEnabled>
+    <WasmShellMonoRuntimeExecutionMode>Interpreter</WasmShellMonoRuntimeExecutionMode>
 	
-    <!-- Grab latest MonoWasm drops from here: https://jenkins.mono-project.com/job/test-mono-mainline-wasm/label=ubuntu-1804-amd64/lastSuccessfulBuild/Azure/ -->
-    <MonoWasmSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/label=ubuntu-1804-amd64/lastSuccessfulBuild/Azure/processDownloadRequest/2518/ubuntu-1804-amd64/sdks/wasm/mono-wasm-180915ffa6b.zip</MonoWasmSDKUri>
-    <MonoWasmAOTSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/label=ubuntu-1804-amd64/lastSuccessfulBuild/Azure/processDownloadRequest/2518/ubuntu-1804-amd64/wasm-release-Linux-180915ffa6bea6712109d40ec6bd3666415f511b.zip</MonoWasmAOTSDKUri>
+    <!--
+      Grab latest MonoWasm drops from here:
+      https://jenkins.mono-project.com/job/test-mono-mainline-wasm/label=ubuntu-1804-amd64/lastSuccessfulBuild/Azure/
+    -->
+    <MonoWasmSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/2495/label=ubuntu-1804-amd64/Azure/processDownloadRequest/2495/ubuntu-1804-amd64/sdks/wasm/mono-wasm-e894d683f9f.zip</MonoWasmSDKUri>
+    <MonoWasmAOTSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/2495/label=ubuntu-1804-amd64/Azure/processDownloadRequest/2495/ubuntu-1804-amd64/wasm-release-Linux-e894d683f9f0a9c7351b513d3f015a5e170449eb.zip</MonoWasmAOTSDKUri>
 	
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0006" />
-    <PackageReference Include="WaveEngine.Common" Version="2.5.0.39" />
     <PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0-dev.242" />
     <DotNetCliToolReference Include="Uno.Wasm.Bootstrap.Cli" Version="1.0.0-dev.242" />
+    <PackageReference Include="WaveEngine.Common" Version="2.5.0.39" />
   </ItemGroup>
   
   <ItemGroup>
@@ -36,24 +39,29 @@
   
   <ItemGroup>
     <LinkerDescriptor Remove="LinkerConfig.xml" />
-    <None Remove="Assets\spongebob.bmp" />
-    <None Remove="Assets\spongebob.jpg" />
-    <None Remove="Assets\spongebob.png" />
+    
     <None Remove="WasmCSS\styles.css" />
     <EmbeddedResource Include="WasmCSS\styles.css" />
-    <Content Include="Assets\spongebob.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    
+    <None Remove="Assets\PlainConcepts.bmp" />
+    <Content Include="Assets\PlainConcepts.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\spongebob.bmp">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    
+    <None Remove="Assets\PlainConcepts.jpg" />
+    <Content Include="Assets\PlainConcepts.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Assets\spongebob.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    
+    <None Remove="Assets\PlainConcepts.png" />
+    <Content Include="Assets\PlainConcepts.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    
   </ItemGroup>
   
   <ItemGroup>
     <ProjectReference Include="..\WebGLDotNET\WebGLDotNET.csproj" />
   </ItemGroup>
-
+  
 </Project>

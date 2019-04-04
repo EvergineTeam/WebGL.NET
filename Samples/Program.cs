@@ -23,7 +23,7 @@ namespace Samples
                 new Triangle(),
                 new RotatingCube(),
                 new Texture2D(),
-                new TexturedCube(),
+                new TexturedCubeFromHTMLImage(),
                 new TexturedCubeFromAssets(),
             };
 

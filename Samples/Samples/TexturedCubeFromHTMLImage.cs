@@ -5,8 +5,13 @@ using WebGLDotNET;
 
 namespace Samples
 {
-    public class TexturedCube : BaseTexturedCube
+    public class TexturedCubeFromHTMLImage : BaseTexturedCube
     {
+        const string AssetPath = "Assets/PlainConcepts.png";
+
+        public override string Description =>
+            $"Texture comes from HTML's Image, whose src property points <a href=\"{AssetPath}\">here</a>.";
+
         protected override void LoadImage()
         {
             var image = new HostObject("Image");
@@ -41,7 +46,7 @@ namespace Samples
                     image);
             });
             image.SetObjectProperty("onload", onLoad);
-            image.SetObjectProperty("src", "Assets/spongebob.jpg");
+            image.SetObjectProperty("src", AssetPath);
         }
     }
 }

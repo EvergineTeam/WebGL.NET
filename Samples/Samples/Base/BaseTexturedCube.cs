@@ -26,9 +26,6 @@ namespace Samples
         WebGLUniformLocation samplerUniform;
         double totalElapsedTimeSeconds;
 
-        public override string Description => 
-            "The image is loaded from <a href=\"Assets/spongebob.jpg\">here</a>.";
-
         public override void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor)
         {
             base.Run(canvas, canvasWidth, canvasHeight, clearColor);

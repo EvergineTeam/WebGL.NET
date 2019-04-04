@@ -9,10 +9,15 @@ namespace Samples
 {
     public class TexturedCubeFromAssets : BaseTexturedCube
     {
+        const string AssetPath = "Assets/PlainConcepts.bmp";
+
+        public override string Description =>
+            $"Texture comes a HttpClient retrieving <a href=\"{AssetPath}\">it</a> and load through " +
+            "SixLabors' ImageSharp which returns its colors array.";
+
         protected override async void LoadImage()
         {
-            var file = "Assets/spongebob.bmp";
-            var img = await GetImageFromAssets(file);
+            var img = await GetImageFromAssets(AssetPath);
             var colors = GetRGBAColors(img);
 
             var imageData = new ImageData(colors, img.Width, img.Height);
