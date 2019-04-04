@@ -16,7 +16,7 @@ namespace Samples
 
                 if (address.Contains("/"))
                 {
-                    address = address.Substring(0, address.LastIndexOf('/'));
+                    address = address.Substring(0, address.LastIndexOf('/') + 1);
                 }
 
                 return address;
