@@ -24,7 +24,7 @@ namespace WebGLDotNET
 
     public partial class WebGLRenderingContextBase
     {
-        private JSObject gl;
+        private readonly JSObject gl;
 
         private WebGLRenderingContextBase(JSObject canvas)
         {
