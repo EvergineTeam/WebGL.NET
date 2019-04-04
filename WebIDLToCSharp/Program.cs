@@ -1,5 +1,21 @@
 ﻿// https://astexplorer.net/
 
+/* TODO
+
+- Reuse TypedArrays instead of allocating new ones:
+
+Float32Array transposeMatrix = null;  // Let's keep one around instead of always allocating a new one.
+public void UniformMatrix4fv(WebGLUniformLocation location, bool transpose, float[] value)
+{
+    if (transposeMatrix == null)
+        transposeMatrix = Float32Array.From(value);
+    else
+        transposeMatrix.CopyFrom(value);
+    Invoke("uniformMatrix4fv", location?.Handle, transpose, transposeMatrix);
+}
+
+ */
+
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;

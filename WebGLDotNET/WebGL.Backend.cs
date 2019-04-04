@@ -65,10 +65,25 @@ namespace WebGLDotNET
             return array;
         }
 
+        private void DisposeTypedArrays(object[] args)
+        {
+            for (int i = 0; i < args.Length; i++)
+            {
+                var arg = args[i];
+
+                if (arg is ITypedArray typedArray && typedArray != null)
+                {
+                    var disposable = (IDisposable)typedArray;
+                    disposable.Dispose();
+                }
+            }
+        }
+
         private object Invoke(string method, params object[] args)
         {
             var actualArgs = Translate(args);
             var result = gl.Invoke(method, actualArgs);
+            DisposeTypedArrays(actualArgs);
 
             return result;
         }
@@ -78,6 +93,7 @@ namespace WebGLDotNET
         {
             var actualArgs = Translate(args);
             var rawResult = gl.Invoke(method, actualArgs);
+            DisposeTypedArrays(actualArgs);
 
 #if DEBUG
             Console.WriteLine($"{nameof(Invoke)}<{typeof(T)}>(): {rawResult}");

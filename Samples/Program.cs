@@ -23,11 +23,9 @@ namespace Samples
                 new Triangle(),
                 new RotatingCube(),
                 new Texture2D(),
-                new TexturedCube()
+                new TexturedCube(),
+                new TexturedCubeFromAssets(),
             };
-
-            // Needed for linker preserve
-            Loop(-1);
 
             foreach (var item in samples)
             {
@@ -91,19 +89,31 @@ namespace Samples
             }
         }
 
+        static void AnimateLoop(double milliseconds)
+        {
+            if (milliseconds < 0)
+            {
+                // Should this request an animation frame?
+                return;
+            }
+
+            foreach (var item in samples)
+            {
+                var elapsedMilliseconds = milliseconds - item.OldMilliseconds;
+                item.Update(elapsedMilliseconds);
+                item.OldMilliseconds = milliseconds;
+                item.Draw();
+            }
+            RequestAnimationFrame();
+        }
+
+        static Action<double> animate = new Action<double>(AnimateLoop);
+        static JSObject window = null;
         static void RequestAnimationFrame()
         {
-            var animationBootstrap =
-                "var animate = function(time) {\n" +
-                "    BINDING.call_static_method(" +
-                    $"'[{nameof(Samples)}] {nameof(Samples)}.{nameof(Program)}:{nameof(Loop)}', [time]);\n" +
-                "    window.requestAnimationFrame(animate);\n" +
-                "}\n" +
-                "animate(0);";
-#if DEBUG
-            Console.WriteLine(animationBootstrap);
-#endif
-            Runtime.InvokeJS(animationBootstrap);
+            if (window == null)
+                window = (JSObject)Runtime.GetGlobalObject();
+            window.Invoke("requestAnimationFrame", animate);
         }
     }
 }
