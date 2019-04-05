@@ -38,6 +38,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    
     <LinkerDescriptor Remove="LinkerConfig.xml" />
     
     <None Remove="WasmCSS\styles.css" />
