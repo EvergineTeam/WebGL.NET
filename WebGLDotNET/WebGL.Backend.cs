@@ -18,8 +18,44 @@ namespace WebGLDotNET
     {
     }
 
-    public partial class WebGLObject : JSHandler
+    public partial class WebGLObject : JSHandler, IDisposable
     {
+        // to detect redundant calls
+        public bool IsDisposed { get; internal set; }
+
+        ~WebGLObject()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            // Dispose of unmanaged resources.
+            Dispose(true);
+            // Suppress finalization.
+            GC.SuppressFinalize(this);
+        }
+
+        // Protected implementation of Dispose pattern.
+        protected virtual void Dispose(bool disposing)
+        {
+
+            if (!IsDisposed)
+            {
+                if (disposing)
+                {
+
+                    // Free any other managed objects here.
+                    //
+                }
+
+                IsDisposed = true;
+
+                // Free unmanaged objects here.
+                Handle.Dispose();
+
+            }
+        }
     }
 
     public partial class WebGLRenderingContextBase
@@ -148,7 +184,45 @@ namespace WebGLDotNET
     {
     }
 
-    public partial class WebGLUniformLocation : JSHandler
+    public partial class WebGLUniformLocation : JSHandler, IDisposable
     {
+        // to detect redundant calls
+        public bool IsDisposed { get; internal set; }
+
+        ~WebGLUniformLocation()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            // Dispose of unmanaged resources.
+            Dispose(true);
+            // Suppress finalization.
+            GC.SuppressFinalize(this);
+        }
+
+        // Protected implementation of Dispose pattern.
+        protected virtual void Dispose(bool disposing)
+        {
+
+            if (!IsDisposed)
+            {
+                if (disposing)
+                {
+
+                    // Free any other managed objects here.
+                    //
+                }
+
+                IsDisposed = true;
+
+                // Free unmanaged objects here.  i.e. our javascript ImageData object handle that we created
+                // 
+                Handle.Dispose();
+
+            }
+        }
+
     }
 }
