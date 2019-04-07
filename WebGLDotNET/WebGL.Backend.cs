@@ -217,7 +217,7 @@ namespace WebGLDotNET
 
                 IsDisposed = true;
 
-                // Free unmanaged objects here.  i.e. our javascript ImageData object handle that we created
+                // Free unmanaged objects here.
                 // 
                 Handle.Dispose();
 
