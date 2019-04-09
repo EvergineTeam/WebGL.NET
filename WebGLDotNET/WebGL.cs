@@ -972,4 +972,818 @@ namespace WebGLDotNET
     {
     }
 
+    public partial class WebGLQuery : WebGLObject
+    {
+    }
+
+    public partial class WebGLSampler : WebGLObject
+    {
+    }
+
+    public partial class WebGLSync : WebGLObject
+    {
+    }
+
+    public partial class WebGLTransformFeedback : WebGLObject
+    {
+    }
+
+    public partial class WebGLVertexArrayObject : WebGLObject
+    {
+    }
+
+    public partial class WebGL2RenderingContextBase
+    {
+        public const uint READ_BUFFER = 0x0C02;
+
+        public const uint UNPACK_ROW_LENGTH = 0x0CF2;
+
+        public const uint UNPACK_SKIP_ROWS = 0x0CF3;
+
+        public const uint UNPACK_SKIP_PIXELS = 0x0CF4;
+
+        public const uint PACK_ROW_LENGTH = 0x0D02;
+
+        public const uint PACK_SKIP_ROWS = 0x0D03;
+
+        public const uint PACK_SKIP_PIXELS = 0x0D04;
+
+        public const uint COLOR = 0x1800;
+
+        public const uint DEPTH = 0x1801;
+
+        public const uint STENCIL = 0x1802;
+
+        public const uint RED = 0x1903;
+
+        public const uint RGB8 = 0x8051;
+
+        public const uint RGBA8 = 0x8058;
+
+        public const uint RGB10_A2 = 0x8059;
+
+        public const uint TEXTURE_BINDING_3D = 0x806A;
+
+        public const uint UNPACK_SKIP_IMAGES = 0x806D;
+
+        public const uint UNPACK_IMAGE_HEIGHT = 0x806E;
+
+        public const uint TEXTURE_3D = 0x806F;
+
+        public const uint TEXTURE_WRAP_R = 0x8072;
+
+        public const uint MAX_3D_TEXTURE_SIZE = 0x8073;
+
+        public const uint UNSIGNED_INT_2_10_10_10_REV = 0x8368;
+
+        public const uint MAX_ELEMENTS_VERTICES = 0x80E8;
+
+        public const uint MAX_ELEMENTS_INDICES = 0x80E9;
+
+        public const uint TEXTURE_MIN_LOD = 0x813A;
+
+        public const uint TEXTURE_MAX_LOD = 0x813B;
+
+        public const uint TEXTURE_BASE_LEVEL = 0x813C;
+
+        public const uint TEXTURE_MAX_LEVEL = 0x813D;
+
+        public const uint MIN = 0x8007;
+
+        public const uint MAX = 0x8008;
+
+        public const uint DEPTH_COMPONENT24 = 0x81A6;
+
+        public const uint MAX_TEXTURE_LOD_BIAS = 0x84FD;
+
+        public const uint TEXTURE_COMPARE_MODE = 0x884C;
+
+        public const uint TEXTURE_COMPARE_FUNC = 0x884D;
+
+        public const uint CURRENT_QUERY = 0x8865;
+
+        public const uint QUERY_RESULT = 0x8866;
+
+        public const uint QUERY_RESULT_AVAILABLE = 0x8867;
+
+        public const uint STREAM_READ = 0x88E1;
+
+        public const uint STREAM_COPY = 0x88E2;
+
+        public const uint STATIC_READ = 0x88E5;
+
+        public const uint STATIC_COPY = 0x88E6;
+
+        public const uint DYNAMIC_READ = 0x88E9;
+
+        public const uint DYNAMIC_COPY = 0x88EA;
+
+        public const uint MAX_DRAW_BUFFERS = 0x8824;
+
+        public const uint DRAW_BUFFER0 = 0x8825;
+
+        public const uint DRAW_BUFFER1 = 0x8826;
+
+        public const uint DRAW_BUFFER2 = 0x8827;
+
+        public const uint DRAW_BUFFER3 = 0x8828;
+
+        public const uint DRAW_BUFFER4 = 0x8829;
+
+        public const uint DRAW_BUFFER5 = 0x882A;
+
+        public const uint DRAW_BUFFER6 = 0x882B;
+
+        public const uint DRAW_BUFFER7 = 0x882C;
+
+        public const uint DRAW_BUFFER8 = 0x882D;
+
+        public const uint DRAW_BUFFER9 = 0x882E;
+
+        public const uint DRAW_BUFFER10 = 0x882F;
+
+        public const uint DRAW_BUFFER11 = 0x8830;
+
+        public const uint DRAW_BUFFER12 = 0x8831;
+
+        public const uint DRAW_BUFFER13 = 0x8832;
+
+        public const uint DRAW_BUFFER14 = 0x8833;
+
+        public const uint DRAW_BUFFER15 = 0x8834;
+
+        public const uint MAX_FRAGMENT_UNIFORM_COMPONENTS = 0x8B49;
+
+        public const uint MAX_VERTEX_UNIFORM_COMPONENTS = 0x8B4A;
+
+        public const uint SAMPLER_3D = 0x8B5F;
+
+        public const uint SAMPLER_2D_SHADOW = 0x8B62;
+
+        public const uint FRAGMENT_SHADER_DERIVATIVE_HINT = 0x8B8B;
+
+        public const uint PIXEL_PACK_BUFFER = 0x88EB;
+
+        public const uint PIXEL_UNPACK_BUFFER = 0x88EC;
+
+        public const uint PIXEL_PACK_BUFFER_BINDING = 0x88ED;
+
+        public const uint PIXEL_UNPACK_BUFFER_BINDING = 0x88EF;
+
+        public const uint FLOAT_MAT2x3 = 0x8B65;
+
+        public const uint FLOAT_MAT2x4 = 0x8B66;
+
+        public const uint FLOAT_MAT3x2 = 0x8B67;
+
+        public const uint FLOAT_MAT3x4 = 0x8B68;
+
+        public const uint FLOAT_MAT4x2 = 0x8B69;
+
+        public const uint FLOAT_MAT4x3 = 0x8B6A;
+
+        public const uint SRGB = 0x8C40;
+
+        public const uint SRGB8 = 0x8C41;
+
+        public const uint SRGB8_ALPHA8 = 0x8C43;
+
+        public const uint COMPARE_REF_TO_TEXTURE = 0x884E;
+
+        public const uint RGBA32F = 0x8814;
+
+        public const uint RGB32F = 0x8815;
+
+        public const uint RGBA16F = 0x881A;
+
+        public const uint RGB16F = 0x881B;
+
+        public const uint VERTEX_ATTRIB_ARRAY_INTEGER = 0x88FD;
+
+        public const uint MAX_ARRAY_TEXTURE_LAYERS = 0x88FF;
+
+        public const uint MIN_PROGRAM_TEXEL_OFFSET = 0x8904;
+
+        public const uint MAX_PROGRAM_TEXEL_OFFSET = 0x8905;
+
+        public const uint MAX_VARYING_COMPONENTS = 0x8B4B;
+
+        public const uint TEXTURE_2D_ARRAY = 0x8C1A;
+
+        public const uint TEXTURE_BINDING_2D_ARRAY = 0x8C1D;
+
+        public const uint R11F_G11F_B10F = 0x8C3A;
+
+        public const uint UNSIGNED_INT_10F_11F_11F_REV = 0x8C3B;
+
+        public const uint RGB9_E5 = 0x8C3D;
+
+        public const uint UNSIGNED_INT_5_9_9_9_REV = 0x8C3E;
+
+        public const uint TRANSFORM_FEEDBACK_BUFFER_MODE = 0x8C7F;
+
+        public const uint MAX_TRANSFORM_FEEDBACK_SEPARATE_COMPONENTS = 0x8C80;
+
+        public const uint TRANSFORM_FEEDBACK_VARYINGS = 0x8C83;
+
+        public const uint TRANSFORM_FEEDBACK_BUFFER_START = 0x8C84;
+
+        public const uint TRANSFORM_FEEDBACK_BUFFER_SIZE = 0x8C85;
+
+        public const uint TRANSFORM_FEEDBACK_PRIMITIVES_WRITTEN = 0x8C88;
+
+        public const uint RASTERIZER_DISCARD = 0x8C89;
+
+        public const uint MAX_TRANSFORM_FEEDBACK_INTERLEAVED_COMPONENTS = 0x8C8A;
+
+        public const uint MAX_TRANSFORM_FEEDBACK_SEPARATE_ATTRIBS = 0x8C8B;
+
+        public const uint INTERLEAVED_ATTRIBS = 0x8C8C;
+
+        public const uint SEPARATE_ATTRIBS = 0x8C8D;
+
+        public const uint TRANSFORM_FEEDBACK_BUFFER = 0x8C8E;
+
+        public const uint TRANSFORM_FEEDBACK_BUFFER_BINDING = 0x8C8F;
+
+        public const uint RGBA32UI = 0x8D70;
+
+        public const uint RGB32UI = 0x8D71;
+
+        public const uint RGBA16UI = 0x8D76;
+
+        public const uint RGB16UI = 0x8D77;
+
+        public const uint RGBA8UI = 0x8D7C;
+
+        public const uint RGB8UI = 0x8D7D;
+
+        public const uint RGBA32I = 0x8D82;
+
+        public const uint RGB32I = 0x8D83;
+
+        public const uint RGBA16I = 0x8D88;
+
+        public const uint RGB16I = 0x8D89;
+
+        public const uint RGBA8I = 0x8D8E;
+
+        public const uint RGB8I = 0x8D8F;
+
+        public const uint RED_INTEGER = 0x8D94;
+
+        public const uint RGB_INTEGER = 0x8D98;
+
+        public const uint RGBA_INTEGER = 0x8D99;
+
+        public const uint SAMPLER_2D_ARRAY = 0x8DC1;
+
+        public const uint SAMPLER_2D_ARRAY_SHADOW = 0x8DC4;
+
+        public const uint SAMPLER_CUBE_SHADOW = 0x8DC5;
+
+        public const uint UNSIGNED_INT_VEC2 = 0x8DC6;
+
+        public const uint UNSIGNED_INT_VEC3 = 0x8DC7;
+
+        public const uint UNSIGNED_INT_VEC4 = 0x8DC8;
+
+        public const uint INT_SAMPLER_2D = 0x8DCA;
+
+        public const uint INT_SAMPLER_3D = 0x8DCB;
+
+        public const uint INT_SAMPLER_CUBE = 0x8DCC;
+
+        public const uint INT_SAMPLER_2D_ARRAY = 0x8DCF;
+
+        public const uint UNSIGNED_INT_SAMPLER_2D = 0x8DD2;
+
+        public const uint UNSIGNED_INT_SAMPLER_3D = 0x8DD3;
+
+        public const uint UNSIGNED_INT_SAMPLER_CUBE = 0x8DD4;
+
+        public const uint UNSIGNED_INT_SAMPLER_2D_ARRAY = 0x8DD7;
+
+        public const uint DEPTH_COMPONENT32F = 0x8CAC;
+
+        public const uint DEPTH32F_STENCIL8 = 0x8CAD;
+
+        public const uint FLOAT_32_UNSIGNED_INT_24_8_REV = 0x8DAD;
+
+        public const uint FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING = 0x8210;
+
+        public const uint FRAMEBUFFER_ATTACHMENT_COMPONENT_TYPE = 0x8211;
+
+        public const uint FRAMEBUFFER_ATTACHMENT_RED_SIZE = 0x8212;
+
+        public const uint FRAMEBUFFER_ATTACHMENT_GREEN_SIZE = 0x8213;
+
+        public const uint FRAMEBUFFER_ATTACHMENT_BLUE_SIZE = 0x8214;
+
+        public const uint FRAMEBUFFER_ATTACHMENT_ALPHA_SIZE = 0x8215;
+
+        public const uint FRAMEBUFFER_ATTACHMENT_DEPTH_SIZE = 0x8216;
+
+        public const uint FRAMEBUFFER_ATTACHMENT_STENCIL_SIZE = 0x8217;
+
+        public const uint FRAMEBUFFER_DEFAULT = 0x8218;
+
+        public const uint DEPTH_STENCIL_ATTACHMENT = 0x821A;
+
+        public const uint DEPTH_STENCIL = 0x84F9;
+
+        public const uint UNSIGNED_INT_24_8 = 0x84FA;
+
+        public const uint DEPTH24_STENCIL8 = 0x88F0;
+
+        public const uint UNSIGNED_NORMALIZED = 0x8C17;
+
+        public const uint DRAW_FRAMEBUFFER_BINDING = 0x8CA6;
+
+        public const uint READ_FRAMEBUFFER = 0x8CA8;
+
+        public const uint DRAW_FRAMEBUFFER = 0x8CA9;
+
+        public const uint READ_FRAMEBUFFER_BINDING = 0x8CAA;
+
+        public const uint RENDERBUFFER_SAMPLES = 0x8CAB;
+
+        public const uint FRAMEBUFFER_ATTACHMENT_TEXTURE_LAYER = 0x8CD4;
+
+        public const uint MAX_COLOR_ATTACHMENTS = 0x8CDF;
+
+        public const uint COLOR_ATTACHMENT1 = 0x8CE1;
+
+        public const uint COLOR_ATTACHMENT2 = 0x8CE2;
+
+        public const uint COLOR_ATTACHMENT3 = 0x8CE3;
+
+        public const uint COLOR_ATTACHMENT4 = 0x8CE4;
+
+        public const uint COLOR_ATTACHMENT5 = 0x8CE5;
+
+        public const uint COLOR_ATTACHMENT6 = 0x8CE6;
+
+        public const uint COLOR_ATTACHMENT7 = 0x8CE7;
+
+        public const uint COLOR_ATTACHMENT8 = 0x8CE8;
+
+        public const uint COLOR_ATTACHMENT9 = 0x8CE9;
+
+        public const uint COLOR_ATTACHMENT10 = 0x8CEA;
+
+        public const uint COLOR_ATTACHMENT11 = 0x8CEB;
+
+        public const uint COLOR_ATTACHMENT12 = 0x8CEC;
+
+        public const uint COLOR_ATTACHMENT13 = 0x8CED;
+
+        public const uint COLOR_ATTACHMENT14 = 0x8CEE;
+
+        public const uint COLOR_ATTACHMENT15 = 0x8CEF;
+
+        public const uint FRAMEBUFFER_INCOMPLETE_MULTISAMPLE = 0x8D56;
+
+        public const uint MAX_SAMPLES = 0x8D57;
+
+        public const uint HALF_FLOAT = 0x140B;
+
+        public const uint RG = 0x8227;
+
+        public const uint RG_INTEGER = 0x8228;
+
+        public const uint R8 = 0x8229;
+
+        public const uint RG8 = 0x822B;
+
+        public const uint R16F = 0x822D;
+
+        public const uint R32F = 0x822E;
+
+        public const uint RG16F = 0x822F;
+
+        public const uint RG32F = 0x8230;
+
+        public const uint R8I = 0x8231;
+
+        public const uint R8UI = 0x8232;
+
+        public const uint R16I = 0x8233;
+
+        public const uint R16UI = 0x8234;
+
+        public const uint R32I = 0x8235;
+
+        public const uint R32UI = 0x8236;
+
+        public const uint RG8I = 0x8237;
+
+        public const uint RG8UI = 0x8238;
+
+        public const uint RG16I = 0x8239;
+
+        public const uint RG16UI = 0x823A;
+
+        public const uint RG32I = 0x823B;
+
+        public const uint RG32UI = 0x823C;
+
+        public const uint VERTEX_ARRAY_BINDING = 0x85B5;
+
+        public const uint R8_SNORM = 0x8F94;
+
+        public const uint RG8_SNORM = 0x8F95;
+
+        public const uint RGB8_SNORM = 0x8F96;
+
+        public const uint RGBA8_SNORM = 0x8F97;
+
+        public const uint SIGNED_NORMALIZED = 0x8F9C;
+
+        public const uint COPY_READ_BUFFER = 0x8F36;
+
+        public const uint COPY_WRITE_BUFFER = 0x8F37;
+
+        public const uint COPY_READ_BUFFER_BINDING = 0x8F36;
+
+        public const uint COPY_WRITE_BUFFER_BINDING = 0x8F37;
+
+        public const uint UNIFORM_BUFFER = 0x8A11;
+
+        public const uint UNIFORM_BUFFER_BINDING = 0x8A28;
+
+        public const uint UNIFORM_BUFFER_START = 0x8A29;
+
+        public const uint UNIFORM_BUFFER_SIZE = 0x8A2A;
+
+        public const uint MAX_VERTEX_UNIFORM_BLOCKS = 0x8A2B;
+
+        public const uint MAX_FRAGMENT_UNIFORM_BLOCKS = 0x8A2D;
+
+        public const uint MAX_COMBINED_UNIFORM_BLOCKS = 0x8A2E;
+
+        public const uint MAX_UNIFORM_BUFFER_BINDINGS = 0x8A2F;
+
+        public const uint MAX_UNIFORM_BLOCK_SIZE = 0x8A30;
+
+        public const uint MAX_COMBINED_VERTEX_UNIFORM_COMPONENTS = 0x8A31;
+
+        public const uint MAX_COMBINED_FRAGMENT_UNIFORM_COMPONENTS = 0x8A33;
+
+        public const uint UNIFORM_BUFFER_OFFSET_ALIGNMENT = 0x8A34;
+
+        public const uint ACTIVE_UNIFORM_BLOCKS = 0x8A36;
+
+        public const uint UNIFORM_TYPE = 0x8A37;
+
+        public const uint UNIFORM_SIZE = 0x8A38;
+
+        public const uint UNIFORM_BLOCK_INDEX = 0x8A3A;
+
+        public const uint UNIFORM_OFFSET = 0x8A3B;
+
+        public const uint UNIFORM_ARRAY_STRIDE = 0x8A3C;
+
+        public const uint UNIFORM_MATRIX_STRIDE = 0x8A3D;
+
+        public const uint UNIFORM_IS_ROW_MAJOR = 0x8A3E;
+
+        public const uint UNIFORM_BLOCK_BINDING = 0x8A3F;
+
+        public const uint UNIFORM_BLOCK_DATA_SIZE = 0x8A40;
+
+        public const uint UNIFORM_BLOCK_ACTIVE_UNIFORMS = 0x8A42;
+
+        public const uint UNIFORM_BLOCK_ACTIVE_UNIFORM_INDICES = 0x8A43;
+
+        public const uint UNIFORM_BLOCK_REFERENCED_BY_VERTEX_SHADER = 0x8A44;
+
+        public const uint UNIFORM_BLOCK_REFERENCED_BY_FRAGMENT_SHADER = 0x8A46;
+
+        public const uint INVALID_INDEX = 0xFFFFFFFF;
+
+        public const uint MAX_VERTEX_OUTPUT_COMPONENTS = 0x9122;
+
+        public const uint MAX_FRAGMENT_INPUT_COMPONENTS = 0x9125;
+
+        public const uint MAX_SERVER_WAIT_TIMEOUT = 0x9111;
+
+        public const uint OBJECT_TYPE = 0x9112;
+
+        public const uint SYNC_CONDITION = 0x9113;
+
+        public const uint SYNC_STATUS = 0x9114;
+
+        public const uint SYNC_FLAGS = 0x9115;
+
+        public const uint SYNC_FENCE = 0x9116;
+
+        public const uint SYNC_GPU_COMMANDS_COMPLETE = 0x9117;
+
+        public const uint UNSIGNALED = 0x9118;
+
+        public const uint SIGNALED = 0x9119;
+
+        public const uint ALREADY_SIGNALED = 0x911A;
+
+        public const uint TIMEOUT_EXPIRED = 0x911B;
+
+        public const uint CONDITION_SATISFIED = 0x911C;
+
+        public const uint WAIT_FAILED = 0x911D;
+
+        public const uint SYNC_FLUSH_COMMANDS_BIT = 0x00000001;
+
+        public const uint VERTEX_ATTRIB_ARRAY_DIVISOR = 0x88FE;
+
+        public const uint ANY_SAMPLES_PASSED = 0x8C2F;
+
+        public const uint ANY_SAMPLES_PASSED_CONSERVATIVE = 0x8D6A;
+
+        public const uint SAMPLER_BINDING = 0x8919;
+
+        public const uint RGB10_A2UI = 0x906F;
+
+        public const uint INT_2_10_10_10_REV = 0x8D9F;
+
+        public const uint TRANSFORM_FEEDBACK = 0x8E22;
+
+        public const uint TRANSFORM_FEEDBACK_PAUSED = 0x8E23;
+
+        public const uint TRANSFORM_FEEDBACK_ACTIVE = 0x8E24;
+
+        public const uint TRANSFORM_FEEDBACK_BINDING = 0x8E25;
+
+        public const uint TEXTURE_IMMUTABLE_FORMAT = 0x912F;
+
+        public const uint MAX_ELEMENT_INDEX = 0x8D6B;
+
+        public const uint TEXTURE_IMMUTABLE_LEVELS = 0x82DF;
+
+        public const long TIMEOUT_IGNORED = -1;
+
+        public const uint MAX_CLIENT_WAIT_TIMEOUT_WEBGL = 0x9247;
+
+        public void BufferData(uint target, ulong size, uint usage) => Invoke("bufferData", target, size, usage);
+
+        public void BufferData(uint target, object srcData, uint usage) => Invoke("bufferData", target, srcData, usage);
+
+        public void BufferSubData(uint target, uint dstByteOffset, object srcData) => Invoke("bufferSubData", target, dstByteOffset, srcData);
+
+        public void BufferData(uint target, ITypedArray srcData, uint usage, uint srcOffset, uint length) => Invoke("bufferData", target, srcData, usage, srcOffset, length);
+
+        public void BufferSubData(uint target, uint dstByteOffset, ITypedArray srcData, uint srcOffset, uint length) => Invoke("bufferSubData", target, dstByteOffset, srcData, srcOffset, length);
+
+        public void CopyBufferSubData(uint readTarget, uint writeTarget, uint readOffset, uint writeOffset, ulong size) => Invoke("copyBufferSubData", readTarget, writeTarget, readOffset, writeOffset, size);
+
+        public void GetBufferSubData(uint target, uint srcByteOffset, ITypedArray dstBuffer, uint dstOffset, uint length) => Invoke("getBufferSubData", target, srcByteOffset, dstBuffer, dstOffset, length);
+
+        public void BlitFramebuffer(int srcX0, int srcY0, int srcX1, int srcY1, int dstX0, int dstY0, int dstX1, int dstY1, uint mask, uint filter) => Invoke("blitFramebuffer", srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter);
+
+        public void FramebufferTextureLayer(uint target, uint attachment, WebGLTexture texture, int level, int layer) => Invoke("framebufferTextureLayer", target, attachment, texture, level, layer);
+
+        public void InvalidateFramebuffer(uint target, uint[] attachments) => Invoke("invalidateFramebuffer", target, attachments);
+
+        public void InvalidateSubFramebuffer(uint target, uint[] attachments, int x, int y, int width, int height) => Invoke("invalidateSubFramebuffer", target, attachments, x, y, width, height);
+
+        public void ReadBuffer(uint src) => Invoke("readBuffer", src);
+
+        public object GetInternalformatParameter(uint target, uint internalformat, uint pname) => Invoke("getInternalformatParameter", target, internalformat, pname);
+
+        public void RenderbufferStorageMultisample(uint target, int samples, uint internalformat, int width, int height) => Invoke("renderbufferStorageMultisample", target, samples, internalformat, width, height);
+
+        public void TexStorage2D(uint target, int levels, uint internalformat, int width, int height) => Invoke("texStorage2D", target, levels, internalformat, width, height);
+
+        public void TexStorage3D(uint target, int levels, uint internalformat, int width, int height, int depth) => Invoke("texStorage3D", target, levels, internalformat, width, height, depth);
+
+        public void TexImage2D(uint target, int level, int internalformat, int width, int height, int border, uint format, uint type, ITypedArray pixels) => Invoke("texImage2D", target, level, internalformat, width, height, border, format, type, pixels);
+
+        public void TexImage2D(uint target, int level, int internalformat, uint format, uint type, object source) => Invoke("texImage2D", target, level, internalformat, format, type, source);
+
+        public void TexSubImage2D(uint target, int level, int xoffset, int yoffset, int width, int height, uint format, uint type, ITypedArray pixels) => Invoke("texSubImage2D", target, level, xoffset, yoffset, width, height, format, type, pixels);
+
+        public void TexSubImage2D(uint target, int level, int xoffset, int yoffset, uint format, uint type, object source) => Invoke("texSubImage2D", target, level, xoffset, yoffset, format, type, source);
+
+        public void TexImage2D(uint target, int level, int internalformat, int width, int height, int border, uint format, uint type, uint pboOffset) => Invoke("texImage2D", target, level, internalformat, width, height, border, format, type, pboOffset);
+
+        public void TexImage2D(uint target, int level, int internalformat, int width, int height, int border, uint format, uint type, object source) => Invoke("texImage2D", target, level, internalformat, width, height, border, format, type, source);
+
+        public void TexImage2D(uint target, int level, int internalformat, int width, int height, int border, uint format, uint type, ITypedArray srcData, uint srcOffset) => Invoke("texImage2D", target, level, internalformat, width, height, border, format, type, srcData, srcOffset);
+
+        public void TexImage3D(uint target, int level, int internalformat, int width, int height, int depth, int border, uint format, uint type, uint pboOffset) => Invoke("texImage3D", target, level, internalformat, width, height, depth, border, format, type, pboOffset);
+
+        public void TexImage3D(uint target, int level, int internalformat, int width, int height, int depth, int border, uint format, uint type, object source) => Invoke("texImage3D", target, level, internalformat, width, height, depth, border, format, type, source);
+
+        public void TexImage3D(uint target, int level, int internalformat, int width, int height, int depth, int border, uint format, uint type, ITypedArray srcData) => Invoke("texImage3D", target, level, internalformat, width, height, depth, border, format, type, srcData);
+
+        public void TexImage3D(uint target, int level, int internalformat, int width, int height, int depth, int border, uint format, uint type, ITypedArray srcData, uint srcOffset) => Invoke("texImage3D", target, level, internalformat, width, height, depth, border, format, type, srcData, srcOffset);
+
+        public void TexSubImage2D(uint target, int level, int xoffset, int yoffset, int width, int height, uint format, uint type, uint pboOffset) => Invoke("texSubImage2D", target, level, xoffset, yoffset, width, height, format, type, pboOffset);
+
+        public void TexSubImage2D(uint target, int level, int xoffset, int yoffset, int width, int height, uint format, uint type, object source) => Invoke("texSubImage2D", target, level, xoffset, yoffset, width, height, format, type, source);
+
+        public void TexSubImage2D(uint target, int level, int xoffset, int yoffset, int width, int height, uint format, uint type, ITypedArray srcData, uint srcOffset) => Invoke("texSubImage2D", target, level, xoffset, yoffset, width, height, format, type, srcData, srcOffset);
+
+        public void TexSubImage3D(uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, uint type, uint pboOffset) => Invoke("texSubImage3D", target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pboOffset);
+
+        public void TexSubImage3D(uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, uint type, object source) => Invoke("texSubImage3D", target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, source);
+
+        public void TexSubImage3D(uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, uint type, ITypedArray srcData, uint srcOffset) => Invoke("texSubImage3D", target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, srcData, srcOffset);
+
+        public void CopyTexSubImage3D(uint target, int level, int xoffset, int yoffset, int zoffset, int x, int y, int width, int height) => Invoke("copyTexSubImage3D", target, level, xoffset, yoffset, zoffset, x, y, width, height);
+
+        public void CompressedTexImage2D(uint target, int level, uint internalformat, int width, int height, int border, int imageSize, uint offset) => Invoke("compressedTexImage2D", target, level, internalformat, width, height, border, imageSize, offset);
+
+        public void CompressedTexImage2D(uint target, int level, uint internalformat, int width, int height, int border, ITypedArray srcData, uint srcOffset, uint srcLengthOverride) => Invoke("compressedTexImage2D", target, level, internalformat, width, height, border, srcData, srcOffset, srcLengthOverride);
+
+        public void CompressedTexImage3D(uint target, int level, uint internalformat, int width, int height, int depth, int border, int imageSize, uint offset) => Invoke("compressedTexImage3D", target, level, internalformat, width, height, depth, border, imageSize, offset);
+
+        public void CompressedTexImage3D(uint target, int level, uint internalformat, int width, int height, int depth, int border, ITypedArray srcData, uint srcOffset, uint srcLengthOverride) => Invoke("compressedTexImage3D", target, level, internalformat, width, height, depth, border, srcData, srcOffset, srcLengthOverride);
+
+        public void CompressedTexSubImage2D(uint target, int level, int xoffset, int yoffset, int width, int height, uint format, int imageSize, uint offset) => Invoke("compressedTexSubImage2D", target, level, xoffset, yoffset, width, height, format, imageSize, offset);
+
+        public void CompressedTexSubImage2D(uint target, int level, int xoffset, int yoffset, int width, int height, uint format, ITypedArray srcData, uint srcOffset, uint srcLengthOverride) => Invoke("compressedTexSubImage2D", target, level, xoffset, yoffset, width, height, format, srcData, srcOffset, srcLengthOverride);
+
+        public void CompressedTexSubImage3D(uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, int imageSize, uint offset) => Invoke("compressedTexSubImage3D", target, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, offset);
+
+        public void CompressedTexSubImage3D(uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, ITypedArray srcData, uint srcOffset, uint srcLengthOverride) => Invoke("compressedTexSubImage3D", target, level, xoffset, yoffset, zoffset, width, height, depth, format, srcData, srcOffset, srcLengthOverride);
+
+        public int GetFragDataLocation(WebGLProgram program, string name) => InvokeForBasicType<int>("getFragDataLocation", program, name);
+
+        public void Uniform1ui(WebGLUniformLocation location, uint v0) => Invoke("uniform1ui", location, v0);
+
+        public void Uniform2ui(WebGLUniformLocation location, uint v0, uint v1) => Invoke("uniform2ui", location, v0, v1);
+
+        public void Uniform3ui(WebGLUniformLocation location, uint v0, uint v1, uint v2) => Invoke("uniform3ui", location, v0, v1, v2);
+
+        public void Uniform4ui(WebGLUniformLocation location, uint v0, uint v1, uint v2, uint v3) => Invoke("uniform4ui", location, v0, v1, v2, v3);
+
+        public void Uniform1fv(WebGLUniformLocation location, object data, uint srcOffset, uint srcLength) => Invoke("uniform1fv", location, data, srcOffset, srcLength);
+
+        public void Uniform2fv(WebGLUniformLocation location, object data, uint srcOffset, uint srcLength) => Invoke("uniform2fv", location, data, srcOffset, srcLength);
+
+        public void Uniform3fv(WebGLUniformLocation location, object data, uint srcOffset, uint srcLength) => Invoke("uniform3fv", location, data, srcOffset, srcLength);
+
+        public void Uniform4fv(WebGLUniformLocation location, object data, uint srcOffset, uint srcLength) => Invoke("uniform4fv", location, data, srcOffset, srcLength);
+
+        public void Uniform1iv(WebGLUniformLocation location, object data, uint srcOffset, uint srcLength) => Invoke("uniform1iv", location, data, srcOffset, srcLength);
+
+        public void Uniform2iv(WebGLUniformLocation location, object data, uint srcOffset, uint srcLength) => Invoke("uniform2iv", location, data, srcOffset, srcLength);
+
+        public void Uniform3iv(WebGLUniformLocation location, object data, uint srcOffset, uint srcLength) => Invoke("uniform3iv", location, data, srcOffset, srcLength);
+
+        public void Uniform4iv(WebGLUniformLocation location, object data, uint srcOffset, uint srcLength) => Invoke("uniform4iv", location, data, srcOffset, srcLength);
+
+        public void Uniform1uiv(WebGLUniformLocation location, object data, uint srcOffset, uint srcLength) => Invoke("uniform1uiv", location, data, srcOffset, srcLength);
+
+        public void Uniform2uiv(WebGLUniformLocation location, object data, uint srcOffset, uint srcLength) => Invoke("uniform2uiv", location, data, srcOffset, srcLength);
+
+        public void Uniform3uiv(WebGLUniformLocation location, object data, uint srcOffset, uint srcLength) => Invoke("uniform3uiv", location, data, srcOffset, srcLength);
+
+        public void Uniform4uiv(WebGLUniformLocation location, object data, uint srcOffset, uint srcLength) => Invoke("uniform4uiv", location, data, srcOffset, srcLength);
+
+        public void UniformMatrix2fv(WebGLUniformLocation location, bool transpose, object data, uint srcOffset, uint srcLength) => Invoke("uniformMatrix2fv", location, transpose, data, srcOffset, srcLength);
+
+        public void UniformMatrix3x2fv(WebGLUniformLocation location, bool transpose, object data, uint srcOffset, uint srcLength) => Invoke("uniformMatrix3x2fv", location, transpose, data, srcOffset, srcLength);
+
+        public void UniformMatrix4x2fv(WebGLUniformLocation location, bool transpose, object data, uint srcOffset, uint srcLength) => Invoke("uniformMatrix4x2fv", location, transpose, data, srcOffset, srcLength);
+
+        public void UniformMatrix2x3fv(WebGLUniformLocation location, bool transpose, object data, uint srcOffset, uint srcLength) => Invoke("uniformMatrix2x3fv", location, transpose, data, srcOffset, srcLength);
+
+        public void UniformMatrix3fv(WebGLUniformLocation location, bool transpose, object data, uint srcOffset, uint srcLength) => Invoke("uniformMatrix3fv", location, transpose, data, srcOffset, srcLength);
+
+        public void UniformMatrix4x3fv(WebGLUniformLocation location, bool transpose, object data, uint srcOffset, uint srcLength) => Invoke("uniformMatrix4x3fv", location, transpose, data, srcOffset, srcLength);
+
+        public void UniformMatrix2x4fv(WebGLUniformLocation location, bool transpose, object data, uint srcOffset, uint srcLength) => Invoke("uniformMatrix2x4fv", location, transpose, data, srcOffset, srcLength);
+
+        public void UniformMatrix3x4fv(WebGLUniformLocation location, bool transpose, object data, uint srcOffset, uint srcLength) => Invoke("uniformMatrix3x4fv", location, transpose, data, srcOffset, srcLength);
+
+        public void UniformMatrix4fv(WebGLUniformLocation location, bool transpose, object data, uint srcOffset, uint srcLength) => Invoke("uniformMatrix4fv", location, transpose, data, srcOffset, srcLength);
+
+        public void VertexAttribI4i(uint index, int x, int y, int z, int w) => Invoke("vertexAttribI4i", index, x, y, z, w);
+
+        public void VertexAttribI4iv(uint index, object values) => Invoke("vertexAttribI4iv", index, values);
+
+        public void VertexAttribI4ui(uint index, uint x, uint y, uint z, uint w) => Invoke("vertexAttribI4ui", index, x, y, z, w);
+
+        public void VertexAttribI4uiv(uint index, object values) => Invoke("vertexAttribI4uiv", index, values);
+
+        public void VertexAttribIPointer(uint index, int size, uint type, int stride, uint offset) => Invoke("vertexAttribIPointer", index, size, type, stride, offset);
+
+        public void VertexAttribDivisor(uint index, uint divisor) => Invoke("vertexAttribDivisor", index, divisor);
+
+        public void DrawArraysInstanced(uint mode, int first, int count, int instanceCount) => Invoke("drawArraysInstanced", mode, first, count, instanceCount);
+
+        public void DrawElementsInstanced(uint mode, int count, uint type, uint offset, int instanceCount) => Invoke("drawElementsInstanced", mode, count, type, offset, instanceCount);
+
+        public void DrawRangeElements(uint mode, uint start, uint end, int count, uint type, uint offset) => Invoke("drawRangeElements", mode, start, end, count, type, offset);
+
+        public void ReadPixels(int x, int y, int width, int height, uint format, uint type, ITypedArray dstData) => Invoke("readPixels", x, y, width, height, format, type, dstData);
+
+        public void ReadPixels(int x, int y, int width, int height, uint format, uint type, uint offset) => Invoke("readPixels", x, y, width, height, format, type, offset);
+
+        public void ReadPixels(int x, int y, int width, int height, uint format, uint type, ITypedArray dstData, uint dstOffset) => Invoke("readPixels", x, y, width, height, format, type, dstData, dstOffset);
+
+        public void DrawBuffers(uint[] buffers) => Invoke("drawBuffers", buffers);
+
+        public void ClearBufferfv(uint buffer, int drawbuffer, object values, uint srcOffset) => Invoke("clearBufferfv", buffer, drawbuffer, values, srcOffset);
+
+        public void ClearBufferiv(uint buffer, int drawbuffer, object values, uint srcOffset) => Invoke("clearBufferiv", buffer, drawbuffer, values, srcOffset);
+
+        public void ClearBufferuiv(uint buffer, int drawbuffer, object values, uint srcOffset) => Invoke("clearBufferuiv", buffer, drawbuffer, values, srcOffset);
+
+        public void ClearBufferfi(uint buffer, int drawbuffer, float depth, int stencil) => Invoke("clearBufferfi", buffer, drawbuffer, depth, stencil);
+
+        public WebGLQuery CreateQuery() => Invoke<WebGLQuery>("createQuery");
+
+        public void DeleteQuery(WebGLQuery query) => Invoke("deleteQuery", query);
+
+        public bool IsQuery(WebGLQuery query) => InvokeForBasicType<bool>("isQuery", query);
+
+        public void BeginQuery(uint target, WebGLQuery query) => Invoke("beginQuery", target, query);
+
+        public void EndQuery(uint target) => Invoke("endQuery", target);
+
+        public WebGLQuery GetQuery(uint target, uint pname) => Invoke<WebGLQuery>("getQuery", target, pname);
+
+        public object GetQueryParameter(WebGLQuery query, uint pname) => Invoke("getQueryParameter", query, pname);
+
+        public WebGLSampler CreateSampler() => Invoke<WebGLSampler>("createSampler");
+
+        public void DeleteSampler(WebGLSampler sampler) => Invoke("deleteSampler", sampler);
+
+        public bool IsSampler(WebGLSampler sampler) => InvokeForBasicType<bool>("isSampler", sampler);
+
+        public void BindSampler(uint unit, WebGLSampler sampler) => Invoke("bindSampler", unit, sampler);
+
+        public void SamplerParameteri(WebGLSampler sampler, uint pname, int param) => Invoke("samplerParameteri", sampler, pname, param);
+
+        public void SamplerParameterf(WebGLSampler sampler, uint pname, float param) => Invoke("samplerParameterf", sampler, pname, param);
+
+        public object GetSamplerParameter(WebGLSampler sampler, uint pname) => Invoke("getSamplerParameter", sampler, pname);
+
+        public WebGLSync FenceSync(uint condition, uint flags) => Invoke<WebGLSync>("fenceSync", condition, flags);
+
+        public bool IsSync(WebGLSync sync) => InvokeForBasicType<bool>("isSync", sync);
+
+        public void DeleteSync(WebGLSync sync) => Invoke("deleteSync", sync);
+
+        public uint ClientWaitSync(WebGLSync sync, uint flags, ulong timeout) => InvokeForBasicType<uint>("clientWaitSync", sync, flags, timeout);
+
+        public void WaitSync(WebGLSync sync, uint flags, long timeout) => Invoke("waitSync", sync, flags, timeout);
+
+        public object GetSyncParameter(WebGLSync sync, uint pname) => Invoke("getSyncParameter", sync, pname);
+
+        public WebGLTransformFeedback CreateTransformFeedback() => Invoke<WebGLTransformFeedback>("createTransformFeedback");
+
+        public void DeleteTransformFeedback(WebGLTransformFeedback tf) => Invoke("deleteTransformFeedback", tf);
+
+        public bool IsTransformFeedback(WebGLTransformFeedback tf) => InvokeForBasicType<bool>("isTransformFeedback", tf);
+
+        public void BindTransformFeedback(uint target, WebGLTransformFeedback tf) => Invoke("bindTransformFeedback", target, tf);
+
+        public void BeginTransformFeedback(uint primitiveMode) => Invoke("beginTransformFeedback", primitiveMode);
+
+        public void EndTransformFeedback() => Invoke("endTransformFeedback");
+
+        public void TransformFeedbackVaryings(WebGLProgram program, string[] varyings, uint bufferMode) => Invoke("transformFeedbackVaryings", program, varyings, bufferMode);
+
+        public WebGLActiveInfo GetTransformFeedbackVarying(WebGLProgram program, uint index) => Invoke<WebGLActiveInfo>("getTransformFeedbackVarying", program, index);
+
+        public void PauseTransformFeedback() => Invoke("pauseTransformFeedback");
+
+        public void ResumeTransformFeedback() => Invoke("resumeTransformFeedback");
+
+        public void BindBufferBase(uint target, uint index, WebGLBuffer buffer) => Invoke("bindBufferBase", target, index, buffer);
+
+        public void BindBufferRange(uint target, uint index, WebGLBuffer buffer, uint offset, ulong size) => Invoke("bindBufferRange", target, index, buffer, offset, size);
+
+        public object GetIndexedParameter(uint target, uint index) => Invoke("getIndexedParameter", target, index);
+
+        public uint[] GetUniformIndices(WebGLProgram program, string[] uniformNames) => InvokeForArray<uint>("getUniformIndices", program, uniformNames);
+
+        public object GetActiveUniforms(WebGLProgram program, uint[] uniformIndices, uint pname) => Invoke("getActiveUniforms", program, uniformIndices, pname);
+
+        public uint GetUniformBlockIndex(WebGLProgram program, string uniformBlockName) => InvokeForBasicType<uint>("getUniformBlockIndex", program, uniformBlockName);
+
+        public object GetActiveUniformBlockParameter(WebGLProgram program, uint uniformBlockIndex, uint pname) => Invoke("getActiveUniformBlockParameter", program, uniformBlockIndex, pname);
+
+        public string GetActiveUniformBlockName(WebGLProgram program, uint uniformBlockIndex) => InvokeForBasicType<string>("getActiveUniformBlockName", program, uniformBlockIndex);
+
+        public void UniformBlockBinding(WebGLProgram program, uint uniformBlockIndex, uint uniformBlockBinding) => Invoke("uniformBlockBinding", program, uniformBlockIndex, uniformBlockBinding);
+
+        public WebGLVertexArrayObject CreateVertexArray() => Invoke<WebGLVertexArrayObject>("createVertexArray");
+
+        public void DeleteVertexArray(WebGLVertexArrayObject vertexArray) => Invoke("deleteVertexArray", vertexArray);
+
+        public bool IsVertexArray(WebGLVertexArrayObject vertexArray) => InvokeForBasicType<bool>("isVertexArray", vertexArray);
+
+        public void BindVertexArray(WebGLVertexArrayObject array) => Invoke("bindVertexArray", array);
+
+    }
+
+    public partial class WebGL2RenderingContext
+    {
+    }
+
 }

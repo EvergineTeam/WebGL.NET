@@ -27,13 +27,14 @@ namespace WebIDLToCSharp
 {
     class Program
     {
-        const string OutputFile =
-            //"WebGL.cs";
-            "../../../../WebGLDotNET/WebGL.cs";
+        const string WebGL1SpecFile = "webgl.idl";
+        const string WebGL2SpecFile = "webgl2.idl";
+        const string OutputFile = "../../../../WebGLDotNET/WebGL.cs";
 
         static void Main(string[] args)
         {
-            var input = File.ReadAllText("webgl.idl");
+            var input = File.ReadAllText(WebGL1SpecFile);
+            input += File.ReadAllText(WebGL2SpecFile);
             var inputStream = CharStreams.fromstring(input);
             var lexer = new WebIDLLexer(inputStream);
             var tokenStream = new CommonTokenStream(lexer);
@@ -81,13 +82,20 @@ namespace WebIDLToCSharp
                     { "GLenum", "uint" },
                     { "GLfloat", "float" },
                     { "GLint", "int" },
+                    { "GLint64", "long" },
                     { "GLintptr", "uint" },
                     { "GLsizei", "int" },
                     { "GLsizeiptr", "ulong" },
                     { "GLuint", "uint" },
+                    { "GLuint64", "ulong" },
                     // Workarounds to bypass commented typedefs with "or"
                     { "BufferDataSource", "System.Array" },
-                    { "TexImageSource", "object" }
+                    { "TexImageSource", "object" },
+                    // Workarounds for WebGL 2 missing definitions
+                    { "BufferSource", "object" },
+                    { "Float32List", "object" },
+                    { "Int32List", "object" },
+                    { "Uint32List", "object" }
                 };
             }
 

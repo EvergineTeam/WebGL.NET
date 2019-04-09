@@ -60,18 +60,11 @@ namespace WebGLDotNET
 
     public partial class WebGLRenderingContextBase
     {
-        private readonly JSObject gl;
+        protected readonly JSObject gl;
 
-        private WebGLRenderingContextBase(JSObject canvas)
+        public WebGLRenderingContextBase(JSObject canvas)
         {
             gl = (JSObject)canvas.Invoke("getContext", "webgl");
-        }
-
-        public static WebGLRenderingContextBase GetContext(JSObject canvas)
-        {
-            var instance = new WebGLRenderingContextBase(canvas);
-
-            return instance;
         }
 
         public ITypedArray CastNativeArray(object managedArray)
@@ -115,7 +108,7 @@ namespace WebGLDotNET
             }
         }
 
-        private object Invoke(string method, params object[] args)
+        protected object Invoke(string method, params object[] args)
         {
             var actualArgs = Translate(args);
             var result = gl.Invoke(method, actualArgs);
@@ -124,7 +117,7 @@ namespace WebGLDotNET
             return result;
         }
 
-        private T Invoke<T>(string method, params object[] args)
+        protected T Invoke<T>(string method, params object[] args)
             where T : JSHandler, new()
         {
             var actualArgs = Translate(args);
@@ -139,12 +132,12 @@ namespace WebGLDotNET
             return result;
         }
 
-        private T[] InvokeForArray<T>(string method, params object[] args) =>
+        protected T[] InvokeForArray<T>(string method, params object[] args) =>
             ((object[])gl.Invoke(method, args))
                 .Cast<T>()
                 .ToArray();
 
-        private T InvokeForBasicType<T>(string method, params object[] args)
+        protected T InvokeForBasicType<T>(string method, params object[] args)
             where T : IConvertible =>
             (T)Invoke(method, args);
 
@@ -224,5 +217,19 @@ namespace WebGLDotNET
             }
         }
 
+    }
+
+    public partial class WebGL2RenderingContext : WebGL2RenderingContextBase
+    {
+        public WebGL2RenderingContext(JSObject canvas) : base(canvas)
+        { 
+        }
+    }
+
+    public partial class WebGL2RenderingContextBase : WebGLRenderingContextBase
+    {
+        public WebGL2RenderingContextBase(JSObject canvas) : base(canvas)
+        {
+        }
     }
 }
