@@ -30,7 +30,7 @@ namespace Samples
 
         public virtual void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor)
         {
-            gl = WebGLRenderingContextBase.GetContext(canvas);
+            gl = new WebGL2RenderingContext(canvas);
             this.canvasWidth = canvasWidth;
             this.canvasHeight = canvasHeight;
             this.clearColor = clearColor;

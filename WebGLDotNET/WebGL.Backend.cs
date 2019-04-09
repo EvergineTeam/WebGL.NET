@@ -58,13 +58,20 @@ namespace WebGLDotNET
         }
     }
 
-    public partial class WebGLRenderingContextBase
+    public partial class WebGLRenderingContext : WebGLRenderingContextBase
+    {
+        public WebGLRenderingContext(JSObject canvas) : base(canvas, "webgl")
+        {
+        }
+    }
+
+    public abstract partial class WebGLRenderingContextBase
     {
         protected readonly JSObject gl;
 
-        public WebGLRenderingContextBase(JSObject canvas)
+        public WebGLRenderingContextBase(JSObject canvas, string contextType)
         {
-            gl = (JSObject)canvas.Invoke("getContext", "webgl");
+            gl = (JSObject)canvas.Invoke("getContext", contextType);
         }
 
         public ITypedArray CastNativeArray(object managedArray)
@@ -221,14 +228,14 @@ namespace WebGLDotNET
 
     public partial class WebGL2RenderingContext : WebGL2RenderingContextBase
     {
-        public WebGL2RenderingContext(JSObject canvas) : base(canvas)
+        public WebGL2RenderingContext(JSObject canvas) : base(canvas, "webgl2")
         { 
         }
     }
 
-    public partial class WebGL2RenderingContextBase : WebGLRenderingContextBase
+    public abstract partial class WebGL2RenderingContextBase : WebGLRenderingContextBase
     {
-        public WebGL2RenderingContextBase(JSObject canvas) : base(canvas)
+        public WebGL2RenderingContextBase(JSObject canvas, string contextType) : base(canvas, contextType)
         {
         }
     }
