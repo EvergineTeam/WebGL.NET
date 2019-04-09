@@ -14,8 +14,8 @@
       Grab latest MonoWasm drops from here:
       https://jenkins.mono-project.com/job/test-mono-mainline-wasm/label=ubuntu-1804-amd64/lastSuccessfulBuild/Azure/
     -->
-    <MonoWasmSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/2495/label=ubuntu-1804-amd64/Azure/processDownloadRequest/2495/ubuntu-1804-amd64/sdks/wasm/mono-wasm-e894d683f9f.zip</MonoWasmSDKUri>
-    <MonoWasmAOTSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/2495/label=ubuntu-1804-amd64/Azure/processDownloadRequest/2495/ubuntu-1804-amd64/wasm-release-Linux-e894d683f9f0a9c7351b513d3f015a5e170449eb.zip</MonoWasmAOTSDKUri>
+    <MonoWasmSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/2555/label=ubuntu-1804-amd64/Azure/processDownloadRequest/2555/ubuntu-1804-amd64/sdks/wasm/mono-wasm-7116ecaf4ee.zip</MonoWasmSDKUri>
+    <MonoWasmAOTSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/2555/label=ubuntu-1804-amd64/Azure/processDownloadRequest/2555/ubuntu-1804-amd64/wasm-release-Linux-7116ecaf4eeceed143023352d597e4d09f1dfc95.zip</MonoWasmAOTSDKUri>
 	
   </PropertyGroup>
 
