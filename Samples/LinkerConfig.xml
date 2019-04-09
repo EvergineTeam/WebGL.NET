@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<linker>
+  
+  <!-- https://github.com/mono/mono/blob/master/sdks/wasm/framework/src/WebAssembly.Bindings/LinkDescriptor/WebAssembly.Bindings.xml -->
+  <assembly fullname="mscorlib" preserve="all">
+    <type fullname="System.Delegate">
+      <method signature="System.Object DynamicInvoke(System.Object[])" />
+    </type>
+  </assembly> 
+
+  <assembly fullname="WebAssembly.Bindings" />
+  
+</linker>

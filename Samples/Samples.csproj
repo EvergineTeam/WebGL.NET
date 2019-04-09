@@ -1,0 +1,68 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netstandard2.0</TargetFramework>
+	
+    <MonoRuntimeDebuggerEnabled>false</MonoRuntimeDebuggerEnabled>
+    <WasmShellGenerateCompressedFiles>false</WasmShellGenerateCompressedFiles>
+    <WasmShellILLinkerEnabled>false</WasmShellILLinkerEnabled>
+    <WasmShellMonoRuntimeExecutionMode>Interpreter</WasmShellMonoRuntimeExecutionMode>
+	
+    <!--
+      Grab latest MonoWasm drops from here:
+      https://jenkins.mono-project.com/job/test-mono-mainline-wasm/label=ubuntu-1804-amd64/lastSuccessfulBuild/Azure/
+    -->
+    <MonoWasmSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/2555/label=ubuntu-1804-amd64/Azure/processDownloadRequest/2555/ubuntu-1804-amd64/sdks/wasm/mono-wasm-7116ecaf4ee.zip</MonoWasmSDKUri>
+    <MonoWasmAOTSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/2555/label=ubuntu-1804-amd64/Azure/processDownloadRequest/2555/ubuntu-1804-amd64/wasm-release-Linux-7116ecaf4eeceed143023352d597e4d09f1dfc95.zip</MonoWasmAOTSDKUri>
+	
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0006" />
+    <PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0-dev.242" />
+    <DotNetCliToolReference Include="Uno.Wasm.Bootstrap.Cli" Version="1.0.0-dev.242" />
+    <PackageReference Include="WaveEngine.Common" Version="2.5.0.39" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Reference Include="WebAssembly.Bindings">
+      <HintPath>..\WebGLDotNET\WebAssembly.Bindings.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="WebAssembly.Net.Http">
+      <HintPath>..\WebGLDotNET\WebAssembly.Net.Http.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+  
+  <ItemGroup>
+    
+    <LinkerDescriptor Remove="LinkerConfig.xml" />
+    
+    <None Remove="WasmCSS\styles.css" />
+    <EmbeddedResource Include="WasmCSS\styles.css" />
+    
+    <None Remove="Assets\PlainConcepts.bmp" />
+    <Content Include="Assets\PlainConcepts.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    
+    <None Remove="Assets\PlainConcepts.jpg" />
+    <Content Include="Assets\PlainConcepts.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    
+    <None Remove="Assets\PlainConcepts.png" />
+    <Content Include="Assets\PlainConcepts.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\WebGLDotNET\WebGLDotNET.csproj" />
+  </ItemGroup>
+  
+</Project>
