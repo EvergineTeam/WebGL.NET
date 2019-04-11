@@ -45,7 +45,7 @@ namespace Samples
                     WebGLRenderingContextBase.RGB,
                     WebGLRenderingContextBase.RGB,
                     WebGLRenderingContextBase.UNSIGNED_BYTE,
-                    image);
+                    imageData);
 
                 // Make sure we tell managed code and javascript that we can dispose of the
                 // event object.
