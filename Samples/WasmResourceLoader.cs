@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using WebAssembly;
@@ -23,10 +24,11 @@ namespace Samples
             }
         }
 
-        public static async Task<byte[]> LoadAsync(string relativePath, string baseAddress)
+        public static async Task<Stream> LoadAsync(string relativePath, string baseAddress)
         {
+            Stream content;
+
             var httpClient = new HttpClient { BaseAddress = new Uri(baseAddress) };
-            byte[] content;
 
 #if DEBUG
             Console.WriteLine($"Requesting '{relativePath}' at '{baseAddress}'...");
@@ -36,7 +38,7 @@ namespace Samples
             {
                 var response = await httpClient.GetAsync(relativePath);
                 response.EnsureSuccessStatusCode();
-                content = await response.Content.ReadAsByteArrayAsync();
+                content = await response.Content.ReadAsStreamAsync();
             }
             catch (Exception exception)
             {
