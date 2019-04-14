@@ -1,0 +1,20 @@
+#version 300 es
+
+layout(std140) uniform type_Matrices
+{
+    mat4 worldViewProj;
+} Matrices;
+
+layout(location = 0) in vec3 in_var_NORMAL;
+layout(location = 1) in vec3 in_var_POSITION;
+layout(location = 2) in vec2 in_var_TEXCOORD;
+out vec3 out_var_NORMAL;
+out vec2 out_var_TEXCOORD;
+
+void main()
+{
+    gl_Position = Matrices.worldViewProj * vec4(in_var_POSITION, 1.0);
+    out_var_NORMAL = in_var_NORMAL;
+    out_var_TEXCOORD = in_var_TEXCOORD;
+}
+

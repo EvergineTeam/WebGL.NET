@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Drawing;
+using WaveEngine.Common.Graphics;
+using WaveEngine.Common.Math;
 using WebAssembly;
 using WebGLDotNET;
 
@@ -9,7 +10,7 @@ namespace Samples
     {
         float canvasWidth;
         float canvasHeight;
-        Color clearColor;
+        Vector4 clearColor;
 
         protected WebGLRenderingContextBase gl;
         protected WebGLShader vertexShader;
@@ -24,11 +25,11 @@ namespace Samples
         {
             gl.Enable(WebGLRenderingContextBase.DEPTH_TEST);
 
-            gl.ClearColor(clearColor.R, clearColor.G, clearColor.B, clearColor.A);
+            gl.ClearColor(clearColor.X, clearColor.Y, clearColor.Z, clearColor.W);
             gl.Clear(WebGLRenderingContextBase.COLOR_BUFFER_BIT);
         }
 
-        public virtual void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor)
+        public virtual void Run(JSObject canvas, float canvasWidth, float canvasHeight, Vector4 clearColor)
         {
             gl = new WebGL2RenderingContext(canvas);
             this.canvasWidth = canvasWidth;

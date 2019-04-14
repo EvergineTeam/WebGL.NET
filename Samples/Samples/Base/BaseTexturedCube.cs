@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+﻿using WaveEngine.Common.Graphics;
 using WaveEngine.Common.Math;
 using WebAssembly;
 using WebGLDotNET;
@@ -26,7 +26,7 @@ namespace Samples
         WebGLUniformLocation samplerUniform;
         double totalElapsedTimeSeconds;
 
-        public override void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor)
+        public override void Run(JSObject canvas, float canvasWidth, float canvasHeight, Vector4 clearColor)
         {
             base.Run(canvas, canvasWidth, canvasHeight, clearColor);
 

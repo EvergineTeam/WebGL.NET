@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Drawing;
+using WaveEngine.Common.Graphics;
+using WaveEngine.Common.Math;
 using WebAssembly;
 
 namespace Samples
@@ -25,6 +26,7 @@ namespace Samples
                 new Texture2D(),
                 new TexturedCubeFromHTMLImage(),
                 new TexturedCubeFromAssets(),
+                new LoadGLTF(),
             };
 
             foreach (var item in samples)
@@ -32,7 +34,7 @@ namespace Samples
                 AddHeader2(item.GetType().Name);
                 AddParagraph(item.Description);
                 using (var canvas = AddCanvas(CanvasWidth, CanvasHeight))
-                    item.Run(canvas, CanvasWidth, CanvasHeight, Color.Fuchsia);
+                    item.Run(canvas, CanvasWidth, CanvasHeight, Color.CornflowerBlue.ToVector4());
             }
 
             RequestAnimationFrame();
@@ -41,7 +43,8 @@ namespace Samples
         static JSObject AddCanvas(int width, int height)
         {
             using (var document = (JSObject)Runtime.GetGlobalObject("document"))
-            using (var body = (JSObject)document.GetObjectProperty("body")) {
+            using (var body = (JSObject)document.GetObjectProperty("body"))
+            {
                 var canvas = (JSObject)document.Invoke("createElement", "canvas");
                 canvas.SetObjectProperty("width", width);
                 canvas.SetObjectProperty("height", height);
