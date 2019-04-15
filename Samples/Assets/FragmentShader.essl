@@ -1,10 +1,7 @@
-#version 300 es
-precision mediump float;
-precision highp int;
+#version 300
 
-in highp vec3 in_var_NORMAL;
-in highp vec2 in_var_TEXCOORD;
-layout(location = 0) out highp vec4 out_var_SV_Target;
+varying vec3 in_var_NORMAL;
+varying vec2 in_var_TEXCOORD;
 
 void main()
 {

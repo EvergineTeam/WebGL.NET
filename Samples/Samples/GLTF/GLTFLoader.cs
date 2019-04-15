@@ -14,13 +14,13 @@ namespace Samples.GLTF
 
         public GLTFModelLoader(string filePath)
         {
-            this.Read(filePath);
+            this.ReadAsync(filePath);
         }
 
-        private void Read(string filePath)
+        private async System.Threading.Tasks.Task ReadAsync(string filePath)
         {
             // Deserialize gltf
-            this.model = this.ObtainGLTF(filePath);
+            this.model = await this.ObtainGLTFAsync(filePath);
 
             // read all buffers
             int numBuffers = this.model.Buffers.Length;
@@ -63,16 +63,17 @@ namespace Samples.GLTF
             }
         }
 
-        private Gltf ObtainGLTF(string filePath)
+        private async System.Threading.Tasks.Task<Gltf> ObtainGLTFAsync(string filePath)
         {
             try
             {
+                var content = await WasmResourceLoader.LoadAsync(filePath, WasmResourceLoader.GetLocalAddress());
                 if (!File.Exists(filePath))
                 {
                     throw new InvalidOperationException($"The asset file \"{filePath}\"");
                 }
 
-                return Interface.LoadModel(filePath);
+                return Interface.LoadModel(content);
             }
             catch (Exception e)
             {

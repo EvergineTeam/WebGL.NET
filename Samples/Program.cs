@@ -21,11 +21,11 @@ namespace Samples
 
             samples = new ISample[]
             {
-                new Triangle(),
-                new RotatingCube(),
-                new Texture2D(),
-                new TexturedCubeFromHTMLImage(),
-                new TexturedCubeFromAssets(),
+                ////new Triangle(),
+                ////new RotatingCube(),
+                ////new Texture2D(),
+                ////new TexturedCubeFromHTMLImage(),
+                ////new TexturedCubeFromAssets(),
                 new LoadGLTF(),
             };
 

@@ -4,6 +4,8 @@ using WaveEngine.Common.Math;
 using WebAssembly;
 using WebGLDotNET;
 using Samples.GLTF;
+using System.Runtime.InteropServices;
+using System.IO;
 
 namespace Samples
 {
@@ -14,11 +16,15 @@ namespace Samples
         Vector4 clearColor;
         Matrix viewProj;
         Matrix worldViewProj;
-        float time;
 
         WebGLBuffer[] vertexBuffers;
         WebGLBuffer indexBuffer;
         int indexCount;
+
+        WebGLShader vertexShader;
+        WebGLShader fragmentShader;
+        WebGLProgram shaderProgram;
+        WebGLUniformLocation wvp;
 
         protected WebGLRenderingContextBase gl;
 
@@ -33,38 +39,74 @@ namespace Samples
             this.canvasHeight = canvasHeight;
             this.clearColor = clearColor;
 
-            this.Initialize();
+            this.InitializeAsync();
         }
 
-        private void Initialize()
+        private async System.Threading.Tasks.Task InitializeAsync()
         {
             var view = Matrix.CreateLookAt(new Vector3(0, 0, 3), new Vector3(0, 0, 0), Vector3.UnitY);
             var proj = Matrix.CreatePerspectiveFieldOfView(MathHelper.PiOver4, canvasWidth / canvasHeight, 0.1f, 100f);
             this.viewProj = Matrix.Multiply(view, proj);
 
-            // Load gltf mesh
-            ////using (var gltf = new GLTFModelLoader($"{this.assetsDirectory.RootPath}/Resources/DamagedHelmet.gltf"))
-            ////{
-            ////    var mesh = gltf.Meshes[0];
+            // Load VertexShader
+            var vertexShaderStream = await WasmResourceLoader.LoadAsync("Assets/VertexShader.essl", WasmResourceLoader.GetLocalAddress());
+            using (StreamReader reader = new StreamReader(vertexShaderStream))
+            {
+                var vertexShaderCode = reader.ReadToEnd();
+                this.vertexShader = gl.CreateShader(WebGLRenderingContextBase.VERTEX_SHADER);
+                gl.ShaderSource(this.vertexShader, vertexShaderCode);
+                gl.CompileShader(this.vertexShader);
+            }
 
-            ////    // Index Buffer
-            ////    var indexBufferView = mesh.IndicesBufferView;
-            ////    var indexBufferDescription = new BufferDescription((uint)indexBufferView.ByteLength, BufferFlags.IndexBuffer, ResourceUsage.Default);
-            ////    var indexPointer = gltf.Buffers[indexBufferView.Buffer].bufferPointer + indexBufferView.ByteOffset;
-            ////    this.indexCount = indexBufferView.ByteLength / sizeof(ushort);
-            ////    this.indexBuffer = this.graphicsContext.Factory.CreateBuffer(indexPointer, ref indexBufferDescription);
+            // Load FragmentShader
+            var fragmentShaderStream = await WasmResourceLoader.LoadAsync("Assets/FragmentShader.essl", WasmResourceLoader.GetLocalAddress());
+            using (StreamReader reader = new StreamReader(vertexShaderStream))
+            {
+                var fragmentShaderCode = reader.ReadToEnd();
+                this.fragmentShader = gl.CreateShader(WebGLRenderingContextBase.FRAGMENT_SHADER);
+                gl.ShaderSource(this.vertexShader, fragmentShaderCode);
+                gl.CompileShader(this.fragmentShader);
+            }
 
-            ////    // Vertex Buffer
-            ////    int vertexBufferCount = mesh.AttributeBufferView.Length;
-            ////    this.vertexBuffers = new Buffer[vertexBufferCount];
-            ////    for (int i = 0; i < vertexBufferCount; i++)
-            ////    {
-            ////        var vertexBufferView = mesh.AttributeBufferView[i];
-            ////        var vertexBufferDescription = new BufferDescription((uint)vertexBufferView.ByteLength, BufferFlags.VertexBuffer, ResourceUsage.Default);
-            ////        var vertexPointer = gltf.Buffers[vertexBufferView.Buffer].bufferPointer + vertexBufferView.ByteOffset;
-            ////        this.vertexBuffers[i] = this.graphicsContext.Factory.CreateBuffer(vertexPointer, ref vertexBufferDescription);
-            ////    }
-            ////}
+            // Create Program
+            this.shaderProgram = gl.CreateProgram();
+            gl.AttachShader(this.shaderProgram, this.vertexShader);
+            gl.AttachShader(this.shaderProgram, this.fragmentShader);
+            gl.LinkProgram(this.shaderProgram);
+
+            this.wvp = gl.GetUniformLocation(this.shaderProgram, "worldViewProj");
+
+            //Load gltf mesh
+            using (var gltf = new GLTFModelLoader("Assets/DamagedHelmet.gltf"))
+            {
+                var mesh = gltf.Meshes[0];
+
+                // Index Buffer
+                var indexBufferView = mesh.IndicesBufferView;
+                this.indexCount = indexBufferView.ByteLength / sizeof(ushort);
+                this.indexBuffer = gl.CreateBuffer();
+                gl.BindBuffer(WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER, this.indexBuffer);
+                var indexPointer = gltf.Buffers[indexBufferView.Buffer].bufferPointer + indexBufferView.ByteOffset;
+                var indices = new byte[indexBufferView.ByteLength];
+                Marshal.Copy(indexPointer, indices, 0, indexBufferView.ByteLength);
+                gl.BufferData(WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER, indices, WebGLRenderingContextBase.STATIC_DRAW);
+
+                // Vertex Buffer
+                int vertexBufferCount = mesh.AttributeBufferView.Length;
+                this.vertexBuffers = new WebGLBuffer[vertexBufferCount];
+                for (int i = 0; i < vertexBufferCount; i++)
+                {
+                    var vertexBufferView = mesh.AttributeBufferView[i];
+
+                    var buffer = gl.CreateBuffer();
+                    gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, buffer);
+                    var vertexPointer = gltf.Buffers[vertexBufferView.Buffer].bufferPointer + vertexBufferView.ByteOffset;
+                    var vertices = new byte[vertexBufferView.ByteLength];
+                    Marshal.Copy(vertexPointer, vertices, 0, vertexBufferView.ByteLength);
+                    gl.BufferData(WebGLRenderingContextBase.ARRAY_BUFFER, vertices, WebGLRenderingContextBase.STATIC_DRAW);
+                    this.vertexBuffers[i] = buffer;
+                }
+            }
         }
 
         public void Update(double elapsedTime)
@@ -103,6 +145,13 @@ namespace Samples
             gl.EnableVertexAttribArray(2);
             gl.VertexAttribPointer(0, 2, WebGLRenderingContextBase.FLOAT, false, 8, 0);
 
+            // Set Program
+            gl.UseProgram(this.shaderProgram);
+
+            // Set Shader resources
+            gl.UniformMatrix4fv(this.wvp, false, this.worldViewProj.ToArray());
+
+            // Draw
             gl.DrawElements(
                 WebGLRenderingContextBase.TRIANGLES,
                 this.indexCount,
