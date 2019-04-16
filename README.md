@@ -1,5 +1,10 @@
 # WebGL.NET
 
-A *proof-of-concept* C# wrapper for WebGL through WebAssembly, thought for [Wave Engine](https://waveengine.net).
+C# wrapper for WebGL through WebAssembly.
 
-See the samples running [here](https://marcoscobena.com/tmp/webgldotnet/).
+See the samples running [here](https://marcoscobena.com/tmp/webgldotnet/) (they may not be updated with current status).
+
+## Features
+
+- WebGL 1 & 2 support
+- API C#-ified to make .NET Developers feel at home
