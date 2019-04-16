@@ -865,7 +865,7 @@ namespace WebGLDotNET
 
         public void TexImage2D(uint target, int level, uint internalformat, int width, int height, int border, uint format, uint type, ITypedArray pixels) => Invoke("texImage2D", target, level, internalformat, width, height, border, format, type, pixels);
 
-        public void TexImage2D(uint target, int level, uint internalformat, uint format, uint type, ImageData source) => Invoke("texImage2D", target, level, internalformat, format, type, source);
+        public void TexImage2D(uint target, int level, uint internalformat, uint format, uint type, object source) => Invoke("texImage2D", target, level, internalformat, format, type, source);
 
         public void TexParameterf(uint target, uint pname, float param) => Invoke("texParameterf", target, pname, param);
 
@@ -873,7 +873,7 @@ namespace WebGLDotNET
 
         public void TexSubImage2D(uint target, int level, int xoffset, int yoffset, int width, int height, uint format, uint type, ITypedArray pixels) => Invoke("texSubImage2D", target, level, xoffset, yoffset, width, height, format, type, pixels);
 
-        public void TexSubImage2D(uint target, int level, int xoffset, int yoffset, uint format, uint type, ImageData source) => Invoke("texSubImage2D", target, level, xoffset, yoffset, format, type, source);
+        public void TexSubImage2D(uint target, int level, int xoffset, int yoffset, uint format, uint type, object source) => Invoke("texSubImage2D", target, level, xoffset, yoffset, format, type, source);
 
         public void Uniform1f(WebGLUniformLocation location, float x) => Invoke("uniform1f", location, x);
 
@@ -1559,13 +1559,13 @@ namespace WebGLDotNET
 
         public void TexImage2D(uint target, int level, int internalformat, int width, int height, int border, uint format, uint type, uint pboOffset) => Invoke("texImage2D", target, level, internalformat, width, height, border, format, type, pboOffset);
 
-        public void TexImage2D(uint target, int level, int internalformat, int width, int height, int border, uint format, uint type, ImageData source) => Invoke("texImage2D", target, level, internalformat, width, height, border, format, type, source);
+        public void TexImage2D(uint target, int level, int internalformat, int width, int height, int border, uint format, uint type, object source) => Invoke("texImage2D", target, level, internalformat, width, height, border, format, type, source);
 
         public void TexImage2D(uint target, int level, int internalformat, int width, int height, int border, uint format, uint type, ITypedArray srcData, uint srcOffset) => Invoke("texImage2D", target, level, internalformat, width, height, border, format, type, srcData, srcOffset);
 
         public void TexImage3D(uint target, int level, int internalformat, int width, int height, int depth, int border, uint format, uint type, uint pboOffset) => Invoke("texImage3D", target, level, internalformat, width, height, depth, border, format, type, pboOffset);
 
-        public void TexImage3D(uint target, int level, int internalformat, int width, int height, int depth, int border, uint format, uint type, ImageData source) => Invoke("texImage3D", target, level, internalformat, width, height, depth, border, format, type, source);
+        public void TexImage3D(uint target, int level, int internalformat, int width, int height, int depth, int border, uint format, uint type, object source) => Invoke("texImage3D", target, level, internalformat, width, height, depth, border, format, type, source);
 
         public void TexImage3D(uint target, int level, int internalformat, int width, int height, int depth, int border, uint format, uint type, ITypedArray srcData) => Invoke("texImage3D", target, level, internalformat, width, height, depth, border, format, type, srcData);
 
@@ -1573,13 +1573,13 @@ namespace WebGLDotNET
 
         public void TexSubImage2D(uint target, int level, int xoffset, int yoffset, int width, int height, uint format, uint type, uint pboOffset) => Invoke("texSubImage2D", target, level, xoffset, yoffset, width, height, format, type, pboOffset);
 
-        public void TexSubImage2D(uint target, int level, int xoffset, int yoffset, int width, int height, uint format, uint type, ImageData source) => Invoke("texSubImage2D", target, level, xoffset, yoffset, width, height, format, type, source);
+        public void TexSubImage2D(uint target, int level, int xoffset, int yoffset, int width, int height, uint format, uint type, object source) => Invoke("texSubImage2D", target, level, xoffset, yoffset, width, height, format, type, source);
 
         public void TexSubImage2D(uint target, int level, int xoffset, int yoffset, int width, int height, uint format, uint type, ITypedArray srcData, uint srcOffset) => Invoke("texSubImage2D", target, level, xoffset, yoffset, width, height, format, type, srcData, srcOffset);
 
         public void TexSubImage3D(uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, uint type, uint pboOffset) => Invoke("texSubImage3D", target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pboOffset);
 
-        public void TexSubImage3D(uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, uint type, ImageData source) => Invoke("texSubImage3D", target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, source);
+        public void TexSubImage3D(uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, uint type, object source) => Invoke("texSubImage3D", target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, source);
 
         public void TexSubImage3D(uint target, int level, int xoffset, int yoffset, int zoffset, int width, int height, int depth, uint format, uint type, ITypedArray srcData, uint srcOffset) => Invoke("texSubImage3D", target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, srcData, srcOffset);
 

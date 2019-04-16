@@ -38,14 +38,13 @@ namespace Samples
                     WebGLRenderingContextBase.TEXTURE_MAG_FILTER,
                     (int)WebGLRenderingContextBase.NEAREST);
 
-                var imageData = new ImageData(DemoImage.ARGBColors, DemoImage.Width, DemoImage.Height);
                 gl.TexImage2D(
                     WebGLRenderingContextBase.TEXTURE_2D,
                     0,
                     WebGLRenderingContextBase.RGB,
                     WebGLRenderingContextBase.RGB,
                     WebGLRenderingContextBase.UNSIGNED_BYTE,
-                    imageData);
+                    image);
 
                 // Make sure we tell managed code and javascript that we can dispose of the
                 // event object.

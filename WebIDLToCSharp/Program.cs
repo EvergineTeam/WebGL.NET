@@ -95,7 +95,7 @@ namespace WebIDLToCSharp
                     // Workarounds to bypass commented typedefs with "or"
                     { "BufferDataSource", "System.Array" },
                     // typedef (ImageData or HTMLImageElement or HTMLCanvasElement or HTMLVideoElement) TexImageSource;
-                    { "TexImageSource", "ImageData" },
+                    { "TexImageSource", "object" },
                     // Workarounds for WebGL 2 missing definitions
                     { "BufferSource", "object" },
                     { "Float32List", "object" },
