@@ -6,6 +6,7 @@ namespace Samples
 {
     public interface ISample
     {
+        bool IsReady { get; set; }
         string Description { get; }
 
         double OldMilliseconds { get; set; }

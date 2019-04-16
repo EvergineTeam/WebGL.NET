@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Drawing;
 using WaveEngine.Common.Math;
 using WebAssembly;
 using WebGLDotNET;
@@ -31,6 +30,7 @@ namespace Samples
         public string Description => string.Empty;
 
         public double OldMilliseconds { get; set; }
+        public bool IsReady { get; set; }
 
         public void Run(JSObject canvas, float canvasWidth, float canvasHeight, Vector4 clearColor)
         {
@@ -53,6 +53,7 @@ namespace Samples
             using (StreamReader reader = new StreamReader(vertexShaderStream))
             {
                 var vertexShaderCode = reader.ReadToEnd();
+                Console.WriteLine($"VertexShaderCode: {vertexShaderCode}");
                 this.vertexShader = gl.CreateShader(WebGLRenderingContextBase.VERTEX_SHADER);
                 gl.ShaderSource(this.vertexShader, vertexShaderCode);
                 gl.CompileShader(this.vertexShader);
@@ -63,6 +64,7 @@ namespace Samples
             using (StreamReader reader = new StreamReader(vertexShaderStream))
             {
                 var fragmentShaderCode = reader.ReadToEnd();
+                Console.WriteLine($"FragmentShaderCode: {fragmentShaderCode}");
                 this.fragmentShader = gl.CreateShader(WebGLRenderingContextBase.FRAGMENT_SHADER);
                 gl.ShaderSource(this.vertexShader, fragmentShaderCode);
                 gl.CompileShader(this.fragmentShader);

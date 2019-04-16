@@ -42,6 +42,8 @@
     
     <LinkerDescriptor Remove="LinkerConfig.xml" />
     
+    <None Remove="Assets\VertexShader.essl" />
+    
     <None Remove="WasmCSS\styles.css" />
     <EmbeddedResource Include="WasmCSS\styles.css" />
     
@@ -56,6 +58,14 @@
     </Content>
     
     <None Remove="Assets\PlainConcepts.png" />
+    
+    <_ContentIncludedByDefault Remove="Assets\CubeFragmentShader.essl" />
+    
+    <_ContentIncludedByDefault Remove="Assets\CubeVertexShader.essl" />
+    
+    <Content Include="Assets\VertexShader.essl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\PlainConcepts.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

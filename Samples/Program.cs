@@ -9,7 +9,6 @@ namespace Samples
     {
         const int CanvasWidth = 640;
         const int CanvasHeight = 480;
-
         static ISample[] samples;
 
         static void Main(string[] args)
@@ -22,11 +21,11 @@ namespace Samples
             samples = new ISample[]
             {
                 ////new Triangle(),
-                ////new RotatingCube(),
+                new RotatingCube(),
                 ////new Texture2D(),
                 ////new TexturedCubeFromHTMLImage(),
                 ////new TexturedCubeFromAssets(),
-                new LoadGLTF(),
+                ////new LoadGLTF(),
             };
 
             foreach (var item in samples)
@@ -80,22 +79,6 @@ namespace Samples
                     paragraph.SetObjectProperty("innerHTML", text);
                     body.Invoke("appendChild", paragraph);
                 }
-            }
-        }
-
-        static void Loop(double milliseconds)
-        {
-            if (milliseconds < 0)
-            {
-                return;
-            }
-
-            foreach (var item in samples)
-            {
-                var elapsedMilliseconds = milliseconds - item.OldMilliseconds;
-                item.Update(elapsedMilliseconds);
-                item.OldMilliseconds = milliseconds;
-                item.Draw();
             }
         }
 

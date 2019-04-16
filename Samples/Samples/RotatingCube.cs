@@ -25,7 +25,7 @@ namespace Samples
             "Every matrix calc relies in Wave Engine's Math library, consumed through NuGet. This will make @jcant0n " +
             "happy :-)";
 
-        public override void Run(JSObject canvas, float canvasWidth, float canvasHeight, Vector4 clearColor)
+        public override async void Run(JSObject canvas, float canvasWidth, float canvasHeight, Vector4 clearColor)
         {
             base.Run(canvas, canvasWidth, canvasHeight, clearColor);
 
@@ -121,29 +121,7 @@ namespace Samples
             };
             colorBuffer = CreateArrayBuffer(colors);
 
-            InitializeShaders(
-                vertexShaderCode:
-@"attribute vec3 position;
-attribute vec3 color;
-
-uniform mat4 pMatrix;
-uniform mat4 vMatrix;
-uniform mat4 wMatrix;
-
-varying vec3 vColor;
-
-void main(void) {
-    gl_Position = pMatrix * vMatrix * wMatrix * vec4(position, 1.0);
-    vColor = color;
-}",
-                fragmentShaderCode:
-@"precision mediump float;
-
-varying vec3 vColor;
-
-void main(void) {
-    gl_FragColor = vec4(vColor, 1.0);
-}");
+            await InitializeShadersFromAssetsAsync("Assets/CubeVertexShader", "Assets/CubeFragmentShader");
 
             pMatrixUniform = gl.GetUniformLocation(shaderProgram, "pMatrix");
             vMatrixUniform = gl.GetUniformLocation(shaderProgram, "vMatrix");
@@ -169,31 +147,39 @@ void main(void) {
             worldMatrix = Matrix.Identity;
 
             gl.BindBuffer(WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER, indexBuffer);
+
+            this.IsReady = true;
         }
 
         public override void Update(double elapsedMilliseconds)
         {
-            base.Update(elapsedMilliseconds);
+            if (this.IsReady)
+            {
+                base.Update(elapsedMilliseconds);
 
-            var elapsedMillisecondsFloat = (float)elapsedMilliseconds;
-            var rotation = Quaternion.CreateFromYawPitchRoll(
-                elapsedMillisecondsFloat * 2 * 0.001f, 
-                elapsedMillisecondsFloat * 4 * 0.001f, 
-                elapsedMillisecondsFloat * 3 * 0.001f);
-            worldMatrix *= Matrix.CreateFromQuaternion(rotation);
+                var elapsedMillisecondsFloat = (float)elapsedMilliseconds;
+                var rotation = Quaternion.CreateFromYawPitchRoll(
+                    elapsedMillisecondsFloat * 2 * 0.001f,
+                    elapsedMillisecondsFloat * 4 * 0.001f,
+                    elapsedMillisecondsFloat * 3 * 0.001f);
+                worldMatrix *= Matrix.CreateFromQuaternion(rotation);
+            }
         }
 
         public override void Draw()
         {
-            base.Draw();
+            if (this.IsReady)
+            {
+                base.Draw();
 
-            gl.UniformMatrix4fv(wMatrixUniform, false, worldMatrix.ToArray());
+                gl.UniformMatrix4fv(wMatrixUniform, false, worldMatrix.ToArray());
 
-            gl.DrawElements(
-                WebGLRenderingContextBase.TRIANGLES, 
-                indices.Length, 
-                WebGLRenderingContextBase.UNSIGNED_SHORT, 
-                0);
+                gl.DrawElements(
+                    WebGLRenderingContextBase.TRIANGLES,
+                    indices.Length,
+                    WebGLRenderingContextBase.UNSIGNED_SHORT,
+                    0);
+            }
         }
     }
 }

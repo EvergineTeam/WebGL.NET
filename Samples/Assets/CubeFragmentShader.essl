@@ -1,0 +1,10 @@
+#version 300 es
+
+precision mediump float;
+
+in vec3 vColor;
+out vec4 out_var_SV_Target;
+
+void main(void) {
+    out_var_SV_Target = vec4(vColor, 1.0);
+}

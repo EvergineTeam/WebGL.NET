@@ -71,7 +71,7 @@ namespace WebGLDotNET
 
         public WebGLRenderingContextBase(JSObject canvas, string contextType)
         {
-            gl = (JSObject)canvas.Invoke("getContext", contextType, "{premultipliedAlpha: false}");
+            gl = (JSObject)canvas.Invoke("getContext", contextType);
         }
 
         public ITypedArray CastNativeArray(object managedArray)
