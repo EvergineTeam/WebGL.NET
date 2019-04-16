@@ -7,8 +7,6 @@ namespace Samples
 {
     public abstract class BaseSample : ISample
     {
-        float canvasWidth;
-        float canvasHeight;
         Color clearColor;
 
         protected WebGLRenderingContextBase gl;
@@ -17,8 +15,6 @@ namespace Samples
         protected WebGLProgram shaderProgram;
 
         public virtual string Description => string.Empty;
-
-        public double OldMilliseconds { get; set; }
 
         public virtual void Draw()
         {
@@ -31,8 +27,6 @@ namespace Samples
         public virtual void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor)
         {
             gl = new WebGL2RenderingContext(canvas);
-            this.canvasWidth = canvasWidth;
-            this.canvasHeight = canvasHeight;
             this.clearColor = clearColor;
         }
 

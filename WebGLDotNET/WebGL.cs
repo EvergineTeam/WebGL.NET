@@ -1,4 +1,3 @@
-using WebAssembly;
 using WebAssembly.Core;
 
 namespace WebGLDotNET

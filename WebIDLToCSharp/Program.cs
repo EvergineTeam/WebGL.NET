@@ -44,7 +44,6 @@ namespace WebIDLToCSharp
 
             using (var outputStream = File.CreateText(OutputFile))
             {
-                outputStream.WriteLine("using WebAssembly;");
                 outputStream.WriteLine("using WebAssembly.Core;");
                 outputStream.WriteLine();
                 outputStream.WriteLine("namespace WebGLDotNET");
