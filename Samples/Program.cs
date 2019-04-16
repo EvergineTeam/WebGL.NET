@@ -16,7 +16,7 @@ namespace Samples
             AddHeader1("WebGL.NET Samples Gallery");
             AddParagraph(
                 "A collection of WebGL samples translated from .NET/C# into WebAssembly. " +
-                "See the <a href=\"https://github.com/MarcosCobena/WebGL.NET\">GitHub repo</a>.");
+                "See the <a href=\"https://github.com/WaveEngine/WebGL.NET\">GitHub repo</a>.");
 
             samples = new ISample[]
             {
