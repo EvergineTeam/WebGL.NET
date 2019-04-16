@@ -3,8 +3,8 @@
 precision mediump float;
 
 in vec3 vColor;
-out vec4 out_var_SV_Target;
+out vec4 outColor;
 
 void main(void) {
-    out_var_SV_Target = vec4(vColor, 1.0);
+    outColor = vec4(vColor, 1.0);
 }

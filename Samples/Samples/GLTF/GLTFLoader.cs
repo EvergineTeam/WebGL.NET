@@ -11,10 +11,15 @@ namespace Samples.GLTF
 
         public BufferInfo[] Buffers;
         public MeshInfo[] Meshes;
+        private string filePath;
 
-        public GLTFModelLoader(string filePath)
+        public GLTFModelLoader()
         {
-            this.ReadAsync(filePath);
+        }
+
+        public async void Initialize(string filePath)
+        {
+            await this.ReadAsync(filePath);
         }
 
         private async System.Threading.Tasks.Task ReadAsync(string filePath)

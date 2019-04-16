@@ -31,58 +31,58 @@ namespace Samples
 
             var vertices = new float[]
             {
-                -1, -1, -1, 
-                 1, -1, -1, 
-                 1,  1, -1, 
+                -1, -1, -1,
+                 1, -1, -1,
+                 1,  1, -1,
 
                 -1,  1, -1,
-                -1, -1,  1, 
-                 1, -1,  1, 
+                -1, -1,  1,
+                 1, -1,  1,
 
-                 1,  1,  1, 
+                 1,  1,  1,
                 -1,  1,  1,
-                -1, -1, -1, 
+                -1, -1, -1,
 
-                -1,  1, -1, 
-                -1,  1,  1, 
+                -1,  1, -1,
+                -1,  1,  1,
                 -1, -1,  1,
 
-                 1, -1, -1, 
-                 1,  1, -1, 
-                 1,  1,  1, 
+                 1, -1, -1,
+                 1,  1, -1,
+                 1,  1,  1,
 
                  1, -1,  1,
-                -1, -1, -1, 
-                -1, -1,  1, 
+                -1, -1, -1,
+                -1, -1,  1,
 
-                 1, -1,  1, 
+                 1, -1,  1,
                  1, -1, -1,
-                -1,  1, -1, 
+                -1,  1, -1,
 
-                -1,  1,  1, 
-                 1,  1,  1, 
+                -1,  1,  1,
+                 1,  1,  1,
                  1,  1, -1
             };
             vertexBuffer = CreateArrayBuffer(vertices);
 
             indices = new ushort[]
             {
-                 0,  1,  2, 
+                 0,  1,  2,
                  0,  2,  3,
-                      
-                 4,  5,  6, 
+
+                 4,  5,  6,
                  4,  6,  7,
 
-                 8,  9, 10, 
-                 8, 10, 11, 
+                 8,  9, 10,
+                 8, 10, 11,
 
-                12, 13, 14, 
+                12, 13, 14,
                 12, 14, 15,
 
-                16, 17, 18, 
-                16, 18, 19, 
+                16, 17, 18,
+                16, 18, 19,
 
-                20, 21, 22, 
+                20, 21, 22,
                 20, 22, 23
             };
             indexBuffer = CreateElementArrayBuffer(indices);
@@ -153,33 +153,34 @@ namespace Samples
 
         public override void Update(double elapsedMilliseconds)
         {
-            if (this.IsReady)
-            {
-                base.Update(elapsedMilliseconds);
+            if (!this.IsReady)
+                return;
 
-                var elapsedMillisecondsFloat = (float)elapsedMilliseconds;
-                var rotation = Quaternion.CreateFromYawPitchRoll(
-                    elapsedMillisecondsFloat * 2 * 0.001f,
-                    elapsedMillisecondsFloat * 4 * 0.001f,
-                    elapsedMillisecondsFloat * 3 * 0.001f);
-                worldMatrix *= Matrix.CreateFromQuaternion(rotation);
-            }
+            base.Update(elapsedMilliseconds);
+
+            var elapsedMillisecondsFloat = (float)elapsedMilliseconds;
+            var rotation = Quaternion.CreateFromYawPitchRoll(
+                elapsedMillisecondsFloat * 2 * 0.001f,
+                elapsedMillisecondsFloat * 4 * 0.001f,
+                elapsedMillisecondsFloat * 3 * 0.001f);
+            worldMatrix *= Matrix.CreateFromQuaternion(rotation);
         }
 
         public override void Draw()
         {
-            if (this.IsReady)
-            {
-                base.Draw();
+            if (!this.IsReady)
+                return;
 
-                gl.UniformMatrix4fv(wMatrixUniform, false, worldMatrix.ToArray());
+            base.Draw();
 
-                gl.DrawElements(
-                    WebGLRenderingContextBase.TRIANGLES,
-                    indices.Length,
-                    WebGLRenderingContextBase.UNSIGNED_SHORT,
-                    0);
-            }
+            gl.UniformMatrix4fv(wMatrixUniform, false, worldMatrix.ToArray());
+
+            gl.DrawElements(
+                WebGLRenderingContextBase.TRIANGLES,
+                indices.Length,
+                WebGLRenderingContextBase.UNSIGNED_SHORT,
+                0);
+
         }
     }
 }

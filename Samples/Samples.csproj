@@ -42,8 +42,6 @@
     
     <LinkerDescriptor Remove="LinkerConfig.xml" />
     
-    <None Remove="Assets\VertexShader.essl" />
-    
     <None Remove="WasmCSS\styles.css" />
     <EmbeddedResource Include="WasmCSS\styles.css" />
     
@@ -56,16 +54,28 @@
     <Content Include="Assets\PlainConcepts.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    
-    <None Remove="Assets\PlainConcepts.png" />
-    
-    <_ContentIncludedByDefault Remove="Assets\CubeFragmentShader.essl" />
-    
-    <_ContentIncludedByDefault Remove="Assets\CubeVertexShader.essl" />
-    
-    <Content Include="Assets\VertexShader.essl">
+
+    <None Remove="Assets\CubeFragmentShader.essl" />
+    <Content Include="Assets\CubeFragmentShader.essl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+
+    <None Remove="Assets\CubeVertexShader.essl" />
+    <Content Include="Assets\CubeVertexShader.essl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+
+    <None Remove="Assets\GLTFVertexShader.essl" />
+    <Content Include="Assets\GLTFVertexShader.essl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+
+    <None Remove="Assets\GLTFFragmentShader.essl" />
+    <Content Include="Assets\GLTFFragmentShader.essl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    
+    <None Remove="Assets\PlainConcepts.png" />
     <Content Include="Assets\PlainConcepts.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

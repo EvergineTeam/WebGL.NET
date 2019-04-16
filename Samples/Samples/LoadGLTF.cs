@@ -32,14 +32,14 @@ namespace Samples
         public double OldMilliseconds { get; set; }
         public bool IsReady { get; set; }
 
-        public void Run(JSObject canvas, float canvasWidth, float canvasHeight, Vector4 clearColor)
+        public async void Run(JSObject canvas, float canvasWidth, float canvasHeight, Vector4 clearColor)
         {
             gl = new WebGL2RenderingContext(canvas);
             this.canvasWidth = canvasWidth;
             this.canvasHeight = canvasHeight;
             this.clearColor = clearColor;
 
-            this.InitializeAsync();
+            await this.InitializeAsync();
         }
 
         private async System.Threading.Tasks.Task InitializeAsync()
@@ -79,8 +79,9 @@ namespace Samples
             this.wvp = gl.GetUniformLocation(this.shaderProgram, "worldViewProj");
 
             //Load gltf mesh
-            using (var gltf = new GLTFModelLoader("Assets/DamagedHelmet.gltf"))
+            using (var gltf = new GLTFModelLoader())
             {
+                gltf.Initialize("Assets/DamagedHelmet.glb");
                 var mesh = gltf.Meshes[0];
 
                 // Index Buffer
@@ -109,10 +110,15 @@ namespace Samples
                     this.vertexBuffers[i] = buffer;
                 }
             }
+
+            this.IsReady = true;
         }
 
         public void Update(double elapsedTime)
         {
+            if (!this.IsReady)
+                return;
+
             var elapsedMillisecondsFloat = (float)elapsedTime;
             var rotation = Quaternion.CreateFromYawPitchRoll(
                 0,
@@ -125,6 +131,9 @@ namespace Samples
 
         public void Draw()
         {
+            if (!this.IsReady)
+                return;
+
             gl.Enable(WebGLRenderingContextBase.DEPTH_TEST);
             gl.ClearColor(clearColor.X, clearColor.Y, clearColor.Z, clearColor.W);
             gl.Clear(WebGLRenderingContextBase.COLOR_BUFFER_BIT);
