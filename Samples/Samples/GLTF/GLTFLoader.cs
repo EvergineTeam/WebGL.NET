@@ -70,20 +70,11 @@ namespace Samples.GLTF
 
         private async System.Threading.Tasks.Task<Gltf> ObtainGLTFAsync(string filePath)
         {
-            try
-            {
-                var content = await WasmResourceLoader.LoadAsync(filePath, WasmResourceLoader.GetLocalAddress());
-                if (!File.Exists(filePath))
-                {
-                    throw new InvalidOperationException($"The asset file \"{filePath}\"");
-                }
+            var content = await WasmResourceLoader.LoadAsync(filePath, WasmResourceLoader.GetLocalAddress());
 
-                return Interface.LoadModel(content);
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
+            var gltf = Interface.LoadModel(content);
+
+            return gltf;
         }
 
         private BufferView ReadAccessor(int index)

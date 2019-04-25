@@ -49,6 +49,11 @@
     <Content Include="Assets\PlainConcepts.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+
+    <None Remove="Assets\PlainConcepts.png" />
+    <Content Include="Assets\PlainConcepts.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     
     <None Remove="Assets\PlainConcepts.jpg" />
     <Content Include="Assets\PlainConcepts.jpg">
@@ -74,9 +79,9 @@
     <Content Include="Assets\GLTFFragmentShader.essl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    
-    <None Remove="Assets\PlainConcepts.png" />
-    <Content Include="Assets\PlainConcepts.png">
+
+    <None Remove="Assets\DamagedHelmet.glb" />
+    <Content Include="Assets\DamagedHelmet.glb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     
