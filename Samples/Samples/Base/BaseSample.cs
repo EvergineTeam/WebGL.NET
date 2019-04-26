@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using WaveEngine.Common.Graphics;
+using System.Threading.Tasks;
 using WaveEngine.Common.Math;
 using WebAssembly;
 using WebGLDotNET;
@@ -9,11 +9,10 @@ namespace Samples
 {
     public abstract class BaseSample : ISample
     {
-        float canvasWidth;
-        float canvasHeight;
-        Vector4 clearColor;
-
         protected WebGLRenderingContextBase gl;
+        protected float canvasWidth;
+        protected float canvasHeight;
+        protected Vector4 clearColor;
         protected WebGLShader vertexShader;
         protected WebGLShader fragmentShader;
         protected WebGLProgram shaderProgram;
@@ -93,26 +92,27 @@ namespace Samples
             gl.UseProgram(shaderProgram);
         }
 
-        protected async System.Threading.Tasks.Task InitializeShadersFromAssetsAsync(string vertexShaderPath, string fragmentShaderPath)
+        protected async Task InitializeShadersFromAssetsAsync(string vertexShaderPath, string fragmentShaderPath)
         {
-            var vertexShaderStream = await WasmResourceLoader.LoadAsync(vertexShaderPath, WasmResourceLoader.GetLocalAddress());
+            var baseAddress = WasmResourceLoader.GetLocalAddress();
+
+            var vertexShaderStream = await WasmResourceLoader.LoadAsync(vertexShaderPath, baseAddress);
             string vertexShaderCode;
-            using (StreamReader reader = new StreamReader(vertexShaderStream))
+
+            using (var reader = new StreamReader(vertexShaderStream))
             {
                 vertexShaderCode = reader.ReadToEnd();
-                Console.WriteLine($"VertexShaderCode: {vertexShaderCode}");
             }
 
-            // Load FragmentShader
-            var fragmentShaderStream = await WasmResourceLoader.LoadAsync(fragmentShaderPath, WasmResourceLoader.GetLocalAddress());
+            var fragmentShaderStream = await WasmResourceLoader.LoadAsync(fragmentShaderPath, baseAddress);
             string fragmentShaderCode;
-            using (StreamReader reader = new StreamReader(fragmentShaderStream))
+
+            using (var reader = new StreamReader(fragmentShaderStream))
             {
                 fragmentShaderCode = reader.ReadToEnd();
-                Console.WriteLine($"FragmentShaderCode: {fragmentShaderCode}");
             }
 
-            this.InitializeShaders(vertexShaderCode, fragmentShaderCode);
+            InitializeShaders(vertexShaderCode, fragmentShaderCode);
         }
     }
 }
