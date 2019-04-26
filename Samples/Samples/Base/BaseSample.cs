@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 using WaveEngine.Common.Math;
@@ -18,10 +18,6 @@ namespace Samples
         protected WebGLProgram shaderProgram;
 
         public virtual string Description => string.Empty;
-
-        public double OldMilliseconds { get; set; }
-
-        public bool IsReady { get; set; }
 
         public virtual void Draw()
         {

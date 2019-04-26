@@ -16,6 +16,7 @@ public void UniformMatrix4fv(WebGLUniformLocation location, bool transpose, floa
 
  */
 
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -61,6 +62,8 @@ namespace WebIDLToCSharp
 
             readonly StreamWriter outputStream;
             readonly Dictionary<string, string> typesDictionary;
+            readonly List<string> constants = new List<string>();
+            readonly List<string> operations = new List<string>();
 
             string returnType;
             string rawMethodName;
@@ -90,6 +93,7 @@ namespace WebIDLToCSharp
                     { "GLuint64", "ulong" },
                     // Workarounds to bypass commented typedefs with "or"
                     { "BufferDataSource", "System.Array" },
+                    // typedef (ImageData or HTMLImageElement or HTMLCanvasElement or HTMLVideoElement) TexImageSource;
                     { "TexImageSource", "object" },
                     // Workarounds for WebGL 2 missing definitions
                     { "BufferSource", "object" },
@@ -106,7 +110,18 @@ namespace WebIDLToCSharp
                 var type = TranslateType(context.constType().GetText());
                 var rawName = context.IDENTIFIER_WEBIDL().GetText();
                 //var name = CSharpify(rawName);
-                outputStream.WriteLine($"        public const {type} {rawName} = {context.constValue().GetText()};");
+                outputStream.Write($"        public");
+
+                if (constants.Contains(rawName))
+                {
+                    outputStream.Write(" new");
+                }
+                else
+                {
+                    constants.Add(rawName);
+                }
+
+                outputStream.WriteLine($" const {type} {rawName} = {context.constValue().GetText()};");
                 outputStream.WriteLine();
             }
 
@@ -184,7 +199,24 @@ namespace WebIDLToCSharp
                 returnType = TranslateType(context.returnType().GetText());
                 rawMethodName = context.operationRest().optionalIdentifier().GetText();
                 var methodName = CSharpify(rawMethodName);
-                outputStream.Write($"        public {returnType} {methodName}(");
+                outputStream.Write($"        public");
+
+                var rawOperation = context.GetText();
+
+                if (operations.Contains(rawOperation))
+                {
+                    outputStream.Write($" new");
+
+                    Console.WriteLine($"Operation already processed: {rawOperation}");
+                }
+                else
+                {
+                    operations.Add(rawOperation);
+
+                    Console.WriteLine($"Operation added: {rawOperation}");
+                }
+
+                outputStream.Write($" {returnType} {methodName}(");
 
                 @params = string.Empty;
             }
@@ -195,7 +227,7 @@ namespace WebIDLToCSharp
 
                 outputStream.Write(") => ");
 
-                var isArray = returnType.EndsWith("[]", System.StringComparison.InvariantCultureIgnoreCase);
+                var isArray = returnType.EndsWith("[]", StringComparison.InvariantCultureIgnoreCase);
                 var isReturnTypeBasic = typesDictionary.ContainsValue(returnType) && returnType != "object";
 
                 if (isArray)
@@ -224,7 +256,8 @@ namespace WebIDLToCSharp
                 outputStream.WriteLine();
             }
 
-            public override void ExitOptionalOrRequiredArgument([NotNull] WebIDLParser.OptionalOrRequiredArgumentContext context)
+            public override void ExitOptionalOrRequiredArgument(
+                [NotNull] WebIDLParser.OptionalOrRequiredArgumentContext context)
             {
                 base.ExitOptionalOrRequiredArgument(context);
 
@@ -282,7 +315,7 @@ namespace WebIDLToCSharp
                 var type = rawType.TrimEnd('?');
                 var isSequence = false;
 
-                if (rawType.StartsWith(SequencePrefix, System.StringComparison.InvariantCulture))
+                if (rawType.StartsWith(SequencePrefix, StringComparison.InvariantCulture))
                 {
                     type = type.Substring(
                         SequencePrefix.Length, 

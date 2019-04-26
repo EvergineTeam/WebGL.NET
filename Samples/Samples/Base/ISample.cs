@@ -6,10 +6,7 @@ namespace Samples
 {
     public interface ISample
     {
-        bool IsReady { get; set; }
         string Description { get; }
-
-        double OldMilliseconds { get; set; }
 
         void Run(JSObject canvas, float canvasWidth, float canvasHeight, Vector4 clearColor);
 

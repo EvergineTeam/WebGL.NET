@@ -1,6 +1,5 @@
 ﻿using System;
-using WaveEngine.Common.Graphics;
-using WaveEngine.Common.Math;
+using System.Drawing;
 using WebAssembly;
 
 namespace Samples
@@ -9,31 +8,37 @@ namespace Samples
     {
         const int CanvasWidth = 640;
         const int CanvasHeight = 480;
+
         static ISample[] samples;
+        static Action<double> loop = new Action<double>(Loop);
+        static double previousMilliseconds;
+        static JSObject window;
 
         static void Main(string[] args)
         {
             AddHeader1("WebGL.NET Samples Gallery");
             AddParagraph(
                 "A collection of WebGL samples translated from .NET/C# into WebAssembly. " +
-                "See the <a href=\"https://github.com/MarcosCobena/WebGL.NET\">GitHub repo</a>.");
+                "See the <a href=\"https://github.com/WaveEngine/WebGL.NET\">GitHub repo</a>.");
 
             samples = new ISample[]
             {
-                ////new Triangle(),
-                ////new RotatingCube(),
-                ////new Texture2D(),
-                ////new TexturedCubeFromHTMLImage(),
-                ////new TexturedCubeFromAssets(),
-                new LoadGLTF(),
+                new Triangle(),
+                new RotatingCube(),
+                new Texture2D(),
+                new TexturedCubeFromHTMLImage(),
+                new TexturedCubeFromAssets(),
             };
 
             foreach (var item in samples)
             {
                 AddHeader2(item.GetType().Name);
                 AddParagraph(item.Description);
+
                 using (var canvas = AddCanvas(CanvasWidth, CanvasHeight))
-                    item.Run(canvas, CanvasWidth, CanvasHeight, Color.CornflowerBlue.ToVector4());
+                {
+                    item.Run(canvas, CanvasWidth, CanvasHeight, Color.Fuchsia);
+                }
             }
 
             RequestAnimationFrame();
@@ -42,7 +47,7 @@ namespace Samples
         static JSObject AddCanvas(int width, int height)
         {
             using (var document = (JSObject)Runtime.GetGlobalObject("document"))
-            using (var body = (JSObject)document.GetObjectProperty("body"))
+            using (var body = (JSObject)document.GetObjectProperty("body")) 
             {
                 var canvas = (JSObject)document.Invoke("createElement", "canvas");
                 canvas.SetObjectProperty("width", width);
@@ -73,40 +78,35 @@ namespace Samples
         {
             using (var document = (JSObject)Runtime.GetGlobalObject("document"))
             using (var body = (JSObject)document.GetObjectProperty("body"))
+            using (var paragraph = (JSObject)document.Invoke("createElement", "p"))
             {
-                using (var paragraph = (JSObject)document.Invoke("createElement", "p"))
-                {
-                    paragraph.SetObjectProperty("innerHTML", text);
-                    body.Invoke("appendChild", paragraph);
-                }
+                paragraph.SetObjectProperty("innerHTML", text);
+                body.Invoke("appendChild", paragraph);
             }
         }
 
-        static void AnimateLoop(double milliseconds)
+        static void Loop(double milliseconds)
         {
-            if (milliseconds < 0)
-            {
-                // Should this request an animation frame?
-                return;
-            }
+            var elapsedMilliseconds = milliseconds - previousMilliseconds;
+            previousMilliseconds = milliseconds;
 
             foreach (var item in samples)
             {
-                var elapsedMilliseconds = milliseconds - item.OldMilliseconds;
                 item.Update(elapsedMilliseconds);
-                item.OldMilliseconds = milliseconds;
                 item.Draw();
             }
+
             RequestAnimationFrame();
         }
 
-        static Action<double> animate = new Action<double>(AnimateLoop);
-        static JSObject window = null;
         static void RequestAnimationFrame()
         {
             if (window == null)
+            {
                 window = (JSObject)Runtime.GetGlobalObject();
-            window.Invoke("requestAnimationFrame", animate);
+            }
+
+            window.Invoke("requestAnimationFrame", loop);
         }
     }
 }

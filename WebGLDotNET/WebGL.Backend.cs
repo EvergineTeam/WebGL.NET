@@ -5,9 +5,34 @@ using WebAssembly.Core;
 
 namespace WebGLDotNET
 {
-    public abstract class JSHandler
+    public abstract class JSHandler : IDisposable
     {
         internal JSObject Handle { get; set; }
+
+        public bool IsDisposed { get; private set; }
+
+        ~JSHandler()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (IsDisposed)
+            {
+                return;
+            }
+
+            IsDisposed = true;
+
+            Handle.Dispose();
+        }
     }
 
     public partial class WebGLActiveInfo : JSHandler
@@ -18,44 +43,8 @@ namespace WebGLDotNET
     {
     }
 
-    public partial class WebGLObject : JSHandler, IDisposable
+    public partial class WebGLObject : JSHandler
     {
-        // to detect redundant calls
-        public bool IsDisposed { get; internal set; }
-
-        ~WebGLObject()
-        {
-            Dispose(false);
-        }
-
-        public void Dispose()
-        {
-            // Dispose of unmanaged resources.
-            Dispose(true);
-            // Suppress finalization.
-            GC.SuppressFinalize(this);
-        }
-
-        // Protected implementation of Dispose pattern.
-        protected virtual void Dispose(bool disposing)
-        {
-
-            if (!IsDisposed)
-            {
-                if (disposing)
-                {
-
-                    // Free any other managed objects here.
-                    //
-                }
-
-                IsDisposed = true;
-
-                // Free unmanaged objects here.
-                Handle.Dispose();
-
-            }
-        }
     }
 
     public partial class WebGLRenderingContext : WebGLRenderingContextBase
@@ -186,44 +175,6 @@ namespace WebGLDotNET
 
     public partial class WebGLUniformLocation : JSHandler, IDisposable
     {
-        // to detect redundant calls
-        public bool IsDisposed { get; internal set; }
-
-        ~WebGLUniformLocation()
-        {
-            Dispose(false);
-        }
-
-        public void Dispose()
-        {
-            // Dispose of unmanaged resources.
-            Dispose(true);
-            // Suppress finalization.
-            GC.SuppressFinalize(this);
-        }
-
-        // Protected implementation of Dispose pattern.
-        protected virtual void Dispose(bool disposing)
-        {
-
-            if (!IsDisposed)
-            {
-                if (disposing)
-                {
-
-                    // Free any other managed objects here.
-                    //
-                }
-
-                IsDisposed = true;
-
-                // Free unmanaged objects here.
-                // 
-                Handle.Dispose();
-
-            }
-        }
-
     }
 
     public partial class WebGL2RenderingContext : WebGL2RenderingContextBase
