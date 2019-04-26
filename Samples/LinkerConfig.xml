@@ -1,6 +1,16 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
 <linker>
+
+  <!-- Required for debugging -->
+  <assembly fullname="mscorlib">
+  </assembly>
+  <assembly fullname="System.Core">
+  </assembly>
+
+  <assembly fullname="SkiaSharp.Wasm" />
   
+  <assembly fullname="WebAssembly.Bindings" />
+
   <!-- https://github.com/mono/mono/blob/master/sdks/wasm/framework/src/WebAssembly.Bindings/LinkDescriptor/WebAssembly.Bindings.xml -->
   <assembly fullname="mscorlib" preserve="all">
     <type fullname="System.Delegate">
@@ -8,6 +18,4 @@
     </type>
   </assembly> 
 
-  <assembly fullname="WebAssembly.Bindings" />
-  
 </linker>

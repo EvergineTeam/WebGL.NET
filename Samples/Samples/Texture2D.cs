@@ -13,7 +13,7 @@ namespace Samples
         {
             base.Run(canvas, canvasWidth, canvasHeight, clearColor);
 
-            InitializeShaders(
+            var shaderProgram = gl.InitializeShaders(
                 vertexShaderCode:
 @"attribute vec2 position;
 attribute vec2 textureCoordinate;
@@ -57,9 +57,9 @@ void main() {
                 x2, y1,
                 x2, y2
             };
-            var positionBuffer = CreateArrayBuffer(positions);
+            var positionBuffer = gl.CreateArrayBuffer(positions);
 
-            var textureCoordinateBuffer = CreateArrayBuffer(new float[]
+            var textureCoordinateBuffer = gl.CreateArrayBuffer(new float[]
             {
                 0, 0, 
                 0, 1, 

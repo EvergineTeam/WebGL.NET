@@ -28,6 +28,7 @@ namespace Samples
                 new Texture2D(),
                 new TexturedCubeFromHTMLImage(),
                 new TexturedCubeFromAssets(),
+                //new TransformFeedback(),
             };
 
             foreach (var item in samples)
@@ -47,7 +48,7 @@ namespace Samples
         static JSObject AddCanvas(int width, int height)
         {
             using (var document = (JSObject)Runtime.GetGlobalObject("document"))
-            using (var body = (JSObject)document.GetObjectProperty("body")) 
+            using (var body = (JSObject)document.GetObjectProperty("body"))
             {
                 var canvas = (JSObject)document.Invoke("createElement", "canvas");
                 canvas.SetObjectProperty("width", width);

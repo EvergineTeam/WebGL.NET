@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -7,10 +7,10 @@
   <ItemGroup>
     <PackageReference Include="System.Memory" Version="4.5.2" />
   </ItemGroup>
-  
+
   <ItemGroup>
     <Reference Include="WebAssembly.Bindings">
-      <HintPath>WebAssembly.Bindings.dll</HintPath>
+      <HintPath>..\libs\WebAssembly.Bindings.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

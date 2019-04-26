@@ -63,7 +63,7 @@ namespace Samples
                  1,  1,  1, 
                  1,  1, -1
             };
-            vertexBuffer = CreateArrayBuffer(vertices);
+            vertexBuffer = gl.CreateArrayBuffer(vertices);
 
             indices = new ushort[]
             {
@@ -85,7 +85,7 @@ namespace Samples
                 20, 21, 22, 
                 20, 22, 23
             };
-            indexBuffer = CreateElementArrayBuffer(indices);
+            indexBuffer = gl.CreateElementArrayBuffer(indices);
 
             var colors = new float[]
             {
@@ -119,9 +119,9 @@ namespace Samples
                 1, 1, 1,
                 1, 1, 1
             };
-            colorBuffer = CreateArrayBuffer(colors);
+            colorBuffer = gl.CreateArrayBuffer(colors);
 
-            InitializeShaders(
+            var shaderProgram = gl.InitializeShaders(
                 vertexShaderCode:
 @"attribute vec3 position;
 attribute vec3 color;

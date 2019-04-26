@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.PixelFormats;
+using SkiaSharp;
 using WebGLDotNET;
 
 namespace Samples
@@ -13,7 +12,7 @@ namespace Samples
 
         public override string Description =>
             $"Texture comes a HttpClient retrieving <a href=\"{AssetPath}\">it</a> and load through " +
-            "SixLabors' ImageSharp which returns its colors array.";
+            "[Uno.SkiaSharp] SKBitmap.Decode which returns its colors array.";
 
         protected override async void LoadImage()
         {
@@ -56,22 +55,28 @@ namespace Samples
                 imageData);
         }
 
-        private async Task<Image<Rgba32>> GetImageFromAssetsAsync(string path)
+        private async Task<SKBitmap> GetImageFromAssetsAsync(string path)
         {
+            await LoadCanvasKitAsync();
+
             var content = await WasmResourceLoader.LoadAsync(path, WasmResourceLoader.GetLocalAddress());
 
             var stopwatch = Stopwatch.StartNew();
-            var image = Image.Load(content);
+
+            // png and bmp now working in Chrome and Firefox :D 
+            // jpg fails
+            var image = SKBitmap.Decode(content);
+
             stopwatch.Stop();
 
 #if DEBUG
-            Console.WriteLine($"Image.Load() elapsed: {stopwatch.Elapsed}");
+            Console.WriteLine($"Image load elapsed: {stopwatch.Elapsed}");
 #endif
 
             return image;
         }
 
-        private byte[] GetRGBAColors(Image<Rgba32> img)
+        private byte[] GetRGBAColors(SKBitmap img)
         {
             var numBytes = img.Width * img.Height * 4;
             var colors = new byte[numBytes];
@@ -81,16 +86,25 @@ namespace Samples
             {
                 for (int j = 0; j < img.Height; j++)
                 {
-                    var pixel = img[i, j];
+                    var pixel = img.GetPixel(i, j);
 
-                    colors[colorIndex++] = pixel.R;
-                    colors[colorIndex++] = pixel.G;
-                    colors[colorIndex++] = pixel.B;
-                    colors[colorIndex++] = pixel.A;
+                    colors[colorIndex++] = pixel.Red;
+                    colors[colorIndex++] = pixel.Green;
+                    colors[colorIndex++] = pixel.Blue;
+                    colors[colorIndex++] = pixel.Alpha;
                 }
             }
 
             return colors;
+        }
+
+        private async Task LoadCanvasKitAsync()
+        {
+            while (WebAssemblyRuntime.InvokeJS($"typeof CanvasKit !== 'undefined'") != "true")
+            {
+                Console.WriteLine("Waiting for Skia init");
+                await Task.Delay(500);
+            }
         }
     }
 }

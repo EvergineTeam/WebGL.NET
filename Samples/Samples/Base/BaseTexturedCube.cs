@@ -30,7 +30,7 @@ namespace Samples
         {
             base.Run(canvas, canvasWidth, canvasHeight, clearColor);
 
-            InitializeShaders(
+            var shaderProgram = gl.InitializeShaders(
                 vertexShaderCode:
 @"attribute vec4 aVertexPosition;
 attribute vec2 aTextureCoord;
@@ -92,7 +92,7 @@ void main(void) {
                 -1.0f,  1.0f,  1.0f,
                 -1.0f,  1.0f, -1.0f
             };
-            positionBuffer = CreateArrayBuffer(positions);
+            positionBuffer = gl.CreateArrayBuffer(positions);
 
             var textureCoordinates = new float[]
             {
@@ -127,7 +127,7 @@ void main(void) {
                 1.0f, 1.0f,
                 0.0f, 1.0f
             };
-            textureCoordBuffer = CreateArrayBuffer(textureCoordinates);
+            textureCoordBuffer = gl.CreateArrayBuffer(textureCoordinates);
 
             indices = new ushort[]
             {
@@ -138,7 +138,7 @@ void main(void) {
                 16, 17, 18,   16, 18, 19,   // right
                 20, 21, 22,   20, 22, 23    // left
             };
-            indexBuffer = CreateElementArrayBuffer(indices);
+            indexBuffer = gl.CreateElementArrayBuffer(indices);
 
             texture = gl.CreateTexture();
 
