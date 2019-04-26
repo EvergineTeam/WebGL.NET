@@ -1,5 +1,5 @@
 ﻿using System;
-using WaveEngine.Common.Graphics;
+using System.Drawing;
 using WaveEngine.Common.Math;
 using WebAssembly;
 using WebGLDotNET;
@@ -25,7 +25,7 @@ namespace Samples
             "Every matrix calc relies in Wave Engine's Math library, consumed through NuGet. This will make @jcant0n " +
             "happy :-)";
 
-        public override async void Run(JSObject canvas, float canvasWidth, float canvasHeight, Vector4 clearColor)
+        public override void Run(JSObject canvas, float canvasWidth, float canvasHeight, Vector4 clearColor)
         {
             base.Run(canvas, canvasWidth, canvasHeight, clearColor);
 
@@ -121,7 +121,29 @@ namespace Samples
             };
             colorBuffer = CreateArrayBuffer(colors);
 
-            await InitializeShadersFromAssetsAsync("Assets/CubeVertexShader", "Assets/CubeFragmentShader");
+            InitializeShaders(
+                vertexShaderCode:
+@"attribute vec3 position;
+attribute vec3 color;
+
+uniform mat4 pMatrix;
+uniform mat4 vMatrix;
+uniform mat4 wMatrix;
+
+varying vec3 vColor;
+
+void main(void) {
+    gl_Position = pMatrix * vMatrix * wMatrix * vec4(position, 1.0);
+    vColor = color;
+}",
+                fragmentShaderCode:
+@"precision mediump float;
+
+varying vec3 vColor;
+
+void main(void) {
+    gl_FragColor = vec4(vColor, 1.0);
+}");
 
             pMatrixUniform = gl.GetUniformLocation(shaderProgram, "pMatrix");
             vMatrixUniform = gl.GetUniformLocation(shaderProgram, "vMatrix");
@@ -147,15 +169,10 @@ namespace Samples
             worldMatrix = Matrix.Identity;
 
             gl.BindBuffer(WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER, indexBuffer);
-
-            this.IsReady = true;
         }
 
         public override void Update(double elapsedMilliseconds)
         {
-            if (!this.IsReady)
-                return;
-
             base.Update(elapsedMilliseconds);
 
             var elapsedMillisecondsFloat = (float)elapsedMilliseconds;
@@ -168,9 +185,6 @@ namespace Samples
 
         public override void Draw()
         {
-            if (!this.IsReady)
-                return;
-
             base.Draw();
 
             gl.UniformMatrix4fv(wMatrixUniform, false, worldMatrix.ToArray());
@@ -180,7 +194,6 @@ namespace Samples
                 indices.Length,
                 WebGLRenderingContextBase.UNSIGNED_SHORT,
                 0);
-
         }
     }
 }

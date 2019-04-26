@@ -11,6 +11,7 @@ namespace Samples
 {
     public class LoadGLTF : BaseSample
     {
+        bool isReady;
         Matrix viewProjectionMatrix;
         Matrix worldViewProjectionMatrix;
         WebGLUniformLocation worldViewProjectionUniformLocation;
@@ -25,7 +26,7 @@ namespace Samples
 
             await InitializeAsync();
 
-            IsReady = true;
+            isReady = true;
         }
 
         public override void Update(double elapsedMilliseconds)
@@ -41,7 +42,7 @@ namespace Samples
 
         public override void Draw()
         {
-            if (!IsReady)
+            if (!isReady)
             {
                 return;
             }
