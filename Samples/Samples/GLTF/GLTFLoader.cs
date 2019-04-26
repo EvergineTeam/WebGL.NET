@@ -1,5 +1,5 @@
 ﻿using System;
-using System.IO;
+using System.Threading.Tasks;
 using glTFLoader;
 using glTFLoader.Schema;
 
@@ -17,12 +17,12 @@ namespace Samples.GLTF
         {
         }
 
-        public async void Initialize(string filePath)
+        public async Task InitializeAsync(string filePath)
         {
             await this.ReadAsync(filePath);
         }
 
-        private async System.Threading.Tasks.Task ReadAsync(string filePath)
+        private async Task ReadAsync(string filePath)
         {
             // Deserialize gltf
             this.model = await this.ObtainGLTFAsync(filePath);

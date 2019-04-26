@@ -56,7 +56,7 @@ namespace Samples
             //Load gltf mesh
             using (var gltf = new GLTFModelLoader())
             {
-                gltf.Initialize("Assets/DamagedHelmet.glb");
+                await gltf.InitializeAsync("Assets/DamagedHelmet.glb");
 
                 Console.WriteLine($"{gltf != null} and {gltf.Meshes != null} and {gltf.Meshes.Length}");
                 Console.WriteLine("ERROR 1 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$");
