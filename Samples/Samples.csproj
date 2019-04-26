@@ -62,16 +62,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
 
-    <None Remove="Assets\CubeFragmentShader.essl" />
-    <Content Include="Assets\CubeFragmentShader.essl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-
-    <None Remove="Assets\CubeVertexShader.essl" />
-    <Content Include="Assets\CubeVertexShader.essl">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-
     <None Remove="Assets\GLTFVertexShader.essl" />
     <Content Include="Assets\GLTFVertexShader.essl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
