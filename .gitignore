@@ -331,3 +331,5 @@ ASALocalRun/
 
 #Tools
 tools/
+
+*.orig

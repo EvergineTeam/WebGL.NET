@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Threading.Tasks;
 using WebGLDotNET;
 
 namespace Samples
@@ -50,6 +52,30 @@ namespace Samples
 
             return shaderProgram;
         }
+
+        public static async Task<WebGLProgram> InitializeShadersFromAssetsAsync(this WebGLRenderingContextBase gl, string vertexShaderPath, string fragmentShaderPath)
+        {
+            var baseAddress = WasmResourceLoader.GetLocalAddress();
+
+            var vertexShaderStream = await WasmResourceLoader.LoadAsync(vertexShaderPath, baseAddress);
+            string vertexShaderCode;
+
+            using (var reader = new StreamReader(vertexShaderStream))
+            {
+                vertexShaderCode = reader.ReadToEnd();
+            }
+
+            var fragmentShaderStream = await WasmResourceLoader.LoadAsync(fragmentShaderPath, baseAddress);
+            string fragmentShaderCode;
+
+            using (var reader = new StreamReader(fragmentShaderStream))
+            {
+                fragmentShaderCode = reader.ReadToEnd();
+            }
+
+            return InitializeShaders(gl, vertexShaderCode, fragmentShaderCode);
+        }
+
 
         public static WebGLShader GetShader(this WebGLRenderingContextBase gl, string shaderSource, uint type)
         {

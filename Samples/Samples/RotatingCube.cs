@@ -25,64 +25,64 @@ namespace Samples
             "Every matrix calc relies in Wave Engine's Math library, consumed through NuGet. This will make @jcant0n " +
             "happy :-)";
 
-        public override void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor)
+        public override void Run(JSObject canvas, float canvasWidth, float canvasHeight, Vector4 clearColor)
         {
             base.Run(canvas, canvasWidth, canvasHeight, clearColor);
 
             var vertices = new float[]
             {
-                -1, -1, -1, 
-                 1, -1, -1, 
-                 1,  1, -1, 
+                -1, -1, -1,
+                 1, -1, -1,
+                 1,  1, -1,
 
                 -1,  1, -1,
-                -1, -1,  1, 
-                 1, -1,  1, 
+                -1, -1,  1,
+                 1, -1,  1,
 
-                 1,  1,  1, 
+                 1,  1,  1,
                 -1,  1,  1,
-                -1, -1, -1, 
+                -1, -1, -1,
 
-                -1,  1, -1, 
-                -1,  1,  1, 
+                -1,  1, -1,
+                -1,  1,  1,
                 -1, -1,  1,
 
-                 1, -1, -1, 
-                 1,  1, -1, 
-                 1,  1,  1, 
+                 1, -1, -1,
+                 1,  1, -1,
+                 1,  1,  1,
 
                  1, -1,  1,
-                -1, -1, -1, 
-                -1, -1,  1, 
+                -1, -1, -1,
+                -1, -1,  1,
 
-                 1, -1,  1, 
+                 1, -1,  1,
                  1, -1, -1,
-                -1,  1, -1, 
+                -1,  1, -1,
 
-                -1,  1,  1, 
-                 1,  1,  1, 
+                -1,  1,  1,
+                 1,  1,  1,
                  1,  1, -1
             };
             vertexBuffer = gl.CreateArrayBuffer(vertices);
 
             indices = new ushort[]
             {
-                 0,  1,  2, 
+                 0,  1,  2,
                  0,  2,  3,
-                      
-                 4,  5,  6, 
+
+                 4,  5,  6,
                  4,  6,  7,
 
-                 8,  9, 10, 
-                 8, 10, 11, 
+                 8,  9, 10,
+                 8, 10, 11,
 
-                12, 13, 14, 
+                12, 13, 14,
                 12, 14, 15,
 
-                16, 17, 18, 
-                16, 18, 19, 
+                16, 17, 18,
+                16, 18, 19,
 
-                20, 21, 22, 
+                20, 21, 22,
                 20, 22, 23
             };
             indexBuffer = gl.CreateElementArrayBuffer(indices);
@@ -177,8 +177,8 @@ void main(void) {
 
             var elapsedMillisecondsFloat = (float)elapsedMilliseconds;
             var rotation = Quaternion.CreateFromYawPitchRoll(
-                elapsedMillisecondsFloat * 2 * 0.001f, 
-                elapsedMillisecondsFloat * 4 * 0.001f, 
+                elapsedMillisecondsFloat * 2 * 0.001f,
+                elapsedMillisecondsFloat * 4 * 0.001f,
                 elapsedMillisecondsFloat * 3 * 0.001f);
             worldMatrix *= Matrix.CreateFromQuaternion(rotation);
         }
@@ -190,9 +190,9 @@ void main(void) {
             gl.UniformMatrix4fv(wMatrixUniform, false, worldMatrix.ToArray());
 
             gl.DrawElements(
-                WebGLRenderingContextBase.TRIANGLES, 
-                indices.Length, 
-                WebGLRenderingContextBase.UNSIGNED_SHORT, 
+                WebGLRenderingContextBase.TRIANGLES,
+                indices.Length,
+                WebGLRenderingContextBase.UNSIGNED_SHORT,
                 0);
         }
     }

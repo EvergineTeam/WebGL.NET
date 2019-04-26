@@ -1,4 +1,4 @@
-﻿using System.Drawing;
+﻿using WaveEngine.Common.Math;
 using WebAssembly;
 using WebGLDotNET;
 
@@ -17,7 +17,7 @@ namespace Samples
         public string Description => "Simple Transform Feedback WebGL 2 demo from <a href=\"https://www.ibiblio.org/e-notes/webgl/gpu/bounce.htm\">here</a>. " +
             "Points from vertex shader output are swapped between buffers. Then we unbind it and swap buffers for the next draw.";
 
-        public void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor)
+        public void Run(JSObject canvas, float canvasWidth, float canvasHeight, Vector4 clearColor)
         {
             gl = new WebGL2RenderingContext(canvas);
 

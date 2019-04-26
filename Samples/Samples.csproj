@@ -15,13 +15,6 @@
     <WasmShellILLinkerEnabled>false</WasmShellILLinkerEnabled>
     <WasmShellMonoRuntimeExecutionMode>Interpreter</WasmShellMonoRuntimeExecutionMode>
 	
-    <!--
-      Grab latest MonoWasm drops from here:
-      https://jenkins.mono-project.com/job/test-mono-mainline-wasm/label=ubuntu-1804-amd64/lastSuccessfulBuild/Azure/
-    -->
-    <!--<MonoWasmSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/2555/label=ubuntu-1804-amd64/Azure/processDownloadRequest/2555/ubuntu-1804-amd64/sdks/wasm/mono-wasm-7116ecaf4ee.zip</MonoWasmSDKUri>
-    <MonoWasmAOTSDKUri>https://jenkins.mono-project.com/job/test-mono-mainline-wasm/2555/label=ubuntu-1804-amd64/Azure/processDownloadRequest/2555/ubuntu-1804-amd64/wasm-release-Linux-7116ecaf4eeceed143023352d597e4d09f1dfc95.zip</MonoWasmAOTSDKUri>-->
-	
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,12 +22,11 @@
   </ItemGroup>
   
   <ItemGroup>
-    <!--<PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0006" />-->
+    <PackageReference Include="glTF2Loader" Version="1.1.3-alpha" />
     <PackageReference Include="Uno.Wasm.Bootstrap" Version="1.0.0-dev.263" />
     <PackageReference Include="WaveEngine.Common" Version="2.5.0.39">
       <NoWarn>NU1701</NoWarn>
     </PackageReference>
-    <DotNetCliToolReference Include="Uno.Wasm.Bootstrap.Cli" Version="1.0.0-dev.242" />
   </ItemGroup>
   
   <ItemGroup>
@@ -56,8 +48,12 @@
     </Content>
 
     <None Remove="Assets\PlainConcepts.bmp" />
-
     <Content Include="Assets\PlainConcepts.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+
+    <None Remove="Assets\PlainConcepts.png" />
+    <Content Include="Assets\PlainConcepts.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     
@@ -65,9 +61,19 @@
     <Content Include="Assets\PlainConcepts.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    
-    <None Remove="Assets\PlainConcepts.png" />
-    <Content Include="Assets\PlainConcepts.png">
+
+    <None Remove="Assets\GLTFVertexShader.essl" />
+    <Content Include="Assets\GLTFVertexShader.essl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+
+    <None Remove="Assets\GLTFFragmentShader.essl" />
+    <Content Include="Assets\GLTFFragmentShader.essl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+
+    <None Remove="Assets\DamagedHelmet.glb" />
+    <Content Include="Assets\DamagedHelmet.glb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
 
@@ -75,10 +81,6 @@
   
   <ItemGroup>
     <ProjectReference Include="..\WebGLDotNET\WebGLDotNET.csproj" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <Folder Include="Properties\" />
   </ItemGroup>
   
 </Project>

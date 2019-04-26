@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Drawing;
+using WaveEngine.Common.Math;
 using WebAssembly;
 
 namespace Samples
@@ -28,6 +28,7 @@ namespace Samples
                 new Texture2D(),
                 new TexturedCubeFromHTMLImage(),
                 new TexturedCubeFromAssets(),
+                new LoadGLTF(),
                 //new TransformFeedback(),
             };
 
@@ -38,7 +39,7 @@ namespace Samples
 
                 using (var canvas = AddCanvas(CanvasWidth, CanvasHeight))
                 {
-                    item.Run(canvas, CanvasWidth, CanvasHeight, Color.Fuchsia);
+                    item.Run(canvas, CanvasWidth, CanvasHeight, new Vector4(255, 0, 255, 255));
                 }
             }
 

@@ -1,4 +1,4 @@
-using System.Drawing;
+using WaveEngine.Common.Math;
 using WebAssembly;
 
 namespace Samples
@@ -7,7 +7,7 @@ namespace Samples
     {
         string Description { get; }
 
-        void Run(JSObject canvas, float canvasWidth, float canvasHeight, Color clearColor);
+        void Run(JSObject canvas, float canvasWidth, float canvasHeight, Vector4 clearColor);
 
         void Update(double elapsedTime);
 
