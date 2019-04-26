@@ -20,52 +20,15 @@ namespace Samples
         WebGLBuffer[] vertexBuffers;
         double totalMilliseconds;
 
+        private uint inVarNORMAL;
+        private uint inVarPOSITION;
+        private uint inVarTEXCOORD;
+
         public override void Run(JSObject canvas, float canvasWidth, float canvasHeight, Vector4 clearColor)
         {
             base.Run(canvas, canvasWidth, canvasHeight, clearColor);
 
             Initialize();
-        }
-
-        public override void Update(double elapsedMilliseconds)
-        {
-            totalMilliseconds += elapsedMilliseconds;
-
-            var totalMillisecondsFloat = (float)totalMilliseconds;
-            var offsetQuaternion = Quaternion.CreateFromAxisAngle(Vector3.Right, MathHelper.PiOver2);
-            var rotationQuaternion = Quaternion.CreateFromAxisAngle(Vector3.Forward, totalMillisecondsFloat * 0.001f);
-            var worldMatrix = Matrix.CreateFromQuaternion(offsetQuaternion * rotationQuaternion);
-            worldViewProjectionMatrix = worldMatrix * viewProjectionMatrix;
-        }
-
-        public override void Draw()
-        {
-            base.Draw();
-
-            gl.BindBuffer(WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER, indexBuffer);
-
-            // Normals
-            gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, vertexBuffers[0]);
-            gl.EnableVertexAttribArray(1);
-            gl.VertexAttribPointer(1, 3, WebGLRenderingContextBase.FLOAT, false, 12, 0);
-
-            // Positions
-            gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, vertexBuffers[1]);
-            gl.EnableVertexAttribArray(0);
-            gl.VertexAttribPointer(0, 3, WebGLRenderingContextBase.FLOAT, false, 12, 0);
-
-            // Textures
-            gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, vertexBuffers[2]);
-            gl.EnableVertexAttribArray(2);
-            gl.VertexAttribPointer(2, 2, WebGLRenderingContextBase.FLOAT, false, 8, 0);
-
-            gl.UniformMatrix4fv(worldViewProjectionUniformLocation, false, worldViewProjectionMatrix.ToArray());
-
-            gl.DrawElements(
-                WebGLRenderingContextBase.TRIANGLES,
-                indexBufferCount,
-                WebGLRenderingContextBase.UNSIGNED_SHORT,
-                0);
         }
 
         void Initialize()
@@ -89,6 +52,10 @@ namespace Samples
 
                 shaderProgram = gl.InitializeShaders(vertexShader, fragmentShader);
             }
+
+            this.inVarNORMAL = (uint)gl.GetAttribLocation(shaderProgram, "in_var_NORMAL");
+            this.inVarPOSITION = (uint)gl.GetAttribLocation(shaderProgram, "in_var_POSITION");
+            this.inVarTEXCOORD = (uint)gl.GetAttribLocation(shaderProgram, "in_var_TEXCOORD");
 
             worldViewProjectionUniformLocation = gl.GetUniformLocation(shaderProgram, "worldViewProj");
 
@@ -137,6 +104,47 @@ namespace Samples
                     }
                 }
             }
+        }
+
+        public override void Update(double elapsedMilliseconds)
+        {
+            totalMilliseconds += elapsedMilliseconds;
+
+            var totalMillisecondsFloat = (float)totalMilliseconds;
+            var offsetQuaternion = Quaternion.CreateFromAxisAngle(Vector3.Right, MathHelper.PiOver2);
+            var rotationQuaternion = Quaternion.CreateFromAxisAngle(Vector3.Forward, totalMillisecondsFloat * 0.001f);
+            var worldMatrix = Matrix.CreateFromQuaternion(offsetQuaternion * rotationQuaternion);
+            worldViewProjectionMatrix = worldMatrix * viewProjectionMatrix;
+        }
+
+        public override void Draw()
+        {
+            base.Draw();
+
+            gl.BindBuffer(WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER, indexBuffer);
+
+            // Normals
+            gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, vertexBuffers[0]);
+            gl.EnableVertexAttribArray(inVarNORMAL);
+            gl.VertexAttribPointer(inVarNORMAL, 3, WebGLRenderingContextBase.FLOAT, false, 12, 0);
+
+            // Positions
+            gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, vertexBuffers[1]);
+            gl.EnableVertexAttribArray(inVarPOSITION);
+            gl.VertexAttribPointer(inVarPOSITION, 3, WebGLRenderingContextBase.FLOAT, false, 12, 0);
+
+            // Textures
+            gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, vertexBuffers[2]);
+            gl.EnableVertexAttribArray(inVarTEXCOORD);
+            gl.VertexAttribPointer(inVarTEXCOORD, 2, WebGLRenderingContextBase.FLOAT, false, 8, 0);
+
+            gl.UniformMatrix4fv(worldViewProjectionUniformLocation, false, worldViewProjectionMatrix.ToArray());
+
+            gl.DrawElements(
+                WebGLRenderingContextBase.TRIANGLES,
+                indexBufferCount,
+                WebGLRenderingContextBase.UNSIGNED_SHORT,
+                0);
         }
 
         class GLTFModelLoader : IDisposable
