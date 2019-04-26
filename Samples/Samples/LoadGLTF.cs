@@ -1,8 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using glTFLoader;
 using glTFLoader.Schema;
+using Samples.Helpers;
 using WaveEngine.Common.Math;
 using WebAssembly;
 using WebGLDotNET;
@@ -11,7 +12,6 @@ namespace Samples
 {
     public class LoadGLTF : BaseSample
     {
-        bool isReady;
         Matrix viewProjectionMatrix;
         Matrix worldViewProjectionMatrix;
         WebGLUniformLocation worldViewProjectionUniformLocation;
@@ -20,13 +20,11 @@ namespace Samples
         WebGLBuffer[] vertexBuffers;
         double totalMilliseconds;
 
-        public override async void Run(JSObject canvas, float canvasWidth, float canvasHeight, Vector4 clearColor)
+        public override void Run(JSObject canvas, float canvasWidth, float canvasHeight, Vector4 clearColor)
         {
             base.Run(canvas, canvasWidth, canvasHeight, clearColor);
 
-            await InitializeAsync();
-
-            isReady = true;
+            Initialize();
         }
 
         public override void Update(double elapsedMilliseconds)
@@ -42,11 +40,6 @@ namespace Samples
 
         public override void Draw()
         {
-            if (!isReady)
-            {
-                return;
-            }
-
             base.Draw();
 
             gl.BindBuffer(WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER, indexBuffer);
@@ -75,7 +68,7 @@ namespace Samples
                 0);
         }
 
-        async Task InitializeAsync()
+        void Initialize()
         {
             var viewMatrix = Matrix.CreateLookAt(new Vector3(0, 0, 3), new Vector3(0, 0, 0), Vector3.UnitY);
             var projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
@@ -84,46 +77,64 @@ namespace Samples
                 0.1f, 100f);
             viewProjectionMatrix = Matrix.Multiply(viewMatrix, projectionMatrix);
 
-            var shaderProgram = await gl.InitializeShadersFromAssetsAsync("Assets/GLTFVertexShader.essl", "Assets/GLTFFragmentShader.essl");
+            WebGLProgram shaderProgram;
+
+            using (var vs = EmbeddedResourceHelper.Load("GLTFVertexShader.essl"))
+            using (var fs = EmbeddedResourceHelper.Load("GLTFFragmentShader.essl"))
+            using (var vsReader = new StreamReader(vs))
+            using (var fsReader = new StreamReader(fs))
+            {
+                var vertexShader = vsReader.ReadToEnd();
+                var fragmentShader = fsReader.ReadToEnd();
+
+                shaderProgram = gl.InitializeShaders(vertexShader, fragmentShader);
+            }
 
             worldViewProjectionUniformLocation = gl.GetUniformLocation(shaderProgram, "worldViewProj");
 
             using (var gltfModelLoader = new GLTFModelLoader())
             {
-                await gltfModelLoader.ReadAsync("Assets/DamagedHelmet.glb");
-
-                var mesh = gltfModelLoader.Meshes[0];
-
-                var indexBufferView = mesh.IndicesBufferView;
-                indexBufferCount = indexBufferView.ByteLength / sizeof(ushort);
-                indexBuffer = gl.CreateBuffer();
-                gl.BindBuffer(WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER, indexBuffer);
-                var indexBufferPointer = gltfModelLoader.Buffers[indexBufferView.Buffer].Pointer +
-                    indexBufferView.ByteOffset;
-                var indices = new byte[indexBufferView.ByteLength];
-                Marshal.Copy(indexBufferPointer, indices, 0, indexBufferView.ByteLength);
-                gl.BufferData(
-                    WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER,
-                    indices,
-                    WebGLRenderingContextBase.STATIC_DRAW);
-
-                var vertexBufferCount = mesh.AttributesBufferView.Length;
-                vertexBuffers = new WebGLBuffer[vertexBufferCount];
-
-                for (var i = 0; i < vertexBufferCount; i++)
+                using (var stream = EmbeddedResourceHelper.Load("DamagedHelmet.glb"))
                 {
-                    var vertexBufferView = mesh.AttributesBufferView[i];
-                    var buffer = gl.CreateBuffer();
-                    gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, buffer);
-                    var vertexBufferPointer = gltfModelLoader.Buffers[vertexBufferView.Buffer].Pointer +
-                        vertexBufferView.ByteOffset;
-                    var vertices = new byte[vertexBufferView.ByteLength];
-                    Marshal.Copy(vertexBufferPointer, vertices, 0, vertexBufferView.ByteLength);
+                    gltfModelLoader.ReadModel(stream);
+
+                    gltfModelLoader.ReadBuffers(() => EmbeddedResourceHelper.Load("DamagedHelmet.glb"));
+
+                    gltfModelLoader.ReadMeshes();
+
+                    var mesh = gltfModelLoader.Meshes[0];
+
+                    var indexBufferView = mesh.IndicesBufferView;
+                    indexBufferCount = indexBufferView.ByteLength / sizeof(ushort);
+                    indexBuffer = gl.CreateBuffer();
+                    gl.BindBuffer(WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER, indexBuffer);
+                    var indexBufferPointer = gltfModelLoader.Buffers[indexBufferView.Buffer].Pointer +
+                        indexBufferView.ByteOffset;
+                    var indices = new byte[indexBufferView.ByteLength];
+                    Marshal.Copy(indexBufferPointer, indices, 0, indexBufferView.ByteLength);
                     gl.BufferData(
-                        WebGLRenderingContextBase.ARRAY_BUFFER,
-                        vertices,
+                        WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER,
+                        indices,
                         WebGLRenderingContextBase.STATIC_DRAW);
-                    vertexBuffers[i] = buffer;
+
+                    var vertexBufferCount = mesh.AttributesBufferView.Length;
+                    vertexBuffers = new WebGLBuffer[vertexBufferCount];
+
+                    for (var i = 0; i < vertexBufferCount; i++)
+                    {
+                        var vertexBufferView = mesh.AttributesBufferView[i];
+                        var buffer = gl.CreateBuffer();
+                        gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, buffer);
+                        var vertexBufferPointer = gltfModelLoader.Buffers[vertexBufferView.Buffer].Pointer +
+                            vertexBufferView.ByteOffset;
+                        var vertices = new byte[vertexBufferView.ByteLength];
+                        Marshal.Copy(vertexBufferPointer, vertices, 0, vertexBufferView.ByteLength);
+                        gl.BufferData(
+                            WebGLRenderingContextBase.ARRAY_BUFFER,
+                            vertices,
+                            WebGLRenderingContextBase.STATIC_DRAW);
+                        vertexBuffers[i] = buffer;
+                    }
                 }
             }
         }
@@ -135,22 +146,13 @@ namespace Samples
             public BufferInfo[] Buffers;
             public MeshInfo[] Meshes;
 
-            public async Task ReadAsync(string filePath)
+            public void ReadModel(Stream stream)
             {
-                var content = await WasmResourceLoader.LoadAsync(filePath, WasmResourceLoader.GetLocalAddress());
-                model = Interface.LoadModel(content);
+                model = Interface.LoadModel(stream);
+            }
 
-                var buffersLength = model.Buffers.Length;
-                Buffers = new BufferInfo[buffersLength];
-
-                for (var i = 0; i < buffersLength; i++)
-                {
-                    // TODO copy stream instead of re-loading it :-S
-                    content = await WasmResourceLoader.LoadAsync(filePath, WasmResourceLoader.GetLocalAddress());
-                    var bufferBytes = Interface.LoadBinaryBuffer(content); //this.model.LoadBinaryBuffer(i, filePath);
-                    Buffers[i] = new BufferInfo(bufferBytes);
-                }
-
+            public void ReadMeshes()
+            {
                 var meshesLength = model.Meshes.Length;
                 Meshes = new MeshInfo[meshesLength];
 
@@ -180,6 +182,21 @@ namespace Samples
                     }
 
                     Meshes[m] = new MeshInfo(indices, attributes);
+                }
+            }
+
+            public void ReadBuffers(Func<Stream> streamLoader)
+            {
+                var buffersLength = model.Buffers.Length;
+                Buffers = new BufferInfo[buffersLength];
+
+                for (var i = 0; i < buffersLength; i++)
+                {
+                    using(var stream = streamLoader())
+                    {
+                        var bufferBytes = Interface.LoadBinaryBuffer(stream); //this.model.LoadBinaryBuffer(i, filePath);
+                        Buffers[i] = new BufferInfo(bufferBytes);
+                    }
                 }
             }
 

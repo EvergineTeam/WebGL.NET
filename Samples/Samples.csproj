@@ -48,6 +48,12 @@
     </Content>
 
     <None Remove="Assets\PlainConcepts.bmp" />
+
+    <None Remove="Resources\DamagedHelmet.glb" />
+
+    <None Remove="Resources\GLTFFragmentShader.essl" />
+
+    <None Remove="Resources\GLTFVertexShader.essl" />
     <Content Include="Assets\PlainConcepts.bmp">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -61,21 +67,15 @@
     <Content Include="Assets\PlainConcepts.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-
-    <None Remove="Assets\GLTFVertexShader.essl" />
-    <Content Include="Assets\GLTFVertexShader.essl">
+    <EmbeddedResource Include="Resources\DamagedHelmet.glb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-
-    <None Remove="Assets\GLTFFragmentShader.essl" />
-    <Content Include="Assets\GLTFFragmentShader.essl">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\GLTFFragmentShader.essl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-
-    <None Remove="Assets\DamagedHelmet.glb" />
-    <Content Include="Assets\DamagedHelmet.glb">
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\GLTFVertexShader.essl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    </EmbeddedResource>
 
   </ItemGroup>
   
