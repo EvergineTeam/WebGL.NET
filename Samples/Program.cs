@@ -17,6 +17,15 @@ namespace Samples
         static void Main(string[] args)
         {
             AddHeader1("WebGL.NET Samples Gallery");
+
+            // Let's first check if we can continue with WebGL2 instead of crashing.
+            if (!isBrowserSupportsWebGL2())
+            {
+                AddParagraph("We are sorry, but your browser does not seem to support WebGL2.");
+                AddParagraph("See the <a href=\"https://github.com/WaveEngine/WebGL.NET\">GitHub repo</a>.");
+                return;
+            }
+
             AddParagraph(
                 "A collection of WebGL samples translated from .NET/C# into WebAssembly. " +
                 "See the <a href=\"https://github.com/WaveEngine/WebGL.NET\">GitHub repo</a>.");
@@ -44,6 +53,17 @@ namespace Samples
             }
 
             RequestAnimationFrame();
+        }
+
+        static bool isBrowserSupportsWebGL2()
+        {
+            if (window == null)
+            {
+                window = (JSObject)Runtime.GetGlobalObject();
+            }
+
+            // This is a very simple check for WebGL2 support.
+            return window.GetObjectProperty("WebGL2RenderingContext") != null;
         }
 
         static JSObject AddCanvas(int width, int height)
