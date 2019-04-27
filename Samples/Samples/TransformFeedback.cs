@@ -71,9 +71,8 @@ void main(void)
         private void attachButtonEvent()
         {
             using (var document = (JSObject)Runtime.GetGlobalObject("document"))
+            using (var button = (JSObject)document.Invoke("getElementById", "transformNext"))
             {
-                var button = (JSObject)document.Invoke("getElementById", "transformNext");
-                System.Console.WriteLine(button);
                 button.SetObjectProperty("onclick", onClick());
 
             }
