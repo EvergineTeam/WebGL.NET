@@ -90,7 +90,7 @@ namespace WebGLDotNET
             return array;
         }
 
-        private void DisposeTypedArrays(object[] args)
+        private void DisposeArrayTypes(object[] args)
         {
             for (int i = 0; i < args.Length; i++)
             {
@@ -101,6 +101,12 @@ namespace WebGLDotNET
                     var disposable = (IDisposable)typedArray;
                     disposable.Dispose();
                 }
+                if (arg is WebAssembly.Core.Array jsArray && jsArray != null)
+                {
+                    var disposable = (IDisposable)jsArray;
+                    disposable.Dispose();
+
+                }
             }
         }
 
@@ -108,7 +114,7 @@ namespace WebGLDotNET
         {
             var actualArgs = Translate(args);
             var result = gl.Invoke(method, actualArgs);
-            DisposeTypedArrays(actualArgs);
+            DisposeArrayTypes(actualArgs);
 
             return result;
         }
@@ -118,7 +124,7 @@ namespace WebGLDotNET
         {
             var actualArgs = Translate(args);
             var rawResult = gl.Invoke(method, actualArgs);
-            DisposeTypedArrays(actualArgs);
+            DisposeArrayTypes(actualArgs);
 
             //Console.WriteLine($"{nameof(Invoke)}<{typeof(T)}>(): {rawResult}");
 
@@ -157,7 +163,19 @@ namespace WebGLDotNET
                 }
                 else if (arg is System.Array array)
                 {
-                    arg = CastNativeArray(array);
+                    if (((System.Array)arg).GetType().GetElementType().IsPrimitive)
+                        arg = CastNativeArray(array);
+                    else
+                    {
+                        // WebAssembly.Core.Array or Runtime should probably provide some type of
+                        // helper functions for doing this.  I will put it on my todo list.
+                        var argArray = new WebAssembly.Core.Array();
+                        foreach(var item in (System.Array)arg)
+                        {
+                            argArray.Push(item);
+                        }
+                        arg = argArray;
+                    }
                 }
 
                 actualArgs[i] = arg;

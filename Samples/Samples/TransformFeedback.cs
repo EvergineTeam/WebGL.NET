@@ -1,4 +1,5 @@
-﻿using WaveEngine.Common.Math;
+﻿using System;
+using WaveEngine.Common.Math;
 using WebAssembly;
 using WebGLDotNET;
 
@@ -13,6 +14,8 @@ namespace Samples
         private uint aPosLoc;
         private WebGLBuffer bufA;
         private WebGLBuffer bufB;
+
+        private bool shouldDraw = true;
 
         public string Description => "Simple Transform Feedback WebGL 2 demo from <a href=\"https://www.ibiblio.org/e-notes/webgl/gpu/bounce.htm\">here</a>. " +
             "Points from vertex shader output are swapped between buffers. Then we unbind it and swap buffers for the next draw.";
@@ -56,22 +59,42 @@ void main(void)
             var bufAData = new float[]{ 0.8f, 0, 0, 1 };
             bufA = gl.CreateArrayBufferWithUsage(bufAData, WebGL2RenderingContextBase.DYNAMIC_COPY);
 
-            var bufBData = new float[] { 4 * 4 };
+            var bufBData = new float[4*4];
             bufB = gl.CreateArrayBufferWithUsage(bufBData, WebGL2RenderingContextBase.DYNAMIC_COPY);
 
             var transformFeedback = gl.CreateTransformFeedback();
             gl.BindTransformFeedback(WebGL2RenderingContextBase.TRANSFORM_FEEDBACK, transformFeedback);
+
+            attachButtonEvent();
+        }
+
+        private void attachButtonEvent()
+        {
+            using (var document = (JSObject)Runtime.GetGlobalObject("document"))
+            using (var button = (JSObject)document.Invoke("getElementById", "transformNext"))
+            {
+                button.SetObjectProperty("onclick", onClick());
+
+            }
+        }
+
+        public Action<JSObject> onClick ()  
+        {
+            return new Action<JSObject>(clickEvent =>
+            {
+                shouldDraw = true;
+                clickEvent.Dispose();
+            });
         }
 
         public void Update(double elapsedTime)
-        {
-            var t = bufA;
-            bufA = bufB;
-            bufB = t;
-        }
+        { }
 
         public void Draw()
         {
+            if (!shouldDraw)
+                return;
+
             gl.Clear(WebGLRenderingContextBase.COLOR_BUFFER_BIT);
 
             gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, bufA);
@@ -83,6 +106,11 @@ void main(void)
             gl.EndTransformFeedback();
 
             gl.BindBufferBase(WebGL2RenderingContextBase.TRANSFORM_FEEDBACK_BUFFER, 0, null);
+            var t = bufA;
+            bufA = bufB;
+            bufB = t;
+
+            shouldDraw = false;
         }
     }
 }

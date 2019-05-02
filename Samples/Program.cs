@@ -38,13 +38,15 @@ namespace Samples
                 new TexturedCubeFromHTMLImage(),
                 new TexturedCubeFromAssets(),
                 new LoadGLTF(),
-                //new TransformFeedback(),
+                new TransformFeedback(),
             };
 
             foreach (var item in samples)
             {
                 AddHeader2(item.GetType().Name);
                 AddParagraph(item.Description);
+                if (item is TransformFeedback)
+                    AddButton("transformNext", "Next");
 
                 using (var canvas = AddCanvas(CanvasWidth, CanvasHeight))
                 {
@@ -106,6 +108,19 @@ namespace Samples
                 body.Invoke("appendChild", paragraph);
             }
         }
+
+        static void AddButton(string id, string text)
+        {
+            using (var document = (JSObject)Runtime.GetGlobalObject("document"))
+            using (var body = (JSObject)document.GetObjectProperty("body"))
+            using (var button = (JSObject)document.Invoke("createElement", "button"))
+            {
+                button.SetObjectProperty("innerHTML", text);
+                button.SetObjectProperty("id", id);
+                body.Invoke("appendChild", button);
+            }
+        }
+
 
         static void Loop(double milliseconds)
         {
