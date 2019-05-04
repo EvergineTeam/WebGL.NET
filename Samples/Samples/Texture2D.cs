@@ -10,9 +10,9 @@ namespace Samples
     {
         public override string Description => "The image is passed as byte[] in ARGB.";
 
-        public override void Run(JSObject canvas, float canvasWidth, float canvasHeight, Vector4 clearColor)
+        public override void Run()
         {
-            base.Run(canvas, canvasWidth, canvasHeight, clearColor);
+            base.Run();
 
             var shaderProgram = gl.InitializeShaders(
                 vertexShaderCode:

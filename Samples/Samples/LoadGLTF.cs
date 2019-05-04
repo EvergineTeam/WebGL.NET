@@ -24,9 +24,9 @@ namespace Samples
         private uint inVarPOSITION;
         private uint inVarTEXCOORD;
 
-        public override void Run(JSObject canvas, float canvasWidth, float canvasHeight, Vector4 clearColor)
+        public override void Run()
         {
-            base.Run(canvas, canvasWidth, canvasHeight, clearColor);
+            base.Run();
 
             Initialize();
         }
@@ -202,7 +202,7 @@ namespace Samples
                 {
                     using(var stream = streamLoader())
                     {
-                        var bufferBytes = Interface.LoadBinaryBuffer(stream); //this.model.LoadBinaryBuffer(i, filePath);
+                        var bufferBytes = Interface.LoadBinaryBuffer(stream); 
                         Buffers[i] = new BufferInfo(bufferBytes);
                     }
                 }

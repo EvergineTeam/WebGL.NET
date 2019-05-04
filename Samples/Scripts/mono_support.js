@@ -1,4 +1,4 @@
-var MonoSupport;
+﻿var MonoSupport;
 (function (MonoSupport) {
     /**
      * This class is used by https://github.com/mono/mono/blob/fa726d3ac7153d87ed187abd422faa4877f85bb5/sdks/wasm/dotnet_support.js#L88 to perform

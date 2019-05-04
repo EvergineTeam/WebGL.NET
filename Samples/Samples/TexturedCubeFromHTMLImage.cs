@@ -54,6 +54,8 @@ namespace Samples
             });
             image.SetObjectProperty("onload", onLoad);
             image.SetObjectProperty("src", AssetPath);
+
+            textureLoaded = true;
         }
     }
 }

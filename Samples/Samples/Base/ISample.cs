@@ -7,7 +7,11 @@ namespace Samples
     {
         string Description { get; }
 
-        void Run(JSObject canvas, float canvasWidth, float canvasHeight, Vector4 clearColor);
+        bool LazyLoad { get; }
+
+        void Init(JSObject canvas, int canvasWidth, int canvasHeight, Vector4 vector4);
+
+        void Run();
 
         void Update(double elapsedTime);
 

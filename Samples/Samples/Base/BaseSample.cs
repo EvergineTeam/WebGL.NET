@@ -15,6 +15,8 @@ namespace Samples
 
         public virtual string Description => string.Empty;
 
+        public virtual bool LazyLoad => false;
+
         public virtual void Draw()
         {
             gl.Enable(WebGLRenderingContextBase.DEPTH_TEST);
@@ -23,12 +25,16 @@ namespace Samples
             gl.Clear(WebGLRenderingContextBase.COLOR_BUFFER_BIT);
         }
 
-        public virtual void Run(JSObject canvas, float canvasWidth, float canvasHeight, Vector4 clearColor)
+        public virtual void Init(JSObject canvas, int canvasWidth, int canvasHeight, Vector4 clearColor)
         {
             gl = new WebGL2RenderingContext(canvas);
             this.canvasWidth = canvasWidth;
             this.canvasHeight = canvasHeight;
             this.clearColor = clearColor;
+        }
+
+        public virtual void Run()
+        {
         }
 
         public virtual void Update(double elapsedMilliseconds)

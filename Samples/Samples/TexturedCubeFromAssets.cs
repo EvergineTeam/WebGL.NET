@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using SkiaSharp;
+using WaveEngine.Common.Math;
+using WebAssembly;
 using WebGLDotNET;
 
 namespace Samples
@@ -11,8 +13,19 @@ namespace Samples
         const string AssetPath = "Assets/PlainConcepts.bmp";
 
         public override string Description =>
-            $"Texture comes a HttpClient retrieving <a href=\"{AssetPath}\">it</a> and load through " +
-            "[Uno.SkiaSharp] SKBitmap.Decode which returns its colors array.";
+            $"Texture comes from a HttpClient retrieving <a href=\"{AssetPath}\">it</a> and them we load colors through " +
+            "[Uno.SkiaSharp] SKBitmap.Decode.";
+
+        public override bool LazyLoad => true;
+
+        private TaskCompletionSource<bool> canvasKitTcs = new TaskCompletionSource<bool>();
+
+        public override void Init(JSObject canvas, int canvasWidth, int canvasHeight, Vector4 clearColor)
+        {
+            base.Init(canvas, canvasWidth, canvasHeight, clearColor);
+
+            attachButtonEvent();
+        }
 
         protected override async void LoadImage()
         {
@@ -23,9 +36,18 @@ namespace Samples
                 return;
             }
 
+            var stopwatch = Stopwatch.StartNew();
             var colors = GetRGBAColors(image);
+            stopwatch.Stop();
 
+            // TODO: :S
+            Console.WriteLine($"GetRGBAColors elapsed: {stopwatch.Elapsed}");
+
+            stopwatch = Stopwatch.StartNew();
             var imageData = new ImageData(colors, image.Width, image.Height);
+            stopwatch.Stop();
+
+            Console.WriteLine($"ImageData ctor elapsed: {stopwatch.Elapsed}");
 
             gl.BindTexture(WebGLRenderingContextBase.TEXTURE_2D, texture);
 
@@ -53,27 +75,72 @@ namespace Samples
                 WebGLRenderingContextBase.RGB,
                 WebGLRenderingContextBase.UNSIGNED_BYTE,
                 imageData);
+
+            textureLoaded = true;
         }
 
         private async Task<SKBitmap> GetImageFromAssetsAsync(string path)
         {
-            await LoadCanvasKitAsync();
-
             var content = await WasmResourceLoader.LoadAsync(path, WasmResourceLoader.GetLocalAddress());
+
+            await canvasKitTcs.Task;
 
             var stopwatch = Stopwatch.StartNew();
 
-            // png and bmp now working in Chrome and Firefox :D 
-            // jpg fails
+            // TODO: check jpg
             var image = SKBitmap.Decode(content);
 
             stopwatch.Stop();
 
-#if DEBUG
             Console.WriteLine($"Image load elapsed: {stopwatch.Elapsed}");
-#endif
 
             return image;
+        }
+
+        private void CheckCanvasKitReady()
+        {
+            if (canvasKitTcs.Task.IsCompleted)
+            {
+                return;
+            }
+
+            var ready = WebAssemblyRuntime.InvokeJS($"typeof CanvasKit !== 'undefined'") == "true";
+            if (ready)
+            {
+                canvasKitTcs.TrySetResult(true);
+            }
+        }
+
+        private void attachButtonEvent()
+        {
+            var name = $"load_{this.GetType().Name}";
+
+            var onClick = new Action<JSObject>(clickEvent =>
+            {
+                Run();
+
+                clickEvent.Dispose();
+            });
+
+            using (var document = (JSObject)Runtime.GetGlobalObject("document"))
+            using (var button = (JSObject)document.Invoke("getElementById", name))
+            {
+                button.Invoke("addEventListener", "click", onClick, false);
+            }
+        }
+
+        public override void Update(double elapsedTime)
+        {
+            CheckCanvasKitReady();
+
+            base.Update(elapsedTime);
+        }
+
+        public override void Draw()
+        {
+            CheckCanvasKitReady();
+
+            base.Draw();
         }
 
         private byte[] GetRGBAColors(SKBitmap img)
@@ -96,15 +163,6 @@ namespace Samples
             }
 
             return colors;
-        }
-
-        private async Task LoadCanvasKitAsync()
-        {
-            while (WebAssemblyRuntime.InvokeJS($"typeof CanvasKit !== 'undefined'") != "true")
-            {
-                Console.WriteLine("Waiting for Skia init");
-                await Task.Delay(500);
-            }
         }
     }
 }

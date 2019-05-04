@@ -14,7 +14,7 @@ namespace Samples
         static double previousMilliseconds;
         static JSObject window;
 
-        static void Main(string[] args)
+        static void Main()
         {
             AddHeader1("WebGL.NET Samples Gallery");
 
@@ -37,20 +37,30 @@ namespace Samples
                 new Texture2D(),
                 new TexturedCubeFromHTMLImage(),
                 new TexturedCubeFromAssets(),
-                new LoadGLTF(),
+                //new LoadGLTF(), // json.net issue
                 new TransformFeedback(),
+                new PointerLock(),
             };
 
             foreach (var item in samples)
             {
-                AddHeader2(item.GetType().Name);
+                var name = item.GetType().Name;
+
+                AddHeader2(name);
                 AddParagraph(item.Description);
                 if (item is TransformFeedback)
                     AddButton("transformNext", "Next");
 
-                using (var canvas = AddCanvas(CanvasWidth, CanvasHeight))
-                {
-                    item.Run(canvas, CanvasWidth, CanvasHeight, new Vector4(255, 0, 255, 255));
+                if (item.LazyLoad)
+                    AddButton($"load_{name}", "Load sample");
+
+                using (var canvas = AddCanvas(name, CanvasWidth, CanvasHeight))
+                { 
+                    item.Init(canvas, CanvasWidth, CanvasHeight, new Vector4(255, 0, 255, 255));
+                    if (!item.LazyLoad)
+                    {
+                        item.Run();
+                    }
                 }
             }
 
@@ -68,7 +78,7 @@ namespace Samples
             return window.GetObjectProperty("WebGL2RenderingContext") != null;
         }
 
-        static JSObject AddCanvas(int width, int height)
+        static JSObject AddCanvas(string id, int width, int height)
         {
             using (var document = (JSObject)Runtime.GetGlobalObject("document"))
             using (var body = (JSObject)document.GetObjectProperty("body"))
@@ -76,6 +86,7 @@ namespace Samples
                 var canvas = (JSObject)document.Invoke("createElement", "canvas");
                 canvas.SetObjectProperty("width", width);
                 canvas.SetObjectProperty("height", height);
+                canvas.SetObjectProperty("id", id);
                 body.Invoke("appendChild", canvas);
 
                 return canvas;

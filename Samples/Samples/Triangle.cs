@@ -9,9 +9,9 @@ namespace Samples
     {
         ushort[] indices;
 
-        public override void Run(JSObject canvas, float canvasWidth, float canvasHeight, Vector4 clearColor)
+        public override void Run()
         {
-            base.Run(canvas, canvasWidth, canvasHeight, clearColor);
+            base.Run();
 
             var vertices = new float[]
             {

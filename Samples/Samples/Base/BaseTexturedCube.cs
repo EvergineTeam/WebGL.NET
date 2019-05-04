@@ -26,9 +26,17 @@ namespace Samples
         WebGLUniformLocation samplerUniform;
         double totalElapsedTimeSeconds;
 
-        public override void Run(JSObject canvas, float canvasWidth, float canvasHeight, Vector4 clearColor)
+        protected bool textureLoaded = false;
+
+
+        public override void Init(JSObject canvas, int canvasWidth, int canvasHeight, Vector4 clearColor)
         {
-            base.Run(canvas, canvasWidth, canvasHeight, clearColor);
+            base.Init(canvas, canvasWidth, canvasHeight, clearColor);
+        }
+
+        public override void Run()
+        {
+            base.Run();
 
             var shaderProgram = gl.InitializeShaders(
                 vertexShaderCode:
@@ -173,6 +181,8 @@ void main(void) {
         public override void Draw()
         {
             base.Draw();
+
+            if (!textureLoaded) return;
 
             gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, positionBuffer);
             gl.VertexAttribPointer(vertexPositionAttribute, 3, WebGLRenderingContextBase.FLOAT, false, 0, 0);
