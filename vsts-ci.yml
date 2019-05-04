@@ -1,0 +1,12 @@
+steps:
+
+- script: |
+    ./build.sh 
+    ./publish_website.sh
+
+- task: PublishBuildArtifacts@1
+displayName: Publish artifact package
+inputs:
+  pathtoPublish: $(Build.SourcesDirectory)/website
+  artifactName: website
+  artifactType: container  
