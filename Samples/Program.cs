@@ -74,9 +74,8 @@ namespace Samples
 
         private static void AddGenerationStamp()
         {
-            var buildDate = TimestampHelper.GetBuildDate(Assembly.GetExecutingAssembly());
+            var buildDate = StampHelper.GetBuildDate(Assembly.GetExecutingAssembly());
             AddParagraph($"Generated on {buildDate.ToString()} ({buildDate.Humanize()})");
-            AddParagraph($"From commit: {ThisAssembly.GitCommitId}");
         }
 
         static bool isBrowserSupportsWebGL2()
