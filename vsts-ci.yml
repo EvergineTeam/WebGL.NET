@@ -1,4 +1,0 @@
-steps:
-- script: |
-    ./build.sh 
-    ./publish_website.sh
