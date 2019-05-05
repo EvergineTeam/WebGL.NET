@@ -15,6 +15,6 @@
     "surge": "^0.20.4"
   },
   "scripts": {
-	"deploy": "surge www https://webglnet.surge.sh"
+    "deploy": "surge www https://webglnet.surge.sh"
   }
 }
