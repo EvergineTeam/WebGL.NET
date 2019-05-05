@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Humanizer;
+using Samples.Helpers;
+using System;
+using System.Reflection;
 using WaveEngine.Common.Math;
 using WebAssembly;
 
@@ -55,7 +58,7 @@ namespace Samples
                     AddButton($"load_{name}", "Load sample");
 
                 using (var canvas = AddCanvas(name, CanvasWidth, CanvasHeight))
-                { 
+                {
                     item.Init(canvas, CanvasWidth, CanvasHeight, new Vector4(255, 0, 255, 255));
                     if (!item.LazyLoad)
                     {
@@ -64,7 +67,16 @@ namespace Samples
                 }
             }
 
+            AddGenerationStamp();
+
             RequestAnimationFrame();
+        }
+
+        private static void AddGenerationStamp()
+        {
+            var buildDate = TimestampHelper.GetBuildDate(Assembly.GetExecutingAssembly());
+            AddParagraph($"Generated on {buildDate.ToString()} ({buildDate.Humanize()})");
+            AddParagraph($"From commit: {ThisAssembly.GitCommitId}");
         }
 
         static bool isBrowserSupportsWebGL2()
