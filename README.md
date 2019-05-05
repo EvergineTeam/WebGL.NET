@@ -1,8 +1,11 @@
 # WebGL.NET
 
+[![Build status](https://ci.appveyor.com/api/projects/status/mtl68763xqr4wkuk?svg=true)](https://ci.appveyor.com/project/jacano/webgl-net)
+
 C# wrapper for WebGL through WebAssembly.
 
-See the samples running [here](https://webglnet.surge.sh) (they may not be updated with current status).
+See the samples running [here](https://webglnet.surge.sh)
+
 
 ## Features
 

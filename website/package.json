@@ -1,0 +1,20 @@
+{
+  "name": "webgl.net",
+  "version": "1.0.0",
+  "description": "C# wrapper for WebGL through WebAssembly.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WaveEngine/WebGL.NET.git"
+  },
+  "bugs": {
+    "url": "https://github.com/WaveEngine/WebGL.NET/issues"
+  },
+  "license": "ISC",
+  "homepage": "https://github.com/WaveEngine/WebGL.NET#readme",
+  "devDependencies": {
+    "surge": "^0.20.4"
+  },
+  "scripts": {
+	"deploy": "surge www https://webglnet.surge.sh"
+  }
+}

@@ -80,7 +80,7 @@ namespace Samples
             var commitHash = StampHelper.GetCommitHash(Assembly.GetExecutingAssembly());
             if (!string.IsNullOrEmpty(commitHash))
             {
-                AddParagraph($"From git commit: {commitHash})");
+                AddParagraph($"From git commit: {commitHash}");
             }
         }
 
