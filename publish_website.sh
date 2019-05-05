@@ -1,8 +1,8 @@
 #!/bin/sh
 
-rm -rf website/
-cp -rf Samples/bin/Debug/netstandard2.0/ website/
+rm -rf website/www/
+cp -rf Samples/bin/Debug/netstandard2.0/ website/www/
 
-npm install --save-dev surge
-
-surge $(realpath website)/ https://webglnet.surge.sh
+cd website/
+npm run deploy
+cd ..
