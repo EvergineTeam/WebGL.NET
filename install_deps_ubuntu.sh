@@ -2,12 +2,6 @@
 
 # ubuntu 18.04
 
-nodejs () 
-{
-	curl -sL https://deb.nodesource.com/setup_10.x | sudo bash -
-	sudo apt-get -y install nodejs
-}
-
 dotnet ()
 {
 	wget -q https://packages.microsoft.com/config/ubuntu/18.04/prod.list
@@ -29,7 +23,6 @@ mono ()
 
 if [ $# -eq 0 ]
 	then
-		nodejs
 		dotnet
 		mono
 else

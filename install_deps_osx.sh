@@ -1,11 +1,5 @@
 #!/bin/sh
 
-nodejs () 
-{
-	brew update
-	brew install node
-}
-
 dotnet ()
 {
 	brew update
@@ -22,7 +16,6 @@ mono ()
 
 if [ $# -eq 0 ]
 	then
-		nodejs
 		dotnet
 		mono
 else
