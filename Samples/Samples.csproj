@@ -1,10 +1,16 @@
 ﻿<Project Sdk="Mono.WebAssembly.Sdk">
 
   <PropertyGroup>
-    <MonoWasmLinkMode>None</MonoWasmLinkMode>
     <TargetFramework>netstandard2.0</TargetFramework>
-	<NoWarn>NU1701;NU1604</NoWarn>
+	  <NoWarn>NU1701;NU1604</NoWarn>
+    <MonoWasmLinkMode>None</MonoWasmLinkMode>
   </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="LinkDescriptor\Samples.xml">
+      <LogicalName>Samples.xml</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
 
   <ItemGroup>
     <_WasmItem Remove="Scripts\canvaskit.js" />
@@ -55,9 +61,9 @@
   
   <ItemGroup>
 	    <Reference Include="SkiaSharp.Wasm">
-      <HintPath>..\libs\Uno.SkiaSharp\SkiaSharp.Wasm.dll</HintPath>
-    </Reference>
-    <ProjectReference Include="..\WebGLDotNET\WebGLDotNET.csproj" />
+        <HintPath>..\libs\Uno.SkiaSharp\SkiaSharp.Wasm.dll</HintPath>
+      </Reference>
+      <ProjectReference Include="..\WebGLDotNET\WebGLDotNET.csproj" />
   </ItemGroup>
   
 </Project>
