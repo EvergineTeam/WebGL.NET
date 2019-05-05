@@ -7,4 +7,4 @@ brew cask install dotnet-sdk
 brew update
 brew install node
 
-npm install -g surge@latest
+npm install -g surge
