@@ -76,6 +76,12 @@ namespace Samples
         {
             var buildDate = StampHelper.GetBuildDate(Assembly.GetExecutingAssembly());
             AddParagraph($"Generated on {buildDate.ToString()} ({buildDate.Humanize()})");
+
+            var commitHash = StampHelper.GetCommitHash(Assembly.GetExecutingAssembly());
+            if (!string.IsNullOrEmpty(commitHash))
+            {
+                AddParagraph($"From git commit: {commitHash})");
+            }
         }
 
         static bool isBrowserSupportsWebGL2()

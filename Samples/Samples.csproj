@@ -3,6 +3,7 @@
   <PropertyGroup>
     <MonoWasmLinkMode>None</MonoWasmLinkMode>
     <TargetFramework>netstandard2.0</TargetFramework>
+	<NoWarn>NU1701;NU1604</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
@@ -14,18 +15,10 @@
     <PackageReference Include="glTF2Loader" Version="1.1.3-alpha" />
     <PackageReference Include="Humanizer.Core" Version="2.6.2" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="WaveEngine.Common" Version="2.5.0.39">
-      <NoWarn>NU1701</NoWarn>
-    </PackageReference>
-    <PackageReference Include="WebAssembly.Bindings" Version="0.1.0">
-    <NoWarn>NU1604</NoWarn>
-    </PackageReference>
-    <PackageReference Include="WebAssembly.Net.Http" Version="0.1.0">
-    <NoWarn>NU1604</NoWarn>
-    </PackageReference>
-    <PackageReference Include="WebAssembly.Net.WebSockets" Version="0.1.0">
-    <NoWarn>NU1604</NoWarn>
-    </PackageReference>
+    <PackageReference Include="WaveEngine.Common" Version="2.5.0.39" />
+    <PackageReference Include="WebAssembly.Bindings" Version="0.1.0" />
+    <PackageReference Include="WebAssembly.Net.Http" Version="0.1.0" />
+    <PackageReference Include="WebAssembly.Net.WebSockets" Version="0.1.0" />
   </ItemGroup>
 
   <ItemGroup>

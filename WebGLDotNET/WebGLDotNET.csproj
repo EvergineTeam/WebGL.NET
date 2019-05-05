@@ -2,13 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+	<NoWarn>NU1604</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Memory" Version="4.5.2" />
-    <PackageReference Include="WebAssembly.Bindings" Version="0.1.0">
-      <NoWarn>NU1604</NoWarn>
-    </PackageReference>
+    <PackageReference Include="WebAssembly.Bindings" Version="0.1.0" />
   </ItemGroup>
   
 </Project>

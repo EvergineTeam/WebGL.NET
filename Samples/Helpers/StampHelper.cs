@@ -26,5 +26,17 @@ namespace Samples.Helpers
 
             return default(DateTime);
         }
+
+        public static string GetCommitHash(Assembly assembly)
+        {
+            var attribute = assembly.GetCustomAttributes<AssemblyMetadataAttribute>()
+                .FirstOrDefault(x => x.Key == "CommitHash");
+            if (attribute != null)
+            {
+                return attribute.Value;
+            }
+
+            return string.Empty;
+        }
     }
 }

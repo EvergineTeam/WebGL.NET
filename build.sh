@@ -1,3 +1,5 @@
 #!/bin/sh
 
-dotnet build WebGL.NET.sln
+COMMITHASH=$(git rev-parse HEAD)
+
+dotnet build WebGL.NET.sln -p:CommitHash=$COMMITHASH
