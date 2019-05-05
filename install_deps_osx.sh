@@ -1,9 +1,33 @@
 #!/bin/sh
 
-brew update
+nodejs () 
+{
+	brew update
+	brew install node
+}
 
-brew install node
+dotnet ()
+{
+	brew update
+	brew tap caskroom/cask
+	brew cask install dotnet-sdk
+}
 
-brew tap caskroom/cask
-brew cask install dotnet-sdk
-brew cask install mono-mdk
+mono ()
+{
+	brew update
+	brew tap caskroom/cask
+	brew cask install mono-mdk
+}
+
+if [ $# -eq 0 ]
+	then
+		nodejs
+		dotnet
+		mono
+else
+	for arg in $@
+	do
+		eval $(echo $arg)
+	done
+fi
