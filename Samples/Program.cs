@@ -40,8 +40,8 @@ namespace Samples
                 new Texture2D(),
                 new TexturedCubeFromHTMLImage(),
                 new TexturedCubeFromAssets(),
-                // TODO: Issue with the linker ?!?!
-                //new LoadGLTF(),
+                // TODO: Report issue with monolinker (remove Linker workaround project)
+                new LoadGLTF(),
                 new TransformFeedback(),
                 new PointerLock(),
             };

@@ -4,6 +4,7 @@ using WebAssembly;
 
 namespace Samples
 {
+    // https://www.html5rocks.com/en/tutorials/pointerlock/intro/
     public class PointerLock : ISample
     {
         private JSObject ctx;

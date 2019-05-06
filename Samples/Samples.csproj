@@ -63,6 +63,7 @@
 	    <Reference Include="SkiaSharp.Wasm">
         <HintPath>..\libs\Uno.SkiaSharp\SkiaSharp.Wasm.dll</HintPath>
       </Reference>
+	    <ProjectReference Include="..\LinkerWorkaround\LinkerWorkaround.csproj" />
       <ProjectReference Include="..\WebGLDotNET\WebGLDotNET.csproj" />
   </ItemGroup>
   

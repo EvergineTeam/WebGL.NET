@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="LinkerWorkaround.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="LinkerWorkaround.xml">
+      <LogicalName>LinkerWorkaround.xml</LogicalName>
+    </EmbeddedResource>
+  </ItemGroup>
+
+</Project>
