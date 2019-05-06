@@ -40,7 +40,8 @@ namespace Samples
                 new Texture2D(),
                 new TexturedCubeFromHTMLImage(),
                 new TexturedCubeFromAssets(),
-                //new LoadGLTF(), // json.net issue
+                // TODO: Issue with the linker ?!?!
+                //new LoadGLTF(),
                 new TransformFeedback(),
                 new PointerLock(),
             };

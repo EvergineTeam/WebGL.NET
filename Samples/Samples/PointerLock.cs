@@ -10,9 +10,13 @@ namespace Samples
 
         private float x = 50;
         private float y = 50;
+
         private JSObject currentCanvas;
+
         private float cWidth;
         private float cHeight;
+
+        private bool listenToMouseEvent;
 
         private const float RADIUS = 20;
 
@@ -35,36 +39,35 @@ namespace Samples
         }
 
         public void Run()
-        { 
-            ctx = (JSObject)currentCanvas.Invoke("getContext", "2d");
+        {
+            var lockChangeAlert = new Action<JSObject>((o) => {
 
-            var canvasClick = new Action<JSObject>((o) => {
                 using (var document = (JSObject)Runtime.GetGlobalObject("document"))
                 {
-                    var canvasObject = (JSObject)document.Invoke("getElementById", this.GetType().Name);
+                    var canvasName = this.GetType().Name;
+                    var canvasObject = (JSObject)document.Invoke("getElementById", canvasName);
 
-                    var supportPointerLock = canvasObject.GetObjectProperty("requestPointerLock");
-                    if (supportPointerLock != null)
-                    {
-                        canvasObject.Invoke("requestPointerLock");
-                    }
-                    
-                    var supportMozRequestPointerLock = canvasObject.GetObjectProperty("mozRequestPointerLock");
-                    if(supportMozRequestPointerLock != null)
-                    {
-                        canvasObject.Invoke("mozRequestPointerLock");
-                    }
+                    var lockElement = (JSObject)document.GetObjectProperty("pointerLockElement");
+                    var mozLockElement = (JSObject)document.GetObjectProperty("mozPointerLockElement");
 
+                    var enter = (lockElement != null) || (mozLockElement != null);
+                    if (enter)
+                    {
+                        listenToMouseEvent = true;
+                    }
+                    else
+                    {
+                        listenToMouseEvent = false;
+                    }
                 }
 
                 o.Dispose();
             });
 
-            currentCanvas.Invoke("addEventListener", "click", canvasClick, false);
-
-            CanvasDraw();
-
             var updatePosition = new Action<JSObject>((mEvent) => {
+
+                if (!listenToMouseEvent) return;
+
                 var mX = (int)mEvent.GetObjectProperty("movementX");
                 var mY = (int)mEvent.GetObjectProperty("movementY");
 
@@ -89,38 +92,45 @@ namespace Samples
                 }
 
                 mEvent.Dispose();
-
             });
 
-            var lockChangeAlert = new Action<JSObject>((o) => {
-
-                Console.WriteLine("lockChangeAlert");
+            var canvasClick = new Action<JSObject>((o) => {
                 using (var document = (JSObject)Runtime.GetGlobalObject("document"))
                 {
                     var canvasObject = (JSObject)document.Invoke("getElementById", this.GetType().Name);
 
-                    var lockElement = (JSObject)document.GetObjectProperty("pointerLockElement");
-                    var mozLockElement = (JSObject)document.GetObjectProperty("mozPointerLockElement");
-
-                    // TODO: don't know how to check this
-                    var enter = (lockElement != null) || (mozLockElement != null); 
-                    if (enter)
+                    var supportPointerLock = canvasObject.GetObjectProperty("requestPointerLock");
+                    if (supportPointerLock != null)
                     {
-                        document.Invoke("addEventListener", "mousemove", updatePosition, false);
+                        canvasObject.Invoke("requestPointerLock");
                     }
-                    else
+                    
+                    var supportMozRequestPointerLock = canvasObject.GetObjectProperty("mozRequestPointerLock");
+                    if(supportMozRequestPointerLock != null)
                     {
-                        document.Invoke("removeEventListener", "mousemove", updatePosition, false);
+                        canvasObject.Invoke("mozRequestPointerLock");
                     }
                 }
 
                 o.Dispose();
-
             });
+
+
+            ctx = (JSObject)currentCanvas.Invoke("getContext", "2d");
+
+            currentCanvas.Invoke("addEventListener", "click", canvasClick, false);
+
+            CanvasDraw();
+
             using (var document = (JSObject)Runtime.GetGlobalObject("document"))
             {
                 document.Invoke("addEventListener", "pointerlockchange", lockChangeAlert, false);
                 document.Invoke("addEventListener", "mozpointerlockchange", lockChangeAlert, false);
+
+                document.Invoke("addEventListener", "mousemove", updatePosition, false);
+
+                //TODO: removeEventListener does not work?!
+                //document.Invoke("removeEventListener", "mousemove", updatePosition, false);
             }
         }
 
