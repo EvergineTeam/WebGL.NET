@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using SkiaSharp;
 using WaveEngine.Common.Math;
@@ -16,16 +17,9 @@ namespace Samples
             $"Texture comes from a HttpClient retrieving <a href=\"{AssetPath}\">it</a> and them we load colors through " +
             "[Uno.SkiaSharp] SKBitmap.Decode.";
 
-        public override bool LazyLoad => true;
+        public override bool LazyLoad => false;
 
         private TaskCompletionSource<bool> canvasKitTcs = new TaskCompletionSource<bool>();
-
-        public override void Init(JSObject canvas, int canvasWidth, int canvasHeight, Vector4 clearColor)
-        {
-            base.Init(canvas, canvasWidth, canvasHeight, clearColor);
-
-            attachButtonEvent();
-        }
 
         protected override async void LoadImage()
         {
@@ -37,17 +31,10 @@ namespace Samples
             }
 
             var stopwatch = Stopwatch.StartNew();
-            var colors = GetRGBAColors(image);
+            var imageData2 = GetUnsafeImageDataFromRGBAColors(image);
             stopwatch.Stop();
 
-            // TODO: :S
-            Console.WriteLine($"GetRGBAColors elapsed: {stopwatch.Elapsed}");
-
-            stopwatch = Stopwatch.StartNew();
-            var imageData = new ImageData(colors, image.Width, image.Height);
-            stopwatch.Stop();
-
-            Console.WriteLine($"ImageData ctor elapsed: {stopwatch.Elapsed}");
+            Console.WriteLine($"GetUnsafeRGBAColors elapsed: {stopwatch.Elapsed}");
 
             gl.BindTexture(WebGLRenderingContextBase.TEXTURE_2D, texture);
 
@@ -74,7 +61,7 @@ namespace Samples
                 WebGLRenderingContextBase.RGB,
                 WebGLRenderingContextBase.RGB,
                 WebGLRenderingContextBase.UNSIGNED_BYTE,
-                imageData);
+                imageData2);
 
             textureLoaded = true;
         }
@@ -111,24 +98,6 @@ namespace Samples
             }
         }
 
-        private void attachButtonEvent()
-        {
-            var name = $"load_{this.GetType().Name}";
-
-            var onClick = new Action<JSObject>(clickEvent =>
-            {
-                Run();
-
-                clickEvent.Dispose();
-            });
-
-            using (var document = (JSObject)Runtime.GetGlobalObject("document"))
-            using (var button = (JSObject)document.Invoke("getElementById", name))
-            {
-                button.Invoke("addEventListener", "click", onClick, false);
-            }
-        }
-
         public override void Update(double elapsedTime)
         {
             CheckCanvasKitReady();
@@ -143,26 +112,21 @@ namespace Samples
             base.Draw();
         }
 
-        private byte[] GetRGBAColors(SKBitmap img)
+        private unsafe ImageData GetUnsafeImageDataFromRGBAColors(SKBitmap img)
         {
             var numBytes = img.Width * img.Height * 4;
-            var colors = new byte[numBytes];
-            var colorIndex = 0;
 
-            for (int i = 0; i < img.Width; i++)
-            {
-                for (int j = 0; j < img.Height; j++)
-                {
-                    var pixel = img.GetPixel(i, j);
+            var pointer = img.GetPixels().ToPointer();
 
-                    colors[colorIndex++] = pixel.Red;
-                    colors[colorIndex++] = pixel.Green;
-                    colors[colorIndex++] = pixel.Blue;
-                    colors[colorIndex++] = pixel.Alpha;
-                }
-            }
+            var span = new ReadOnlySpan<byte>(pointer, numBytes);
 
-            return colors;
+            var stopwatch = Stopwatch.StartNew();
+            var imageData = new ImageData(span, img.Width, img.Height);
+            stopwatch.Stop();
+
+            Console.WriteLine($"ImageData ctor elapsed: {stopwatch.Elapsed}");
+
+            return imageData;
         }
     }
 }
