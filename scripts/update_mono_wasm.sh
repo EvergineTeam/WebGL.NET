@@ -1,5 +1,3 @@
-#!/bin/sh
-
 WASM_DROP_URL=https://jenkins.mono-project.com/job/test-mono-mainline-wasm/label=ubuntu-1804-amd64/lastSuccessfulBuild/Azure/
 WASM_HTML_CONTENT=$(curl -L $WASM_DROP_URL)
 WASM_SDK=$(echo $WASM_HTML_CONTENT | perl -ne 'print $1 if /(processDownloadRequest\/(.*?)\/ubuntu-1804-amd64\/sdks\/wasm\/mono-wasm-(.*?)\.zip)/s')

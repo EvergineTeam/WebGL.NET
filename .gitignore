@@ -1,5 +1,5 @@
 bin/
 obj/
 .vs/
-
+tools/
 node_modules/
