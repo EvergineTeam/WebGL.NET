@@ -1,4 +1,0 @@
-os: osx
-script:
-    - bash install_deps_osx.sh
-    - bash build.sh
