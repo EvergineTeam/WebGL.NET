@@ -4,8 +4,9 @@
 
 C# wrapper for WebGL through WebAssembly.
 
-See the samples running [here](https://webglnet.surge.sh)
+See the samples running [here](https://webglnet.surge.sh).
 
+(As of May 7th 2019, if you're in macOS please use Visual Studio Code; its brother Visual Studio for Mac currently doesn't support the latests .NET Core SDKs.)
 
 ## Features
 
