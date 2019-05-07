@@ -1,17 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using SkiaSharp;
-using WaveEngine.Common.Math;
-using WebAssembly;
 using WebGLDotNET;
 
 namespace Samples
 {
     public class TexturedCubeFromAssets : BaseTexturedCube
     {
-        const string AssetPath = "Assets/PlainConcepts.bmp";
+        const string AssetPath = "Assets/PlainConcepts.png";
 
         public override string Description =>
             $"Texture comes from a HttpClient retrieving <a href=\"{AssetPath}\">it</a> and them we load colors through " +
@@ -74,7 +71,7 @@ namespace Samples
 
             var stopwatch = Stopwatch.StartNew();
 
-            // TODO: check jpg
+            // TODO: Uno.SkiaSharp unable to handle jpg format
             var image = SKBitmap.Decode(content);
 
             stopwatch.Stop();
@@ -120,11 +117,7 @@ namespace Samples
 
             var span = new ReadOnlySpan<byte>(pointer, numBytes);
 
-            var stopwatch = Stopwatch.StartNew();
             var imageData = new ImageData(span, img.Width, img.Height);
-            stopwatch.Stop();
-
-            Console.WriteLine($"ImageData ctor elapsed: {stopwatch.Elapsed}");
 
             return imageData;
         }
