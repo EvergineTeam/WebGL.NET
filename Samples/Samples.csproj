@@ -5,18 +5,7 @@
 	  <NoWarn>NU1701;NU1604</NoWarn>
     <MonoWasmLinkMode>None</MonoWasmLinkMode>
   </PropertyGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="LinkDescriptor\Samples.xml">
-      <LogicalName>Samples.xml</LogicalName>
-    </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <_WasmItem Remove="Scripts\canvaskit.js" />
-    <_WasmItem Remove="Scripts\SkiaSharp.js" />
-  </ItemGroup>
-  
+ 
   <ItemGroup>
     <PackageReference Include="glTF2Loader" Version="1.1.3-alpha" />
     <PackageReference Include="Humanizer.Core" Version="2.6.2" />

@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Samples.Helpers
 {
-    public class EmbeddedResourceHelper
+    public static class EmbeddedResourceHelper
     {
         public static Stream Load(string resourceName, Assembly assembly = null)
         {

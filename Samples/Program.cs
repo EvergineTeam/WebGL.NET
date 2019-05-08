@@ -19,17 +19,17 @@ namespace Samples
 
         static void Main()
         {
-            AddHeader1("WebGL.NET Samples Gallery");
+            HtmlHelper.AddHeader1("WebGL.NET Samples Gallery");
 
             // Let's first check if we can continue with WebGL2 instead of crashing.
             if (!isBrowserSupportsWebGL2())
             {
-                AddParagraph("We are sorry, but your browser does not seem to support WebGL2.");
-                AddParagraph("See the <a href=\"https://github.com/WaveEngine/WebGL.NET\">GitHub repo</a>.");
+                HtmlHelper.AddParagraph("We are sorry, but your browser does not seem to support WebGL2.");
+                HtmlHelper.AddParagraph("See the <a href=\"https://github.com/WaveEngine/WebGL.NET\">GitHub repo</a>.");
                 return;
             }
 
-            AddParagraph(
+            HtmlHelper.AddParagraph(
                 "A collection of WebGL samples translated from .NET/C# into WebAssembly. " +
                 "See the <a href=\"https://github.com/WaveEngine/WebGL.NET\">GitHub repo</a>.");
 
@@ -50,15 +50,15 @@ namespace Samples
             {
                 var name = item.GetType().Name;
 
-                AddHeader2(name);
-                AddParagraph(item.Description);
+                HtmlHelper.AddHeader2(name);
+                HtmlHelper.AddParagraph(item.Description);
                 if (item is TransformFeedback)
-                    AddButton("transformNext", "Next");
+                    HtmlHelper.AddButton("transformNext", "Next");
 
                 if (item.LazyLoad)
-                    AddButton($"load_{name}", "Load sample");
+                    HtmlHelper.AddButton($"load_{name}", "Load sample");
 
-                using (var canvas = AddCanvas(name, CanvasWidth, CanvasHeight))
+                using (var canvas = HtmlHelper.AddCanvas(name, CanvasWidth, CanvasHeight))
                 {
                     item.Init(canvas, CanvasWidth, CanvasHeight, new Vector4(255, 0, 255, 255));
                     if (!item.LazyLoad)
@@ -72,84 +72,6 @@ namespace Samples
 
             RequestAnimationFrame();
         }
-
-        private static void AddGenerationStamp()
-        {
-            var buildDate = StampHelper.GetBuildDate(Assembly.GetExecutingAssembly());
-            AddParagraph($"Generated on {buildDate.ToString()} ({buildDate.Humanize()})");
-
-            var commitHash = StampHelper.GetCommitHash(Assembly.GetExecutingAssembly());
-            if (!string.IsNullOrEmpty(commitHash))
-            {
-                AddParagraph($"From git commit: {commitHash}");
-            }
-        }
-
-        static bool isBrowserSupportsWebGL2()
-        {
-            if (window == null)
-            {
-                window = (JSObject)Runtime.GetGlobalObject();
-            }
-
-            // This is a very simple check for WebGL2 support.
-            return window.GetObjectProperty("WebGL2RenderingContext") != null;
-        }
-
-        static JSObject AddCanvas(string id, int width, int height)
-        {
-            using (var document = (JSObject)Runtime.GetGlobalObject("document"))
-            using (var body = (JSObject)document.GetObjectProperty("body"))
-            {
-                var canvas = (JSObject)document.Invoke("createElement", "canvas");
-                canvas.SetObjectProperty("width", width);
-                canvas.SetObjectProperty("height", height);
-                canvas.SetObjectProperty("id", id);
-                body.Invoke("appendChild", canvas);
-
-                return canvas;
-            }
-        }
-
-        static void AddHeader(int headerIndex, string text)
-        {
-            using (var document = (JSObject)Runtime.GetGlobalObject("document"))
-            using (var body = (JSObject)document.GetObjectProperty("body"))
-            using (var header = (JSObject)document.Invoke("createElement", $"h{headerIndex}"))
-            using (var headerText = (JSObject)document.Invoke("createTextNode", text))
-            {
-                header.Invoke("appendChild", headerText);
-                body.Invoke("appendChild", header);
-            }
-        }
-
-        static void AddHeader1(string text) => AddHeader(1, text);
-
-        static void AddHeader2(string text) => AddHeader(2, text);
-
-        static void AddParagraph(string text)
-        {
-            using (var document = (JSObject)Runtime.GetGlobalObject("document"))
-            using (var body = (JSObject)document.GetObjectProperty("body"))
-            using (var paragraph = (JSObject)document.Invoke("createElement", "p"))
-            {
-                paragraph.SetObjectProperty("innerHTML", text);
-                body.Invoke("appendChild", paragraph);
-            }
-        }
-
-        static void AddButton(string id, string text)
-        {
-            using (var document = (JSObject)Runtime.GetGlobalObject("document"))
-            using (var body = (JSObject)document.GetObjectProperty("body"))
-            using (var button = (JSObject)document.Invoke("createElement", "button"))
-            {
-                button.SetObjectProperty("innerHTML", text);
-                button.SetObjectProperty("id", id);
-                body.Invoke("appendChild", button);
-            }
-        }
-
 
         static void Loop(double milliseconds)
         {
@@ -173,6 +95,29 @@ namespace Samples
             }
 
             window.Invoke("requestAnimationFrame", loop);
+        }
+
+        static bool isBrowserSupportsWebGL2()
+        {
+            if (window == null)
+            {
+                window = (JSObject)Runtime.GetGlobalObject();
+            }
+
+            // This is a very simple check for WebGL2 support.
+            return window.GetObjectProperty("WebGL2RenderingContext") != null;
+        }
+
+        static void AddGenerationStamp()
+        {
+            var buildDate = StampHelper.GetBuildDate(Assembly.GetExecutingAssembly());
+            HtmlHelper.AddParagraph($"Generated on {buildDate.ToString()} ({buildDate.Humanize()})");
+
+            var commitHash = StampHelper.GetCommitHash(Assembly.GetExecutingAssembly());
+            if (!string.IsNullOrEmpty(commitHash))
+            {
+                HtmlHelper.AddParagraph($"From git commit: {commitHash}");
+            }
         }
     }
 }
