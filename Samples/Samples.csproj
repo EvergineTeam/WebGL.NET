@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-   <Content Include="canvaskit.wasm">
+    <Content Include="canvaskit.wasm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
 
@@ -30,7 +30,23 @@
     <Content Include="Assets\PlainConcepts.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Assets\DamagedHelmet_img0.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\DamagedHelmet_img1.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\DamagedHelmet_img2.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\DamagedHelmet_img3.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\DamagedHelmet_img4.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     
+    <!-- TODO move into Content for best practice -->
     <EmbeddedResource Include="Resources\DamagedHelmet.glb">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
