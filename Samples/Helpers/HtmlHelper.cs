@@ -1,4 +1,5 @@
-﻿using WebAssembly;
+﻿using System;
+using WebAssembly;
 
 namespace Samples.Helpers
 {
@@ -55,6 +56,15 @@ namespace Samples.Helpers
                 button.SetObjectProperty("innerHTML", text);
                 button.SetObjectProperty("id", id);
                 body.Invoke("appendChild", button);
+            }
+        }
+
+        public static void AttachButtonOnClickEvent(string id, Action<JSObject> onClickAction)
+        {
+            using (var document = (JSObject)Runtime.GetGlobalObject("document"))
+            using (var button = (JSObject)document.Invoke("getElementById", id))
+            {
+                button.SetObjectProperty("onclick", onClickAction);
             }
         }
     }

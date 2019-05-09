@@ -14,8 +14,6 @@ namespace Samples
             $"Texture comes from a HttpClient retrieving <a href=\"{AssetPath}\">it</a> and them we load colors through " +
             "[Uno.SkiaSharp] SKBitmap.Decode.";
 
-        public override bool LazyLoad => false;
-
         private TaskCompletionSource<bool> canvasKitTcs = new TaskCompletionSource<bool>();
 
         protected override async void LoadImage()

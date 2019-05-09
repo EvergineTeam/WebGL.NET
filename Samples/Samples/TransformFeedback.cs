@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Samples.Helpers;
+using System;
 using WaveEngine.Common.Math;
 using WebAssembly;
 using WebGLDotNET;
@@ -17,20 +18,23 @@ namespace Samples
 
         private bool shouldDraw = true;
         private JSObject currentCanvas;
+        private static JSObject contextAttributes;
 
         public string Description => "Simple Transform Feedback WebGL 2 demo from <a href=\"https://www.ibiblio.org/e-notes/webgl/gpu/bounce.htm\">here</a>. " +
             "Points from vertex shader output are swapped between buffers. Then we unbind it and swap buffers for the next draw.";
 
-        public bool LazyLoad => false;
-
         public void Init(JSObject canvas, int canvasWidth, int canvasHeight, Vector4 clearColor)
         {
             currentCanvas = canvas;
+
+            HtmlHelper.AddButton("transformNext", "Next");
         }
 
         public void Run()
         {
-            gl = new WebGL2RenderingContext(currentCanvas);
+            InitContextAttributes();
+
+            gl = new WebGL2RenderingContext(currentCanvas, contextAttributes);
 
             var vertexShaderCode =
 @"#version 300 es
@@ -64,35 +68,32 @@ void main(void)
             aPosLoc = (uint)gl.GetAttribLocation(shaderProgram, "aPos");
             gl.EnableVertexAttribArray(aPosLoc);
 
-            var bufAData = new float[]{ 0.8f, 0, 0, 1 };
+            var bufAData = new float[] { 0.8f, 0, 0, 1 };
             bufA = gl.CreateArrayBufferWithUsage(bufAData, WebGL2RenderingContextBase.DYNAMIC_COPY);
 
-            var bufBData = new float[4*4];
+            var bufBData = new float[4 * 4];
             bufB = gl.CreateArrayBufferWithUsage(bufBData, WebGL2RenderingContextBase.DYNAMIC_COPY);
 
             var transformFeedback = gl.CreateTransformFeedback();
             gl.BindTransformFeedback(WebGL2RenderingContextBase.TRANSFORM_FEEDBACK, transformFeedback);
 
-            attachButtonEvent();
-        }
-
-        private void attachButtonEvent()
-        {
-            using (var document = (JSObject)Runtime.GetGlobalObject("document"))
-            using (var button = (JSObject)document.Invoke("getElementById", "transformNext"))
-            {
-                button.SetObjectProperty("onclick", onClick());
-
-            }
-        }
-
-        public Action<JSObject> onClick ()  
-        {
-            return new Action<JSObject>(clickEvent =>
+            HtmlHelper.AttachButtonOnClickEvent("transformNext", new Action<JSObject>(clickEvent =>
             {
                 shouldDraw = true;
                 clickEvent.Dispose();
-            });
+            }));
+        }
+
+        private static void InitContextAttributes()
+        {
+            Runtime.InvokeJS(
+@"
+            var obj = {
+              antialias: false,
+              depth: false
+            };
+            Module.mono_call_static_method (""[Samples] Samples.TransformFeedback:GetCanvasContextAttributes"", [ obj ]);
+");
         }
 
         public void Update(double elapsedTime)
@@ -119,6 +120,11 @@ void main(void)
             bufB = t;
 
             shouldDraw = false;
+        }
+
+        public static void GetCanvasContextAttributes(JSObject obj)
+        {
+            contextAttributes = obj;
         }
     }
 }

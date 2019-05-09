@@ -15,8 +15,6 @@ namespace Samples
 
         public virtual string Description => string.Empty;
 
-        public virtual bool LazyLoad => false;
-
         public virtual void Draw()
         {
             gl.Enable(WebGLRenderingContextBase.DEPTH_TEST);

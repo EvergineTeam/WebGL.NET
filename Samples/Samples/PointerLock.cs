@@ -29,8 +29,6 @@ namespace Samples
 
         public string Description => "Pointer lock demo. See the <a href=\"https://mdn.github.io/dom-examples/pointer-lock/\"> original sample </a>";
 
-        public bool LazyLoad { get; set; } = false;
-
         public void Init(JSObject canvas, int canvasWidth, int canvasHeight, Vector4 clearColor)
         {
             currentCanvas = canvas;
@@ -45,7 +43,7 @@ namespace Samples
 
                 using (var document = (JSObject)Runtime.GetGlobalObject("document"))
                 {
-                    var canvasName = this.GetType().Name;
+                    var canvasName = $"canvas_{this.GetType().Name}";
                     var canvasObject = (JSObject)document.Invoke("getElementById", canvasName);
 
                     var lockElement = (JSObject)document.GetObjectProperty("pointerLockElement");
@@ -98,7 +96,8 @@ namespace Samples
             var canvasClick = new Action<JSObject>((o) => {
                 using (var document = (JSObject)Runtime.GetGlobalObject("document"))
                 {
-                    var canvasObject = (JSObject)document.Invoke("getElementById", this.GetType().Name);
+                    var canvasName = $"canvas_{this.GetType().Name}";
+                    var canvasObject = (JSObject)document.Invoke("getElementById", canvasName);
 
                     var supportPointerLock = canvasObject.GetObjectProperty("requestPointerLock");
                     if (supportPointerLock != null)

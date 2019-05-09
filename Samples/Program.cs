@@ -11,6 +11,7 @@ namespace Samples
     {
         const int CanvasWidth = 640;
         const int CanvasHeight = 480;
+        static readonly Vector4 CanvasColor = new Vector4(255, 0, 255, 255);
 
         static ISample[] samples;
         static Action<double> loop = new Action<double>(Loop);
@@ -48,23 +49,28 @@ namespace Samples
 
             foreach (var item in samples)
             {
-                var name = item.GetType().Name;
+                var sampleName = item.GetType().Name;
 
-                HtmlHelper.AddHeader2(name);
+                HtmlHelper.AddHeader2(sampleName);
                 HtmlHelper.AddParagraph(item.Description);
-                if (item is TransformFeedback)
-                    HtmlHelper.AddButton("transformNext", "Next");
 
-                if (item.LazyLoad)
-                    HtmlHelper.AddButton($"load_{name}", "Load sample");
+                var fullscreenButtonName = $"fullscreen_{sampleName}";
+                HtmlHelper.AddButton(fullscreenButtonName, "Enter fullscreen");
 
-                using (var canvas = HtmlHelper.AddCanvas(name, CanvasWidth, CanvasHeight))
+                var canvasName = $"canvas_{sampleName}";
+                using (var canvas = HtmlHelper.AddCanvas(canvasName, CanvasWidth, CanvasHeight))
                 {
-                    item.Init(canvas, CanvasWidth, CanvasHeight, new Vector4(255, 0, 255, 255));
-                    if (!item.LazyLoad)
+                    HtmlHelper.AttachButtonOnClickEvent(fullscreenButtonName, new Action<JSObject>((o) =>
                     {
-                        item.Run();
-                    }
+                        using (var document = (JSObject)Runtime.GetGlobalObject("document"))
+                        using (var c = (JSObject)document.Invoke("getElementById", canvasName))
+                        {
+
+                        }
+                    }));
+
+                    item.Init(canvas, CanvasWidth, CanvasHeight, CanvasColor);
+                    item.Run();
                 }
             }
 
