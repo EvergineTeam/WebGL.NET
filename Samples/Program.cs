@@ -22,6 +22,7 @@ namespace Samples
 
         private static string fullscreenDivCanvasName;
         private static string fullscreenCanvasName;
+        private static ISample fullscreenSample;
 
         static void Main()
         {
@@ -66,9 +67,12 @@ namespace Samples
                     sample.Init(canvas, CanvasColor);
                     sample.Run();
 
-                    var fullscreenButtonName = $"fullscreen_{sampleName}";
-                    HtmlHelper.AddButton(fullscreenButtonName, "Enter fullscreen");
-                    AddFullScreenHandler(fullscreenButtonName, divCanvasName, canvasName);
+                    if (sample.EnableFullScreen)
+                    {
+                        var fullscreenButtonName = $"fullscreen_{sampleName}";
+                        HtmlHelper.AddButton(fullscreenButtonName, "Enter fullscreen");
+                        AddFullScreenHandler(sample, fullscreenButtonName, divCanvasName, canvasName);
+                    }
                 }
             }
 
@@ -93,18 +97,22 @@ namespace Samples
 
                         if (fullscreenElement != null)
                         {
+                            //TODO: Not working :S
                             //var rect = (JSObject)divCanvasObject.Invoke("getBoundingClientRect");
 
                             //var width = (JSObject)rect.GetObjectProperty("width");
                             //var height = (JSObject)rect.GetObjectProperty("height");
 
-                            canvasObject.SetObjectProperty("width", 1024);
-                            canvasObject.SetObjectProperty("height", 768);
+                            var newWidth = 1024;
+                            var newHeight = 768;
+
+                            SetNewCanvasSize(canvasObject, newWidth, newHeight);
+                            fullscreenSample.Resize(newWidth, newHeight);
                         }
                         else
                         {
-                            canvasObject.SetObjectProperty("width", CanvasWidth);
-                            canvasObject.SetObjectProperty("height", CanvasHeight);
+                            SetNewCanvasSize(canvasObject, CanvasWidth, CanvasHeight);
+                            fullscreenSample.Resize(CanvasWidth, CanvasHeight);
                         }
                     }
 
@@ -113,17 +121,24 @@ namespace Samples
             }
         }
 
-        private static void AddFullScreenHandler(string fullscreenButtonName, string divCanvasName, string canvasName)
+        private static void SetNewCanvasSize(JSObject canvasObject, int newWidth, int newHeight)
+        {
+            canvasObject.SetObjectProperty("width", newWidth);
+            canvasObject.SetObjectProperty("height", newHeight);
+        }
+
+        private static void AddFullScreenHandler(ISample sample, string fullscreenButtonName, string divCanvasName, string canvasName)
         {
             HtmlHelper.AttachButtonOnClickEvent(fullscreenButtonName, new Action<JSObject>((o) =>
             {
+                fullscreenSample = sample;
                 fullscreenCanvasName = canvasName;
                 fullscreenDivCanvasName = divCanvasName;
 
                 using (var document = (JSObject)Runtime.GetGlobalObject("document"))
-                using (var c = (JSObject)document.Invoke("getElementById", divCanvasName))
+                using (var div = (JSObject)document.Invoke("getElementById", divCanvasName))
                 {
-                    c.Invoke("requestFullscreen");
+                    div.Invoke("requestFullscreen");
                 }
 
                 o.Dispose();

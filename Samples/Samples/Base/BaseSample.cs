@@ -15,6 +15,8 @@ namespace Samples
 
         public virtual string Description => string.Empty;
 
+        public virtual bool EnableFullScreen => true;
+
         public virtual void Init(JSObject canvas, Vector4 clearColor)
         {
             this.clearColor = clearColor;
@@ -40,6 +42,12 @@ namespace Samples
 
             gl.ClearColor(clearColor.X, clearColor.Y, clearColor.Z, clearColor.W);
             gl.Clear(WebGLRenderingContextBase.COLOR_BUFFER_BIT);
+        }
+
+        public virtual void Resize(int width, int height)
+        {
+            canvasWidth = width;
+            canvasHeight = height;
         }
     }
 }

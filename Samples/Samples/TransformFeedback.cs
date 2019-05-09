@@ -22,6 +22,8 @@ namespace Samples
         private JSObject canvas;
         private static JSObject contextAttributes;
 
+        public bool EnableFullScreen => false;
+
         public string Description => "Simple Transform Feedback WebGL 2 demo from <a href=\"https://www.ibiblio.org/e-notes/webgl/gpu/bounce.htm\">here</a>. " +
             "Points from vertex shader output are swapped between buffers. Then we unbind it and swap buffers for the next draw.";
 
@@ -131,6 +133,10 @@ void main(void)
         public static void GetCanvasContextAttributes(JSObject obj)
         {
             contextAttributes = obj;
+        }
+
+        public void Resize(int width, int height)
+        {
         }
     }
 }

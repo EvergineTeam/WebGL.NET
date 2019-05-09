@@ -5,7 +5,6 @@ using glTFLoader;
 using glTFLoader.Schema;
 using Samples.Helpers;
 using WaveEngine.Common.Math;
-using WebAssembly;
 using WebGLDotNET;
 
 namespace Samples

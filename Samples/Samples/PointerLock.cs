@@ -7,6 +7,8 @@ namespace Samples
     // https://www.html5rocks.com/en/tutorials/pointerlock/intro/
     public class PointerLock : ISample
     {
+        private const float RADIUS = 20;
+
         private JSObject ctx;
 
         private float x = 50;
@@ -19,13 +21,7 @@ namespace Samples
 
         private bool listenToMouseEvent;
 
-        private const float RADIUS = 20;
-
-        public double degToRad(float degrees)
-        {
-            var result = Math.PI / 180 * degrees;
-            return result;
-        }
+        public bool EnableFullScreen => true;
 
         public string Description => "Pointer lock demo. See the <a href=\"https://mdn.github.io/dom-examples/pointer-lock/\"> original sample </a>";
 
@@ -145,6 +141,18 @@ namespace Samples
         public void Draw()
         {
             CanvasDraw();
+        }
+
+        public void Resize(int width, int height)
+        {
+            canvasWidth = width;
+            canvasHeight = height;
+        }
+
+        private double degToRad(float degrees)
+        {
+            var result = Math.PI / 180 * degrees;
+            return result;
         }
     }
 }
