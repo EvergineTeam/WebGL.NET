@@ -67,9 +67,6 @@ namespace Samples
 
                 using (var document = (JSObject)Runtime.GetGlobalObject("document"))
                 {
-                    var canvasName = $"canvas_{this.GetType().Name}";
-                    var canvasObject = (JSObject)document.Invoke("getElementById", canvasName);
-
                     var lockElement = (JSObject)document.GetObjectProperty("pointerLockElement");
                     var mozLockElement = (JSObject)document.GetObjectProperty("mozPointerLockElement");
 
@@ -94,10 +91,15 @@ namespace Samples
 
                 document.Invoke("addEventListener", "mousemove", new Action<JSObject>((mEvent) => {
 
-                    if (!listenToMouseEvent) return;
-
                     var mX = (int)mEvent.GetObjectProperty("movementX");
                     var mY = (int)mEvent.GetObjectProperty("movementY");
+
+                    mEvent.Dispose();
+
+                    if (!listenToMouseEvent)
+                    {
+                        return;
+                    }
 
                     x += mX;
                     y += mY;
@@ -119,7 +121,6 @@ namespace Samples
                         y = canvasHeight + RADIUS;
                     }
 
-                    mEvent.Dispose();
                 }), false);
             }
         }

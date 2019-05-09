@@ -5,7 +5,7 @@ namespace Samples.Helpers
 {
     public static class HtmlHelper
     {
-        public static JSObject AddCanvas(string id, int width, int height)
+        public static JSObject AddCanvas(string divId, string canvasId, int width, int height)
         {
             using (var document = (JSObject)Runtime.GetGlobalObject("document"))
             using (var body = (JSObject)document.GetObjectProperty("body"))
@@ -13,8 +13,15 @@ namespace Samples.Helpers
                 var canvas = (JSObject)document.Invoke("createElement", "canvas");
                 canvas.SetObjectProperty("width", width);
                 canvas.SetObjectProperty("height", height);
-                canvas.SetObjectProperty("id", id);
-                body.Invoke("appendChild", canvas);
+                canvas.SetObjectProperty("id", canvasId);
+                
+                using (var canvasDiv = (JSObject)document.Invoke("createElement", "div"))
+                {
+                    canvasDiv.SetObjectProperty("id", divId);
+                    canvasDiv.Invoke("appendChild", canvas);
+
+                    body.Invoke("appendChild", canvasDiv);
+                }
 
                 return canvas;
             }

@@ -19,6 +19,8 @@ namespace Samples
         static double previousMilliseconds;
 
         static JSObject window;
+
+        private static string fullscreenDivCanvasName;
         private static string fullscreenCanvasName;
 
         static void Main()
@@ -57,15 +59,16 @@ namespace Samples
                 HtmlHelper.AddHeader2(sampleName);
                 HtmlHelper.AddParagraph(sample.Description);
 
+                var divCanvasName = $"div_canvas_{sampleName}";
                 var canvasName = $"canvas_{sampleName}";
-                using (var canvas = HtmlHelper.AddCanvas(canvasName, CanvasWidth, CanvasHeight))
+                using (var canvas = HtmlHelper.AddCanvas(divCanvasName, canvasName, CanvasWidth, CanvasHeight))
                 {
                     sample.Init(canvas, CanvasColor);
                     sample.Run();
 
                     var fullscreenButtonName = $"fullscreen_{sampleName}";
                     HtmlHelper.AddButton(fullscreenButtonName, "Enter fullscreen");
-                    AddFullScreenHandler(fullscreenButtonName, canvasName);
+                    AddFullScreenHandler(fullscreenButtonName, divCanvasName, canvasName);
                 }
             }
 
@@ -84,20 +87,25 @@ namespace Samples
                 {
                     using (var d = (JSObject)Runtime.GetGlobalObject("document"))
                     {
+                        var fullscreenElement = (JSObject)d.GetObjectProperty("fullscreenElement");
+                        var divCanvasObject = (JSObject)d.Invoke("getElementById", fullscreenDivCanvasName);
                         var canvasObject = (JSObject)d.Invoke("getElementById", fullscreenCanvasName);
 
-                        //if (document.mozFullScreen || document.webkitIsFullScreen)
-                        //{
-                        //    var rect = (JSObject)canvasObject.Invoke("getBoundingClientRect");
+                        if (fullscreenElement != null)
+                        {
+                            //var rect = (JSObject)divCanvasObject.Invoke("getBoundingClientRect");
 
-                        //    canvasObject.SetObjectProperty("width", rect.GetObjectProperty("width"));
-                        //    canvasObject.SetObjectProperty("height", rect.GetObjectProperty("height"));
-                        //}
-                        //else
-                        //{
-                        //    canvasObject.SetObjectProperty("width", CanvasWidth);
-                        //    canvasObject.SetObjectProperty("height", CanvasHeight);
-                        //}
+                            //var width = (JSObject)rect.GetObjectProperty("width");
+                            //var height = (JSObject)rect.GetObjectProperty("height");
+
+                            canvasObject.SetObjectProperty("width", 1024);
+                            canvasObject.SetObjectProperty("height", 768);
+                        }
+                        else
+                        {
+                            canvasObject.SetObjectProperty("width", CanvasWidth);
+                            canvasObject.SetObjectProperty("height", CanvasHeight);
+                        }
                     }
 
                     o.Dispose();
@@ -105,16 +113,17 @@ namespace Samples
             }
         }
 
-        private static void AddFullScreenHandler(string fullscreenButtonName, string canvasName)
+        private static void AddFullScreenHandler(string fullscreenButtonName, string divCanvasName, string canvasName)
         {
             HtmlHelper.AttachButtonOnClickEvent(fullscreenButtonName, new Action<JSObject>((o) =>
             {
+                fullscreenCanvasName = canvasName;
+                fullscreenDivCanvasName = divCanvasName;
+
                 using (var document = (JSObject)Runtime.GetGlobalObject("document"))
-                using (var c = (JSObject)document.Invoke("getElementById", canvasName))
+                using (var c = (JSObject)document.Invoke("getElementById", divCanvasName))
                 {
                     c.Invoke("requestFullscreen");
-
-                    fullscreenCanvasName = canvasName;
                 }
 
                 o.Dispose();
