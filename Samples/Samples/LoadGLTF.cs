@@ -33,14 +33,6 @@ namespace Samples
 
         void Initialize()
         {
-            var aspectRatio = (float)canvasWidth / (float)canvasHeight;
-            var viewMatrix = Matrix.CreateLookAt(new Vector3(0, 0, 3), new Vector3(0, 0, 0), Vector3.UnitY);
-            var projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
-                MathHelper.PiOver4,
-                aspectRatio,
-                0.1f, 100f);
-            viewProjectionMatrix = Matrix.Multiply(viewMatrix, projectionMatrix);
-
             WebGLProgram shaderProgram;
 
             using (var vs = EmbeddedResourceHelper.Load("GLTFVertexShader.essl"))
@@ -110,6 +102,14 @@ namespace Samples
         public override void Update(double elapsedMilliseconds)
         {
             totalMilliseconds += elapsedMilliseconds;
+
+            var aspectRatio = (float)canvasWidth / (float)canvasHeight;
+            var viewMatrix = Matrix.CreateLookAt(new Vector3(0, 0, 3), new Vector3(0, 0, 0), Vector3.UnitY);
+            var projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
+                MathHelper.PiOver4,
+                aspectRatio,
+                0.1f, 100f);
+            viewProjectionMatrix = Matrix.Multiply(viewMatrix, projectionMatrix);
 
             var totalMillisecondsFloat = (float)totalMilliseconds;
             var offsetQuaternion = Quaternion.CreateFromAxisAngle(Vector3.Right, MathHelper.PiOver2);

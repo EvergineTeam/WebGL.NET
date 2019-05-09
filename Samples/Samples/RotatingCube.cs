@@ -157,23 +157,21 @@ void main(void) {
             gl.VertexAttribPointer(colorAttribute, 3, WebGLRenderingContextBase.FLOAT, false, 0, 0);
             gl.EnableVertexAttribArray(colorAttribute);
 
-            var aspectRatio = (float)canvasWidth / (float)canvasHeight;
-
-            projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
-                (float)Math.PI / 4, aspectRatio, 0.1f, 1000f);
-            gl.UniformMatrix4fv(pMatrixUniform, false, projectionMatrix.ToArray());
-
-            viewMatrix = Matrix.CreateLookAt(Vector3.UnitZ * 10, Vector3.Zero, Vector3.Up);
-            gl.UniformMatrix4fv(vMatrixUniform, false, viewMatrix.ToArray());
+            gl.BindBuffer(WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER, indexBuffer);
 
             worldMatrix = Matrix.Identity;
-
-            gl.BindBuffer(WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER, indexBuffer);
         }
 
         public override void Update(double elapsedMilliseconds)
         {
             base.Update(elapsedMilliseconds);
+
+            var aspectRatio = (float)canvasWidth / (float)canvasHeight;
+
+            projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
+                (float)Math.PI / 4, aspectRatio, 0.1f, 1000f);
+
+            viewMatrix = Matrix.CreateLookAt(Vector3.UnitZ * 10, Vector3.Zero, Vector3.Up);
 
             var elapsedMillisecondsFloat = (float)elapsedMilliseconds;
             var rotation = Quaternion.CreateFromYawPitchRoll(
@@ -187,6 +185,8 @@ void main(void) {
         {
             base.Draw();
 
+            gl.UniformMatrix4fv(pMatrixUniform, false, projectionMatrix.ToArray());
+            gl.UniformMatrix4fv(vMatrixUniform, false, viewMatrix.ToArray());
             gl.UniformMatrix4fv(wMatrixUniform, false, worldMatrix.ToArray());
 
             gl.DrawElements(

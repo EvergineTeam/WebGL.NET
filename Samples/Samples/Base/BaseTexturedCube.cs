@@ -156,14 +156,6 @@ void main(void) {
 
             gl.EnableVertexAttribArray(textureCoordAttribute);
             gl.VertexAttribPointer(textureCoordAttribute, 2, WebGLRenderingContextBase.FLOAT, false, 0, 0);
-
-            var aspectRatio = (float)canvasWidth / (float)canvasHeight;
-
-            projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
-                MathHelper.ToRadians(45),
-                aspectRatio, 
-                0.1f, 
-                100f);
         }
 
         public override void Update(double elapsedTime)
@@ -172,6 +164,14 @@ void main(void) {
 
             var elapsedTimeSeconds = elapsedTime * 0.001;
             totalElapsedTimeSeconds += elapsedTimeSeconds;
+
+            var aspectRatio = (float)canvasWidth / (float)canvasHeight;
+
+            projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
+                MathHelper.ToRadians(45),
+                aspectRatio,
+                0.1f,
+                100f);
 
             modelViewMatrix = Matrix.Identity;
             modelViewMatrix *= Matrix.CreateRotationZ((float)totalElapsedTimeSeconds);

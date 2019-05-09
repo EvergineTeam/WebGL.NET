@@ -23,8 +23,6 @@ namespace Samples
 
         static void Main()
         {
-            HtmlHelper.AddHeader1("WebGL.NET Samples Gallery");
-
             // Let's first check if we can continue with WebGL2 instead of crashing.
             if (!isBrowserSupportsWebGL2())
             {
@@ -32,6 +30,8 @@ namespace Samples
                 HtmlHelper.AddParagraph("See the <a href=\"https://github.com/WaveEngine/WebGL.NET\">GitHub repo</a>.");
                 return;
             }
+
+            HtmlHelper.AddHeader1("WebGL.NET Samples Gallery");
 
             HtmlHelper.AddParagraph(
                 "A collection of WebGL samples translated from .NET/C# into WebAssembly. " +
@@ -50,18 +50,18 @@ namespace Samples
                 new PointerLock(),
             };
 
-            foreach (var item in samples)
+            foreach (var sample in samples)
             {
-                var sampleName = item.GetType().Name;
+                var sampleName = sample.GetType().Name;
 
                 HtmlHelper.AddHeader2(sampleName);
-                HtmlHelper.AddParagraph(item.Description);
+                HtmlHelper.AddParagraph(sample.Description);
 
                 var canvasName = $"canvas_{sampleName}";
                 using (var canvas = HtmlHelper.AddCanvas(canvasName, CanvasWidth, CanvasHeight))
                 {
-                    item.Init(canvas, CanvasColor);
-                    item.Run();
+                    sample.Init(canvas, CanvasColor);
+                    sample.Run();
 
                     var fullscreenButtonName = $"fullscreen_{sampleName}";
                     HtmlHelper.AddButton(fullscreenButtonName, "Enter fullscreen");
