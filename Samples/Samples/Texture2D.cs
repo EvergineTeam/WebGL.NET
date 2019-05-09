@@ -1,7 +1,4 @@
-﻿using WaveEngine.Common.Graphics;
-using WaveEngine.Common.Math;
-using WebAssembly;
-using WebGLDotNET;
+﻿using WebGLDotNET;
 
 namespace Samples
 {

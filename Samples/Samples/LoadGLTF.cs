@@ -33,10 +33,11 @@ namespace Samples
 
         void Initialize()
         {
+            var aspectRatio = (float)canvasWidth / (float)canvasHeight;
             var viewMatrix = Matrix.CreateLookAt(new Vector3(0, 0, 3), new Vector3(0, 0, 0), Vector3.UnitY);
             var projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
                 MathHelper.PiOver4,
-                canvasWidth / canvasHeight,
+                aspectRatio,
                 0.1f, 100f);
             viewProjectionMatrix = Matrix.Multiply(viewMatrix, projectionMatrix);
 

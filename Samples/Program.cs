@@ -14,9 +14,12 @@ namespace Samples
         static readonly Vector4 CanvasColor = new Vector4(255, 0, 255, 255);
 
         static ISample[] samples;
+
         static Action<double> loop = new Action<double>(Loop);
         static double previousMilliseconds;
+
         static JSObject window;
+        private static string fullscreenCanvasName;
 
         static void Main()
         {
@@ -54,29 +57,68 @@ namespace Samples
                 HtmlHelper.AddHeader2(sampleName);
                 HtmlHelper.AddParagraph(item.Description);
 
-                var fullscreenButtonName = $"fullscreen_{sampleName}";
-                HtmlHelper.AddButton(fullscreenButtonName, "Enter fullscreen");
-
                 var canvasName = $"canvas_{sampleName}";
                 using (var canvas = HtmlHelper.AddCanvas(canvasName, CanvasWidth, CanvasHeight))
                 {
-                    HtmlHelper.AttachButtonOnClickEvent(fullscreenButtonName, new Action<JSObject>((o) =>
-                    {
-                        using (var document = (JSObject)Runtime.GetGlobalObject("document"))
-                        using (var c = (JSObject)document.Invoke("getElementById", canvasName))
-                        {
-
-                        }
-                    }));
-
-                    item.Init(canvas, CanvasWidth, CanvasHeight, CanvasColor);
+                    item.Init(canvas, CanvasColor);
                     item.Run();
+
+                    var fullscreenButtonName = $"fullscreen_{sampleName}";
+                    HtmlHelper.AddButton(fullscreenButtonName, "Enter fullscreen");
+                    AddFullScreenHandler(fullscreenButtonName, canvasName);
                 }
             }
+
+            AddEnterFullScreenHandler();
 
             AddGenerationStamp();
 
             RequestAnimationFrame();
+        }
+
+        private static void AddEnterFullScreenHandler()
+        {
+            using (var document = (JSObject)Runtime.GetGlobalObject("document"))
+            {
+                document.Invoke("addEventListener", "fullscreenchange", new Action<JSObject>((o) =>
+                {
+                    using (var d = (JSObject)Runtime.GetGlobalObject("document"))
+                    {
+                        var canvasObject = (JSObject)d.Invoke("getElementById", fullscreenCanvasName);
+
+                        //if (document.mozFullScreen || document.webkitIsFullScreen)
+                        //{
+                        //    var rect = (JSObject)canvasObject.Invoke("getBoundingClientRect");
+
+                        //    canvasObject.SetObjectProperty("width", rect.GetObjectProperty("width"));
+                        //    canvasObject.SetObjectProperty("height", rect.GetObjectProperty("height"));
+                        //}
+                        //else
+                        //{
+                        //    canvasObject.SetObjectProperty("width", CanvasWidth);
+                        //    canvasObject.SetObjectProperty("height", CanvasHeight);
+                        //}
+                    }
+
+                    o.Dispose();
+                }), false);
+            }
+        }
+
+        private static void AddFullScreenHandler(string fullscreenButtonName, string canvasName)
+        {
+            HtmlHelper.AttachButtonOnClickEvent(fullscreenButtonName, new Action<JSObject>((o) =>
+            {
+                using (var document = (JSObject)Runtime.GetGlobalObject("document"))
+                using (var c = (JSObject)document.Invoke("getElementById", canvasName))
+                {
+                    c.Invoke("requestFullscreen");
+
+                    fullscreenCanvasName = canvasName;
+                }
+
+                o.Dispose();
+            }));
         }
 
         static void Loop(double milliseconds)

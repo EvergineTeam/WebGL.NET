@@ -1,5 +1,4 @@
-﻿using WaveEngine.Common.Graphics;
-using WaveEngine.Common.Math;
+﻿using WaveEngine.Common.Math;
 using WebAssembly;
 using WebGLDotNET;
 
@@ -29,9 +28,9 @@ namespace Samples
         protected bool textureLoaded = false;
 
 
-        public override void Init(JSObject canvas, int canvasWidth, int canvasHeight, Vector4 clearColor)
+        public override void Init(JSObject canvas, Vector4 clearColor)
         {
-            base.Init(canvas, canvasWidth, canvasHeight, clearColor);
+            base.Init(canvas, clearColor);
         }
 
         public override void Run()
@@ -158,9 +157,11 @@ void main(void) {
             gl.EnableVertexAttribArray(textureCoordAttribute);
             gl.VertexAttribPointer(textureCoordAttribute, 2, WebGLRenderingContextBase.FLOAT, false, 0, 0);
 
+            var aspectRatio = (float)canvasWidth / (float)canvasHeight;
+
             projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
-                MathHelper.ToRadians(45), 
-                canvasWidth / canvasHeight, 
+                MathHelper.ToRadians(45),
+                aspectRatio, 
                 0.1f, 
                 100f);
         }

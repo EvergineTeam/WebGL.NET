@@ -7,7 +7,7 @@ namespace Samples
     {
         string Description { get; }
 
-        void Init(JSObject canvas, int canvasWidth, int canvasHeight, Vector4 vector4);
+        void Init(JSObject canvas, Vector4 vector4);
 
         void Run();
 

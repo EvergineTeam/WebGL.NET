@@ -17,15 +17,18 @@ namespace Samples
         private WebGLBuffer bufB;
 
         private bool shouldDraw = true;
-        private JSObject currentCanvas;
+
+        private Vector4 clearColor;
+        private JSObject canvas;
         private static JSObject contextAttributes;
 
         public string Description => "Simple Transform Feedback WebGL 2 demo from <a href=\"https://www.ibiblio.org/e-notes/webgl/gpu/bounce.htm\">here</a>. " +
             "Points from vertex shader output are swapped between buffers. Then we unbind it and swap buffers for the next draw.";
 
-        public void Init(JSObject canvas, int canvasWidth, int canvasHeight, Vector4 clearColor)
+        public void Init(JSObject canvas, Vector4 clearColor)
         {
-            currentCanvas = canvas;
+            this.clearColor = clearColor;
+            this.canvas = canvas;
 
             HtmlHelper.AddButton("transformNext", "Next");
         }
@@ -34,7 +37,7 @@ namespace Samples
         {
             InitContextAttributes();
 
-            gl = new WebGL2RenderingContext(currentCanvas, contextAttributes);
+            gl = new WebGL2RenderingContext(canvas, contextAttributes);
 
             var vertexShaderCode =
 @"#version 300 es
@@ -104,6 +107,9 @@ void main(void)
             if (!shouldDraw)
                 return;
 
+            gl.Enable(WebGLRenderingContextBase.DEPTH_TEST);
+
+            gl.ClearColor(clearColor.X, clearColor.Y, clearColor.Z, clearColor.W);
             gl.Clear(WebGLRenderingContextBase.COLOR_BUFFER_BIT);
 
             gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, bufA);

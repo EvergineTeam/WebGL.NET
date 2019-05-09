@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Drawing;
 using WaveEngine.Common.Math;
-using WebAssembly;
 using WebGLDotNET;
 
 namespace Samples
@@ -159,8 +157,10 @@ void main(void) {
             gl.VertexAttribPointer(colorAttribute, 3, WebGLRenderingContextBase.FLOAT, false, 0, 0);
             gl.EnableVertexAttribArray(colorAttribute);
 
+            var aspectRatio = (float)canvasWidth / (float)canvasHeight;
+
             projectionMatrix = Matrix.CreatePerspectiveFieldOfView(
-                (float)Math.PI / 4, canvasWidth / canvasHeight, 0.1f, 1000f);
+                (float)Math.PI / 4, aspectRatio, 0.1f, 1000f);
             gl.UniformMatrix4fv(pMatrixUniform, false, projectionMatrix.ToArray());
 
             viewMatrix = Matrix.CreateLookAt(Vector3.UnitZ * 10, Vector3.Zero, Vector3.Up);
