@@ -5,6 +5,8 @@ namespace Samples
     // Based on: https://webglfundamentals.org/webgl/lessons/webgl-image-processing.html
     public class Texture2D : BaseSample
     {
+        private WebGLUniformLocation resolutionUniform;
+
         public override string Description => "The image is passed as byte[] in ARGB.";
 
         public override void Run()
@@ -96,8 +98,7 @@ void main() {
                 WebGLRenderingContextBase.UNSIGNED_BYTE, 
                 imageData);
 
-            var resolutionUniform = gl.GetUniformLocation(shaderProgram, "resolution");
-            gl.Uniform2f(resolutionUniform, canvasWidth, canvasHeight);
+            this.resolutionUniform = gl.GetUniformLocation(shaderProgram, "resolution");
 
             gl.EnableVertexAttribArray(positionAttribute);
             gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, positionBuffer);
@@ -112,6 +113,7 @@ void main() {
         {
             base.Draw();
 
+            gl.Uniform2f(resolutionUniform, canvasWidth, canvasHeight);
             gl.DrawArrays(WebGLRenderingContextBase.TRIANGLES, 0, 6);
         }
     }
