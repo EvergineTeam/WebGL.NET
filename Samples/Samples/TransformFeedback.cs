@@ -10,6 +10,8 @@ namespace Samples
     // https://webglreport.com/?v=2
     public class TransformFeedback : ISample
     {
+        private const string ButtonId = "transformNext";
+
         private WebGL2RenderingContext gl;
 
         private uint aPosLoc;
@@ -22,6 +24,9 @@ namespace Samples
         private JSObject canvas;
         private static JSObject contextAttributes;
 
+        private int canvasWidth;
+        private int canvasHeight;
+
         public bool EnableFullScreen => false;
 
         public string Description => "Simple Transform Feedback WebGL 2 demo from <a href=\"https://www.ibiblio.org/e-notes/webgl/gpu/bounce.htm\">here</a>. " +
@@ -32,7 +37,15 @@ namespace Samples
             this.clearColor = clearColor;
             this.canvas = canvas;
 
-            HtmlHelper.AddButton("transformNext", "Next");
+            canvasWidth = (int)canvas.GetObjectProperty("width");
+            canvasHeight = (int)canvas.GetObjectProperty("height");
+
+            HtmlHelper.AddButton(ButtonId, "Next");
+            HtmlHelper.AttachButtonOnClickEvent(ButtonId, new Action<JSObject>(clickEvent =>
+            {
+                shouldDraw = true;
+                clickEvent.Dispose();
+            }));
         }
 
         public void Run()
@@ -81,12 +94,6 @@ void main(void)
 
             var transformFeedback = gl.CreateTransformFeedback();
             gl.BindTransformFeedback(WebGL2RenderingContextBase.TRANSFORM_FEEDBACK, transformFeedback);
-
-            HtmlHelper.AttachButtonOnClickEvent("transformNext", new Action<JSObject>(clickEvent =>
-            {
-                shouldDraw = true;
-                clickEvent.Dispose();
-            }));
         }
 
         private static void InitContextAttributes()
@@ -110,6 +117,8 @@ void main(void)
                 return;
 
             gl.Enable(WebGLRenderingContextBase.DEPTH_TEST);
+
+            gl.Viewport(0, 0, canvasWidth, canvasHeight);
 
             gl.ClearColor(clearColor.X, clearColor.Y, clearColor.Z, clearColor.W);
             gl.Clear(WebGLRenderingContextBase.COLOR_BUFFER_BIT);
@@ -137,6 +146,8 @@ void main(void)
 
         public void Resize(int width, int height)
         {
+            canvasWidth = width;
+            canvasHeight = height;
         }
     }
 }

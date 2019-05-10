@@ -40,6 +40,8 @@ namespace Samples
         {
             gl.Enable(WebGLRenderingContextBase.DEPTH_TEST);
 
+            gl.Viewport(0, 0, canvasWidth, canvasHeight);
+
             gl.ClearColor(clearColor.X, clearColor.Y, clearColor.Z, clearColor.W);
             gl.Clear(WebGLRenderingContextBase.COLOR_BUFFER_BIT);
         }
