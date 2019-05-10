@@ -97,17 +97,11 @@ namespace Samples
 
                         if (fullscreenElement != null)
                         {
-                            //TODO: Not working :S
-                            //var rect = (JSObject)divCanvasObject.Invoke("getBoundingClientRect");
+                            var width = (int)divCanvasObject.GetObjectProperty("clientWidth");
+                            var height = (int)divCanvasObject.GetObjectProperty("clientHeight");
 
-                            //var width = (JSObject)rect.GetObjectProperty("width");
-                            //var height = (JSObject)rect.GetObjectProperty("height");
-
-                            var newWidth = 1024;
-                            var newHeight = 768;
-
-                            SetNewCanvasSize(canvasObject, newWidth, newHeight);
-                            fullscreenSample.Resize(newWidth, newHeight);
+                            SetNewCanvasSize(canvasObject, width, height);
+                            fullscreenSample.Resize(width, height);
                         }
                         else
                         {
