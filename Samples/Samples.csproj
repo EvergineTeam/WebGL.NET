@@ -3,7 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
 	  <NoWarn>NU1701;NU1604</NoWarn>
-    <MonoWasmLinkMode>None</MonoWasmLinkMode>
+    <MonoWasmLinkMode>Full</MonoWasmLinkMode>
+    <MonoWasmLinkSkip>glTFLoader</MonoWasmLinkSkip>
   </PropertyGroup>
   
   <ItemGroup>
