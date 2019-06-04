@@ -1,5 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <linker>
-  <assembly fullname="Samples" preserve="all"/>
-  <assembly fullname="glTFLoader" preserve="all"/>
+  <!--
+  Preserve some System types to work around newtonsoft.json reflection calls
+  for glTFLoader.Interface.LoadModel.
+  -->
+  <assembly fullname="System">
+        <type fullname="System.ComponentModel.AttributeCollection"/>
+        <type fullname="System.Collections.Specialized.OrderedDictionary"/>
+        <type fullname="System.ComponentModel.INotifyPropertyChanged"/>
+  </assembly>
+
 </linker>
