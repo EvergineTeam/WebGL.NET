@@ -1,0 +1,19 @@
+<Project>
+  
+	<PropertyGroup>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+	
+	<PropertyGroup>
+		<LangVersion>7.1</LangVersion>
+	</PropertyGroup>
+		
+	<PropertyGroup>
+		<CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)\CodeAnalysis\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<AdditionalFiles Include="$(MSBuildThisFileDirectory)\CodeAnalysis\Menees.Analyzers.Settings.xml" />
+	</ItemGroup>
+  
+</Project>

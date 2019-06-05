@@ -1,6 +1,6 @@
 source scripts/common.sh
 
-defaultProject=WebGL.NET.sln
+defaultProject=src/WebGL.NET.sln
 defaultRestore=true
 defaultTreatWarningsAsErrors=true
 

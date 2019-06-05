@@ -1,0 +1,16 @@
+#version 300 es
+
+uniform mat4 worldViewProj;
+
+in vec3 in_var_NORMAL;
+in vec3 in_var_POSITION;
+in vec2 in_var_TEXCOORD;
+
+out vec3 out_var_NORMAL;
+
+void main()
+{
+    gl_Position = worldViewProj * vec4(in_var_POSITION, 1.0);
+    out_var_NORMAL = in_var_NORMAL;
+}
+

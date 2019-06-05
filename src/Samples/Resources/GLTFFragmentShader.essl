@@ -1,0 +1,13 @@
+#version 300 es
+
+precision mediump float;
+
+in vec3 out_var_NORMAL;
+
+out vec4 outColor;
+
+void main()
+{
+    outColor = vec4(out_var_NORMAL, 1.0);
+}
+

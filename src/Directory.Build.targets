@@ -1,0 +1,38 @@
+<Project>
+  
+	<Target Name="AddBuildDateToAssemblyAttributes" BeforeTargets="GetAssemblyAttributes">
+		<ItemGroup>
+		  <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute">
+			<_Parameter1>BuildDate</_Parameter1>
+			<_Parameter2>$([System.DateTime]::UtcNow.ToString("yyyyMMddHHmmss"))</_Parameter2>
+		  </AssemblyAttribute>
+		</ItemGroup>
+	</Target>
+	
+	<Target Name="AddCommitHashToAssemblyAttributes" BeforeTargets="GetAssemblyAttributes">
+		<ItemGroup>
+		  <AssemblyAttribute Include="System.Reflection.AssemblyMetadataAttribute" Condition=" '$(CommitHash)' != '' ">
+			<_Parameter1>CommitHash</_Parameter1>
+			<_Parameter2>$(CommitHash)</_Parameter2>
+		  </AssemblyAttribute>
+		</ItemGroup>
+	</Target>
+	
+	<ItemGroup>
+		<PackageReference Include="Menees.Analyzers.2017" Version="2.0.3">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+			
+		<PackageReference Include="codecracker.CSharp" Version="1.1.0">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+		
+		<PackageReference Include="Lindhart.Analyser.MissingAwaitWarning" Version="1.0.1">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+  
+</Project>

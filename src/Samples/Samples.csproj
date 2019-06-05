@@ -1,0 +1,94 @@
+﻿<Project Sdk="Mono.WebAssembly.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+	  <NoWarn>NU1701;NU1604</NoWarn>
+    <MonoWasmLinkMode>Full</MonoWasmLinkMode>
+    <MonoWasmLinkSkip>glTFLoader</MonoWasmLinkSkip>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <Reference Include="SkiaSharp.Wasm">
+      <HintPath>..\libs\Uno.SkiaSharp\SkiaSharp.Wasm.dll</HintPath>
+    </Reference>
+    <ProjectReference Include="..\LinkerWorkaround\LinkerWorkaround.csproj" />
+    <ProjectReference Include="..\WebGLDotNET\WebGLDotNET.csproj" />
+  </ItemGroup>
+ 
+  <ItemGroup>
+    <PackageReference Include="glTF2Loader" Version="1.1.3-alpha" />
+    <PackageReference Include="Humanizer.Core" Version="2.6.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    <PackageReference Include="WaveEngine.Common" Version="2.5.0.39" />
+    <PackageReference Include="WebAssembly.Bindings" Version="0.1.0" />
+    <PackageReference Include="WebAssembly.Net.Http" Version="0.1.0" />
+    <PackageReference Include="WebAssembly.Net.WebSockets" Version="0.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="canvaskit.js" />
+    <None Remove="index.html" />
+    <None Remove="Scripts\mono_support.js" />
+    <None Remove="Scripts\SkiaSharp.js" />
+    
+    <None Remove="canvaskit.wasm" />
+    <Content Include="canvaskit.wasm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+
+    <None Remove="Assets\PlainConcepts.bmp" />
+    <Content Include="Assets\PlainConcepts.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Assets\PlainConcepts.png" />
+    <Content Include="Assets\PlainConcepts.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Assets\PlainConcepts.jpg" />
+    <Content Include="Assets\PlainConcepts.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Assets\DamagedHelmet_img0.bmp" />
+    <Content Include="Assets\DamagedHelmet_img0.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Assets\DamagedHelmet_img1.bmp" />
+    <Content Include="Assets\DamagedHelmet_img1.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Assets\DamagedHelmet_img2.bmp" />
+    <Content Include="Assets\DamagedHelmet_img2.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Assets\DamagedHelmet_img3.bmp" />
+    <Content Include="Assets\DamagedHelmet_img3.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Remove="Assets\DamagedHelmet_img4.bmp" />
+    <Content Include="Assets\DamagedHelmet_img4.bmp">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    
+    <!-- TODO move into Content for best practice -->
+    <None Remove="Resources\DamagedHelmet.glb" />
+    <EmbeddedResource Include="Resources\DamagedHelmet.glb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Resources\GLTFFragmentShader.essl" />
+    <EmbeddedResource Include="Resources\GLTFFragmentShader.essl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <None Remove="Resources\GLTFVertexShader.essl" />
+    <EmbeddedResource Include="Resources\GLTFVertexShader.essl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  
+  <ItemGroup>
+    <None Remove="server.py" />
+    <Content Include="server.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  
+</Project>
