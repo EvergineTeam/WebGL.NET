@@ -37,28 +37,7 @@ namespace Samples
         {
             base.Run();
 
-            var shaderProgram = gl.InitializeShaders(
-                vertexShaderCode:
-@"attribute vec4 aVertexPosition;
-attribute vec2 aTextureCoord;
-
-uniform mat4 uModelViewMatrix;
-uniform mat4 uProjectionMatrix;
-
-varying highp vec2 vTextureCoord;
-
-void main(void) {
-    gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
-    vTextureCoord = aTextureCoord;
-}",
-                fragmentShaderCode:
-@"varying highp vec2 vTextureCoord;
-
-uniform sampler2D uSampler;
-
-void main(void) {
-    gl_FragColor = texture2D(uSampler, vTextureCoord);
-}");
+            var shaderProgram = InitShaders();
 
             vertexPositionAttribute = (uint)gl.GetAttribLocation(shaderProgram, "aVertexPosition");
             textureCoordAttribute = (uint)gl.GetAttribLocation(shaderProgram, "aTextureCoord");
@@ -156,6 +135,32 @@ void main(void) {
 
             gl.EnableVertexAttribArray(textureCoordAttribute);
             gl.VertexAttribPointer(textureCoordAttribute, 2, WebGLRenderingContextBase.FLOAT, false, 0, 0);
+        }
+
+        private WebGLProgram InitShaders()
+        {
+            return gl.InitializeShaders(
+                vertexShaderCode:
+@"attribute vec4 aVertexPosition;
+attribute vec2 aTextureCoord;
+
+uniform mat4 uModelViewMatrix;
+uniform mat4 uProjectionMatrix;
+
+varying highp vec2 vTextureCoord;
+
+void main(void) {
+    gl_Position = uProjectionMatrix * uModelViewMatrix * aVertexPosition;
+    vTextureCoord = aTextureCoord;
+}",
+                fragmentShaderCode:
+@"varying highp vec2 vTextureCoord;
+
+uniform sampler2D uSampler;
+
+void main(void) {
+    gl_FragColor = texture2D(uSampler, vTextureCoord);
+}");
         }
 
         public override void Update(double elapsedTime)

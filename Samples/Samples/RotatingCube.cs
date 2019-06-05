@@ -119,7 +119,30 @@ namespace Samples
             };
             colorBuffer = gl.CreateArrayBuffer(colors);
 
-            var shaderProgram = gl.InitializeShaders(
+            var shaderProgram = InitShaders();
+
+            pMatrixUniform = gl.GetUniformLocation(shaderProgram, "pMatrix");
+            vMatrixUniform = gl.GetUniformLocation(shaderProgram, "vMatrix");
+            wMatrixUniform = gl.GetUniformLocation(shaderProgram, "wMatrix");
+
+            gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, vertexBuffer);
+            var positionAttribute = (uint)gl.GetAttribLocation(shaderProgram, "position");
+            gl.VertexAttribPointer(positionAttribute, 3, WebGLRenderingContextBase.FLOAT, false, 0, 0);
+            gl.EnableVertexAttribArray(positionAttribute);
+
+            gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, colorBuffer);
+            var colorAttribute = (uint)gl.GetAttribLocation(shaderProgram, "color");
+            gl.VertexAttribPointer(colorAttribute, 3, WebGLRenderingContextBase.FLOAT, false, 0, 0);
+            gl.EnableVertexAttribArray(colorAttribute);
+
+            gl.BindBuffer(WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER, indexBuffer);
+
+            worldMatrix = Matrix.Identity;
+        }
+
+        private WebGLProgram InitShaders()
+        {
+            return gl.InitializeShaders(
                 vertexShaderCode:
 @"attribute vec3 position;
 attribute vec3 color;
@@ -142,24 +165,6 @@ varying vec3 vColor;
 void main(void) {
     gl_FragColor = vec4(vColor, 1.0);
 }");
-
-            pMatrixUniform = gl.GetUniformLocation(shaderProgram, "pMatrix");
-            vMatrixUniform = gl.GetUniformLocation(shaderProgram, "vMatrix");
-            wMatrixUniform = gl.GetUniformLocation(shaderProgram, "wMatrix");
-
-            gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, vertexBuffer);
-            var positionAttribute = (uint)gl.GetAttribLocation(shaderProgram, "position");
-            gl.VertexAttribPointer(positionAttribute, 3, WebGLRenderingContextBase.FLOAT, false, 0, 0);
-            gl.EnableVertexAttribArray(positionAttribute);
-
-            gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, colorBuffer);
-            var colorAttribute = (uint)gl.GetAttribLocation(shaderProgram, "color");
-            gl.VertexAttribPointer(colorAttribute, 3, WebGLRenderingContextBase.FLOAT, false, 0, 0);
-            gl.EnableVertexAttribArray(colorAttribute);
-
-            gl.BindBuffer(WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER, indexBuffer);
-
-            worldMatrix = Matrix.Identity;
         }
 
         public override void Update(double elapsedMilliseconds)

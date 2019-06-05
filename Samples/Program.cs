@@ -121,7 +121,11 @@ namespace Samples
             canvasObject.SetObjectProperty("height", newHeight);
         }
 
-        private static void AddFullScreenHandler(ISample sample, string fullscreenButtonName, string divCanvasName, string canvasName)
+        private static void AddFullScreenHandler(
+            ISample sample,
+            string fullscreenButtonName, 
+            string divCanvasName,
+            string canvasName)
         {
             HtmlHelper.AttachButtonOnClickEvent(fullscreenButtonName, new Action<JSObject>((o) =>
             {

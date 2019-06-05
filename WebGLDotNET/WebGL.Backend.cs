@@ -49,11 +49,13 @@ namespace WebGLDotNET
 
     public partial class WebGLRenderingContext : WebGLRenderingContextBase
     {
-        public WebGLRenderingContext(JSObject canvas) : base(canvas, "webgl")
+        public WebGLRenderingContext(JSObject canvas) 
+            : base(canvas, "webgl")
         {
         }
 
-        public WebGLRenderingContext(JSObject canvas, JSObject contextAttributes) : base(canvas, "webgl", contextAttributes)
+        public WebGLRenderingContext(JSObject canvas, JSObject contextAttributes) 
+            : base(canvas, "webgl", contextAttributes)
         {
         }
     }
@@ -206,22 +208,26 @@ namespace WebGLDotNET
 
     public partial class WebGL2RenderingContext : WebGL2RenderingContextBase
     {
-        public WebGL2RenderingContext(JSObject canvas) : base(canvas, "webgl2")
+        public WebGL2RenderingContext(JSObject canvas) 
+            : base(canvas, "webgl2")
         { 
         }
 
-        public WebGL2RenderingContext(JSObject canvas, JSObject contextAttributes) : base(canvas, "webgl2", contextAttributes)
+        public WebGL2RenderingContext(JSObject canvas, JSObject contextAttributes) 
+            : base(canvas, "webgl2", contextAttributes)
         {
         }
     }
 
     public abstract partial class WebGL2RenderingContextBase : WebGLRenderingContextBase
     {
-        public WebGL2RenderingContextBase(JSObject canvas, string contextType) : base(canvas, contextType)
+        public WebGL2RenderingContextBase(JSObject canvas, string contextType) 
+            : base(canvas, contextType)
         {
         }
 
-        public WebGL2RenderingContextBase(JSObject canvas, string contextType, JSObject contextAttributes) : base(canvas, contextType, contextAttributes)
+        public WebGL2RenderingContextBase(JSObject canvas, string contextType, JSObject contextAttributes) 
+            : base(canvas, contextType, contextAttributes)
         {
         }
     }

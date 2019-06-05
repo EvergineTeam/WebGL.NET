@@ -2,6 +2,7 @@ using WebAssembly.Core;
 
 namespace WebGLDotNET
 {
+#pragma warning disable MEN002
     public partial class WebGLContextAttributes
     {
         public bool Alpha { get; set; } = true;
@@ -1776,4 +1777,5 @@ namespace WebGLDotNET
     {
     }
 
+#pragma warning restore MEN002 
 }

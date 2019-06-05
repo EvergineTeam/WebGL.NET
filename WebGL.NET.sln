@@ -14,6 +14,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{683DF9ED
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinkerWorkaround", "LinkerWorkaround\LinkerWorkaround.csproj", "{CB764FDC-95CD-4AA2-B7A1-87EBD744208D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1B3B473C-3272-47E6-B515-C3684DD67304}"
+	ProjectSection(SolutionItems) = preProject
+		CodeAnalysis\CodeAnalysis.ruleset = CodeAnalysis\CodeAnalysis.ruleset
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

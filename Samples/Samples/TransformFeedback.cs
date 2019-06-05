@@ -29,8 +29,10 @@ namespace Samples
 
         public bool EnableFullScreen => false;
 
-        public string Description => "Simple Transform Feedback WebGL 2 demo from <a href=\"https://www.ibiblio.org/e-notes/webgl/gpu/bounce.htm\">here</a>. " +
-            "Points from vertex shader output are swapped between buffers. Then we unbind it and swap buffers for the next draw.";
+        public string Description => "Simple Transform Feedback WebGL 2 demo " +
+            "from <a href=\"https://www.ibiblio.org/e-notes/webgl/gpu/bounce.htm\">here</a>. " +
+            "Points from vertex shader output are swapped between buffers. " +
+            "Then we unbind it and swap buffers for the next draw.";
 
         public void Init(JSObject canvas, Vector4 clearColor)
         {
@@ -73,13 +75,22 @@ void main(void)
     fragColor = vec4(1., 0., 0., 1. );
 }
 ";
-            var vertexShader = GLExtensions.GetShader(gl, vertexShaderCode, WebGLRenderingContextBase.VERTEX_SHADER);
-            var fragmentShader = GLExtensions.GetShader(gl, fragmentShaderCode, WebGLRenderingContextBase.FRAGMENT_SHADER);
+            var vertexShader = GLExtensions.GetShader(
+                gl, 
+                vertexShaderCode,
+                WebGLRenderingContextBase.VERTEX_SHADER);
+            var fragmentShader = GLExtensions.GetShader(
+                gl, 
+                fragmentShaderCode,
+                WebGLRenderingContextBase.FRAGMENT_SHADER);
 
             var shaderProgram = gl.CreateProgram();
             gl.AttachShader(shaderProgram, vertexShader);
             gl.AttachShader(shaderProgram, fragmentShader);
-            gl.TransformFeedbackVaryings(shaderProgram, new string[] { "gl_Position" }, WebGL2RenderingContextBase.SEPARATE_ATTRIBS);
+            gl.TransformFeedbackVaryings(
+                shaderProgram,
+                new string[] { "gl_Position" },
+                WebGL2RenderingContextBase.SEPARATE_ATTRIBS);
             gl.LinkProgram(shaderProgram);
             gl.UseProgram(shaderProgram);
 
@@ -100,11 +111,11 @@ void main(void)
         {
             Runtime.InvokeJS(
 @"
-            var obj = {
-              antialias: false,
-              depth: false
-            };
-            Module.mono_call_static_method (""[Samples] Samples.TransformFeedback:GetCanvasContextAttributes"", [ obj ]);
+var obj = {
+    antialias: false,
+    depth: false
+};
+Module.mono_call_static_method (""[Samples] Samples.TransformFeedback:GetCanvasContextAttributes"", [ obj ]);
 ");
         }
 

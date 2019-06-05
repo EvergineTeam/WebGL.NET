@@ -23,7 +23,9 @@ namespace Samples
 
         public bool EnableFullScreen => true;
 
-        public string Description => "Pointer lock demo. See the <a href=\"https://mdn.github.io/dom-examples/pointer-lock/\"> original sample </a>";
+        public string Description => "Pointer lock demo. " +
+            "See the <a href=\"https://mdn.github.io/dom-examples/pointer-lock/\"> " +
+            "original sample </a>";
 
         public void Init(JSObject canvas, Vector4 clearColor)
         {

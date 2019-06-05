@@ -11,7 +11,8 @@ namespace Samples
         const string AssetPath = "Assets/PlainConcepts.png";
 
         public override string Description =>
-            $"Texture comes from a HttpClient retrieving <a href=\"{AssetPath}\">it</a> and them we load colors through " +
+            $"Texture comes from a HttpClient retrieving" +
+            $" <a href=\"{AssetPath}\">it</a> and them we load colors through " +
             "[Uno.SkiaSharp] SKBitmap.Decode.";
 
         private TaskCompletionSource<bool> canvasKitTcs = new TaskCompletionSource<bool>();

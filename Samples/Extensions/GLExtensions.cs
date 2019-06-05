@@ -36,7 +36,10 @@ namespace Samples
             return elementArrayBuffer;
         }
 
-        public static WebGLProgram InitializeShaders(this WebGLRenderingContextBase gl, string vertexShaderCode, string fragmentShaderCode)
+        public static WebGLProgram InitializeShaders(
+            this WebGLRenderingContextBase gl,
+            string vertexShaderCode, 
+            string fragmentShaderCode)
         {
             var shaderProgram = gl.CreateProgram();
 

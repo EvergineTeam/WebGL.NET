@@ -8,12 +8,12 @@
 		<LangVersion>7.1</LangVersion>
 	</PropertyGroup>
 		
-	<!--<PropertyGroup>
+	<PropertyGroup>
 		<CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)\CodeAnalysis\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
 	</PropertyGroup>
 	
 	<ItemGroup>
 		<AdditionalFiles Include="$(MSBuildThisFileDirectory)\CodeAnalysis\Menees.Analyzers.Settings.xml" />
-	</ItemGroup>-->
+	</ItemGroup>
   
 </Project>
