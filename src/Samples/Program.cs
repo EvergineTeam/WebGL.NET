@@ -34,6 +34,8 @@ namespace Samples
                 return;
             }
 
+            Tests.Run();
+
             HtmlHelper.AddHeader1("WebGL.NET Samples Gallery");
 
             HtmlHelper.AddParagraph(
