@@ -151,8 +151,16 @@ namespace WebGLDotNET
                 .ToArray();
 
         protected T InvokeForBasicType<T>(string method, params object[] args)
-            where T : IConvertible =>
-            (T)Invoke(method, args);
+            where T : IConvertible
+        {
+            var result = Invoke(method, args);
+
+#if DEBUG
+            Console.WriteLine($"{method}() returns {result.GetType()}, which we'll cast to {typeof(T)}");
+#endif
+
+            return (T)result;
+        }
 
         private object[] Translate(object[] args)
         {

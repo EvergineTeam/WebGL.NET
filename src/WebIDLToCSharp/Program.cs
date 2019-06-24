@@ -48,10 +48,12 @@ namespace WebIDLToCSharp
                 outputStream.WriteLine();
                 outputStream.WriteLine("namespace WebGLDotNET");
                 outputStream.WriteLine("{");
+                outputStream.WriteLine("#pragma warning disable MEN002");
 
                 var listener = new WebIDLListener(outputStream);
                 ParseTreeWalker.Default.Walk(listener, contextSyntaxTree);
 
+                outputStream.WriteLine("#pragma warning restore MEN002");
                 outputStream.WriteLine("}");
             }
         }

@@ -1777,5 +1777,5 @@ namespace WebGLDotNET
     {
     }
 
-#pragma warning restore MEN002 
+#pragma warning restore MEN002
 }
