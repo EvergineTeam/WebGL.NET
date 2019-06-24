@@ -12,7 +12,7 @@
   "license": "ISC",
   "homepage": "https://github.com/WaveEngine/WebGL.NET#readme",
   "devDependencies": {
-    "surge": "^0.20.4"
+    "surge": "^0.21.3"
   },
   "scripts": {
     "deploy": "surge www https://webglnet.surge.sh"
