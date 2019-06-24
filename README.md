@@ -1,4 +1,4 @@
-# WebGL.NET
+﻿# WebGL.NET
 
 [![Build status](https://ci.appveyor.com/api/projects/status/mtl68763xqr4wkuk?svg=true)](https://ci.appveyor.com/project/jacano/webgl-net)
 [![Build Status](https://dev.azure.com/webglnet/WebGL.NET/_apis/build/status/WaveEngine.WebGL.NET?branchName=master)](https://dev.azure.com/webglnet/WebGL.NET/_build/latest?definitionId=2&branchName=master)
@@ -23,3 +23,8 @@ BINDING.mono_wasm_object_registry
 ## Thanks
 
 - [@kjpou1](https://github.com/kjpou1), for your PRs improving performance overall, along with nice comments on how stuff work underneath
+
+## TODO
+
+- Unit Tests: mostly for marshalling, to assure we don't drive back while touching the transpiler
+- Move App Veyor's web publishing to Azure DevOps and remove the first
