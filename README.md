@@ -1,6 +1,5 @@
 # WebGL.NET
 
-[![Build status](https://ci.appveyor.com/api/projects/status/mtl68763xqr4wkuk?svg=true)](https://ci.appveyor.com/project/jacano/webgl-net)
 [![Build Status](https://dev.azure.com/webglnet/WebGL.NET/_apis/build/status/WaveEngine.WebGL.NET?branchName=master)](https://dev.azure.com/webglnet/WebGL.NET/_build/latest?definitionId=2&branchName=master)
 
 C# wrapper for WebGL through WebAssembly.

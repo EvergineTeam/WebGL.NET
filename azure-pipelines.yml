@@ -4,8 +4,7 @@ jobs:
     vmImage: 'windows-2019'
   steps:
   - script: |
-      bash ./scripts/install_env_windows.sh
-      bash ./build.sh
+      bash ./scripts/install_env_windows.sh && ./build.sh && ./publish_website.sh
 
 - job: Linux
   pool:
