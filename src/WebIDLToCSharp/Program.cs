@@ -239,6 +239,14 @@ namespace WebIDLToCSharp
                 }
                 else if (isReturnTypeBasic)
                 {
+                    // getError() actually returns an int in runtime, instead of uint, but we'd like to keep its 
+                    // original signature
+                    if (rawMethodName.Equals("getError", StringComparison.InvariantCulture))
+                    {
+                        outputStream.Write("(uint)");
+                        returnType = "int";
+                    }
+
                     outputStream.Write($"InvokeForBasicType<{returnType}>");
                 }
                 else

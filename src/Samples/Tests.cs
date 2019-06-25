@@ -20,7 +20,8 @@ namespace Samples
         // https://github.com/WaveEngine/WebGL.NET/issues/5
         private static void GetErrorRegression()
         {
-            gl.GetError();
+            var error = gl.GetError();
+            var test = error != WebGLRenderingContextBase.NO_ERROR;
         }
     }
 }

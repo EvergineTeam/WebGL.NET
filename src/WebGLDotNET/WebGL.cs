@@ -789,7 +789,7 @@ namespace WebGLDotNET
 
         public object GetParameter(uint pname) => Invoke("getParameter", pname);
 
-        public uint GetError() => InvokeForBasicType<uint>("getError");
+        public uint GetError() => (uint)InvokeForBasicType<int>("getError");
 
         public object GetFramebufferAttachmentParameter(uint target, uint attachment, uint pname) => Invoke("getFramebufferAttachmentParameter", target, attachment, pname);
 
