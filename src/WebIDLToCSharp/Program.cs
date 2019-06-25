@@ -64,6 +64,7 @@ namespace WebIDLToCSharp
 
             readonly StreamWriter outputStream;
             readonly Dictionary<string, string> typesDictionary;
+            readonly Dictionary<string, string> returnTypesMappingDictionary;
             readonly List<string> constants = new List<string>();
             readonly List<string> operations = new List<string>();
 
@@ -102,6 +103,12 @@ namespace WebIDLToCSharp
                     { "Float32List", "object" },
                     { "Int32List", "object" },
                     { "Uint32List", "object" }
+                };
+
+                returnTypesMappingDictionary = new Dictionary<string, string>
+                {
+                    { "getError", "int" },
+                    { "getUniformBlockIndex", "int" }
                 };
             }
 
@@ -239,12 +246,10 @@ namespace WebIDLToCSharp
                 }
                 else if (isReturnTypeBasic)
                 {
-                    // getError() actually returns an int in runtime, instead of uint, but we'd like to keep its 
-                    // original signature
-                    if (rawMethodName.Equals("getError", StringComparison.InvariantCulture))
+                    if (returnTypesMappingDictionary.ContainsKey(rawMethodName))
                     {
-                        outputStream.Write("(uint)");
-                        returnType = "int";
+                        outputStream.Write($"({returnType})");
+                        returnType = returnTypesMappingDictionary[rawMethodName];
                     }
 
                     outputStream.Write($"InvokeForBasicType<{returnType}>");

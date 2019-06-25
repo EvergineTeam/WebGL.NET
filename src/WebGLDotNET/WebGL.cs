@@ -1755,7 +1755,7 @@ namespace WebGLDotNET
 
         public object GetActiveUniforms(WebGLProgram program, uint[] uniformIndices, uint pname) => Invoke("getActiveUniforms", program, uniformIndices, pname);
 
-        public uint GetUniformBlockIndex(WebGLProgram program, string uniformBlockName) => InvokeForBasicType<uint>("getUniformBlockIndex", program, uniformBlockName);
+        public uint GetUniformBlockIndex(WebGLProgram program, string uniformBlockName) => (uint)InvokeForBasicType<int>("getUniformBlockIndex", program, uniformBlockName);
 
         public object GetActiveUniformBlockParameter(WebGLProgram program, uint uniformBlockIndex, uint pname) => Invoke("getActiveUniformBlockParameter", program, uniformBlockIndex, pname);
 

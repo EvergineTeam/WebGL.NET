@@ -14,6 +14,7 @@ namespace Samples
                 gl = new WebGL2RenderingContext(canvas);
 
                 GetErrorRegression();
+                GetUniformBlockIndexRegression();
             }
         }
 
@@ -22,6 +23,13 @@ namespace Samples
         {
             var error = gl.GetError();
             var test = error != WebGLRenderingContextBase.NO_ERROR;
+        }
+
+        // https://github.com/WaveEngine/WebGL.NET/issues/5
+        private static void GetUniformBlockIndexRegression()
+        {
+            var program = gl.CreateProgram();
+            gl.GetUniformBlockIndex(program, "foo");
         }
     }
 }
