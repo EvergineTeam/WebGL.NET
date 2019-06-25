@@ -26,4 +26,3 @@ BINDING.mono_wasm_object_registry
 ## TODO
 
 - Unit Tests: mostly for marshalling, to assure we don't drive back while touching the transpiler
-- Move App Veyor's web publishing to Azure DevOps and remove the first
