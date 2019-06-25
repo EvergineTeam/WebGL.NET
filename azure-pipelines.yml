@@ -1,14 +1,4 @@
 jobs:
-- job: Windows
-  pool:
-    vmImage: 'windows-2019'
-  steps:
-  - script: |
-      bash printenv
-      bash ./scripts/install_env_windows.sh
-      bash ./build.sh
-      bash ./publish_website.sh
-      
 - job: Linux
   pool:
     vmImage: 'ubuntu-16.04'
@@ -16,7 +6,10 @@ jobs:
   - script: |
       printenv
       ./build.sh 
-
+      ./publish_website.sh
+    env:
+      SURGE_LOGIN: $(SURGE_LOGIN)
+      SURGE_TOKEN: $(SURGE_TOKEN)
 - job: Mac
   pool:
     vmImage: 'macOS-10.14'
@@ -24,3 +17,11 @@ jobs:
   - script: |
       printenv
       ./build.sh 
+- job: Windows
+  pool:
+    vmImage: 'windows-2019'
+  steps:
+  - script: |
+      bash ./scripts/install_env_windows.sh
+      bash ./build.sh
+      
