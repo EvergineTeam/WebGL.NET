@@ -91,7 +91,7 @@ namespace WebIDLToCSharp
                     { "GLint64", "long" },
                     { "GLintptr", "uint" },
                     { "GLsizei", "int" },
-                    { "GLsizeiptr", "ulong" },
+                    { "GLsizeiptr", "double" },
                     { "GLuint", "uint" },
                     { "GLuint64", "ulong" },
                     // Workarounds to bypass commented typedefs with "or"

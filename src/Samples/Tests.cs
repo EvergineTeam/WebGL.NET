@@ -15,6 +15,7 @@ namespace Samples
 
                 GetErrorRegression();
                 GetUniformBlockIndexRegression();
+                BindBufferRangeRegression();
             }
         }
 
@@ -30,6 +31,13 @@ namespace Samples
         {
             var program = gl.CreateProgram();
             gl.GetUniformBlockIndex(program, "foo");
+        }
+
+        // https://github.com/WaveEngine/WebGL.NET/issues/6
+        private static void BindBufferRangeRegression()
+        {
+            var buffer = gl.CreateBuffer();
+            gl.BindBufferRange(WebGL2RenderingContextBase.UNIFORM_BUFFER, 0, buffer, 0, 4);
         }
     }
 }
