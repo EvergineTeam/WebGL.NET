@@ -24,7 +24,9 @@ namespace Samples
         private static string fullscreenCanvasName;
         private static ISample fullscreenSample;
 
+#pragma warning disable CC0061 // Asynchronous methods should return a Task instead of void
         static async void Main()
+#pragma warning restore CC0061 // Asynchronous methods should return a Task instead of void
         {
             // Let's first check if we can continue with WebGL2 instead of crashing.
             if (!isBrowserSupportsWebGL2())
