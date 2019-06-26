@@ -57,10 +57,22 @@ namespace WebGLDotNET
 
     public partial class WebGLActiveInfo
     {
+        public int Size => (int)Handle.GetObjectProperty("size");
+
+        public uint Type => (uint)Handle.GetObjectProperty("type");
+
+        public string Name => (string)Handle.GetObjectProperty("name");
+
     }
 
     public partial class WebGLShaderPrecisionFormat
     {
+        public int RangeMin => (int)Handle.GetObjectProperty("rangeMin");
+
+        public int RangeMax => (int)Handle.GetObjectProperty("rangeMax");
+
+        public int Precision => (int)Handle.GetObjectProperty("precision");
+
     }
 
     public partial class WebGLRenderingContextBase
@@ -658,6 +670,12 @@ namespace WebGLDotNET
         public const uint UNPACK_COLORSPACE_CONVERSION_WEBGL = 0x9243;
 
         public const uint BROWSER_DEFAULT_WEBGL = 0x9244;
+
+        public object Canvas => (object)Handle.GetObjectProperty("canvas");
+
+        public int DrawingBufferWidth => (int)Handle.GetObjectProperty("drawingBufferWidth");
+
+        public int DrawingBufferHeight => (int)Handle.GetObjectProperty("drawingBufferHeight");
 
         public WebGLContextAttributes GetContextAttributes() => Invoke<WebGLContextAttributes>("getContextAttributes");
 

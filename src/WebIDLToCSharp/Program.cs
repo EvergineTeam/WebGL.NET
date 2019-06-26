@@ -102,7 +102,8 @@ namespace WebIDLToCSharp
                     { "BufferSource", "object" },
                     { "Float32List", "object" },
                     { "Int32List", "object" },
-                    { "Uint32List", "object" }
+                    { "Uint32List", "object" },
+                    { "HTMLCanvasElement", "object" }
                 };
 
                 returnTypesMappingDictionary = new Dictionary<string, string>
@@ -300,6 +301,20 @@ namespace WebIDLToCSharp
                 {
                     outputStream.Write(", ");
                 }
+            }
+
+            public override void ExitReadonlyMemberRest([NotNull] WebIDLParser.ReadonlyMemberRestContext context)
+            {
+                base.ExitReadonlyMemberRest(context);
+
+                var attributeRest = context.attributeRest();
+                var type = TranslateType(attributeRest.type().GetText());
+                var rawName = attributeRest.attributeName().GetText();
+                var name = CSharpify(rawName);
+
+                outputStream.WriteLine(
+                    $"        public {type} {name} => ({type})Handle.GetObjectProperty(\"{rawName}\");");
+                outputStream.WriteLine();
             }
 
             static string CSharpify(string value)

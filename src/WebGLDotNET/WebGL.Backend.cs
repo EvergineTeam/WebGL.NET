@@ -60,7 +60,7 @@ namespace WebGLDotNET
         }
     }
 
-    public abstract partial class WebGLRenderingContextBase
+    public abstract partial class WebGLRenderingContextBase : JSHandler
     {
         protected readonly JSObject gl;
 
