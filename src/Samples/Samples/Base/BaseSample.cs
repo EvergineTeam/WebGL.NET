@@ -1,4 +1,4 @@
-using System;
+﻿using System.Threading.Tasks;
 using WaveEngine.Common.Math;
 using WebAssembly;
 using WebGLDotNET;
@@ -17,7 +17,7 @@ namespace Samples
 
         public virtual bool EnableFullScreen => true;
 
-        public virtual void Init(JSObject canvas, Vector4 clearColor)
+        public virtual Task InitAsync(JSObject canvas, Vector4 clearColor)
         {
             this.clearColor = clearColor;
             this.canvas = canvas;
@@ -26,6 +26,8 @@ namespace Samples
             canvasHeight = (int)canvas.GetObjectProperty("height");
 
             gl = new WebGL2RenderingContext(canvas);
+
+            return Task.CompletedTask;
         }
 
         public virtual void Run()

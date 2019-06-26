@@ -1,5 +1,6 @@
-﻿using Samples.Helpers;
-using System;
+﻿using System;
+using System.Threading.Tasks;
+using Samples.Helpers;
 using WaveEngine.Common.Math;
 using WebAssembly;
 using WebGLDotNET;
@@ -34,7 +35,7 @@ namespace Samples
             "Points from vertex shader output are swapped between buffers. " +
             "Then we unbind it and swap buffers for the next draw.";
 
-        public void Init(JSObject canvas, Vector4 clearColor)
+        public Task InitAsync(JSObject canvas, Vector4 clearColor)
         {
             this.clearColor = clearColor;
             this.canvas = canvas;
@@ -48,6 +49,8 @@ namespace Samples
                 shouldDraw = true;
                 clickEvent.Dispose();
             }));
+
+            return Task.CompletedTask;
         }
 
         public void Run()

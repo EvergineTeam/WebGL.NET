@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using WaveEngine.Common.Math;
 using WebAssembly;
 
@@ -27,12 +28,14 @@ namespace Samples
             "See the <a href=\"https://mdn.github.io/dom-examples/pointer-lock/\"> " +
             "original sample </a>";
 
-        public void Init(JSObject canvas, Vector4 clearColor)
+        public Task InitAsync(JSObject canvas, Vector4 clearColor)
         {
             currentCanvas = canvas;
 
             canvasWidth = (int)canvas.GetObjectProperty("width");
             canvasHeight = (int)canvas.GetObjectProperty("height");
+
+            return Task.CompletedTask;
         }
 
         public void Run()

@@ -1,3 +1,4 @@
+﻿using System.Threading.Tasks;
 using WaveEngine.Common.Math;
 using WebAssembly;
 
@@ -9,7 +10,7 @@ namespace Samples
 
         bool EnableFullScreen { get; }
 
-        void Init(JSObject canvas, Vector4 vector4);
+        Task InitAsync(JSObject canvas, Vector4 clearColor);
 
         void Resize(int width, int height);
 

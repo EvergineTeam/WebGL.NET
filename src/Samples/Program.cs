@@ -24,7 +24,7 @@ namespace Samples
         private static string fullscreenCanvasName;
         private static ISample fullscreenSample;
 
-        static void Main()
+        static async void Main()
         {
             // Let's first check if we can continue with WebGL2 instead of crashing.
             if (!isBrowserSupportsWebGL2())
@@ -66,7 +66,7 @@ namespace Samples
                 var canvasName = $"canvas_{sampleName}";
                 using (var canvas = HtmlHelper.AddCanvas(divCanvasName, canvasName, CanvasWidth, CanvasHeight))
                 {
-                    sample.Init(canvas, CanvasColor);
+                    await sample.InitAsync(canvas, CanvasColor);
                     sample.Run();
 
                     if (sample.EnableFullScreen)

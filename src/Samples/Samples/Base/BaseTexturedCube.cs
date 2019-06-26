@@ -27,12 +27,6 @@ namespace Samples
 
         protected bool textureLoaded = false;
 
-
-        public override void Init(JSObject canvas, Vector4 clearColor)
-        {
-            base.Init(canvas, clearColor);
-        }
-
         public override void Run()
         {
             base.Run();

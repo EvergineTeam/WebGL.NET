@@ -1,4 +1,4 @@
-#version 300 es
+﻿#version 300 es
 
 precision mediump float;
 
@@ -10,4 +10,3 @@ void main()
 {
     outColor = vec4(out_var_NORMAL, 1.0);
 }
-

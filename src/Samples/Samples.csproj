@@ -48,26 +48,6 @@
     <Content Include="Assets\PlainConcepts.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Remove="Assets\DamagedHelmet_img0.bmp" />
-    <Content Include="Assets\DamagedHelmet_img0.bmp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Remove="Assets\DamagedHelmet_img1.bmp" />
-    <Content Include="Assets\DamagedHelmet_img1.bmp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Remove="Assets\DamagedHelmet_img2.bmp" />
-    <Content Include="Assets\DamagedHelmet_img2.bmp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Remove="Assets\DamagedHelmet_img3.bmp" />
-    <Content Include="Assets\DamagedHelmet_img3.bmp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <None Remove="Assets\DamagedHelmet_img4.bmp" />
-    <Content Include="Assets\DamagedHelmet_img4.bmp">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     
     <!-- TODO move into Content for best practice -->
     <None Remove="Resources\DamagedHelmet.glb" />
