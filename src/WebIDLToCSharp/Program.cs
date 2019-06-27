@@ -99,7 +99,7 @@ namespace WebIDLToCSharp
                     // typedef (ImageData or HTMLImageElement or HTMLCanvasElement or HTMLVideoElement) TexImageSource;
                     { "TexImageSource", "object" },
                     // Workarounds for WebGL 2 missing definitions
-                    { "BufferSource", "object" },
+                    { "BufferSource", "ITypedArray" },
                     { "Float32List", "object" },
                     { "Int32List", "object" },
                     { "Uint32List", "object" },

@@ -16,6 +16,7 @@ namespace Samples
                 GetErrorRegression();
                 GetUniformBlockIndexRegression();
                 BindBufferRangeRegression();
+                BufferSubDataRegression();
             }
         }
 
@@ -38,6 +39,12 @@ namespace Samples
         {
             var buffer = gl.CreateBuffer();
             gl.BindBufferRange(WebGL2RenderingContextBase.UNIFORM_BUFFER, 0, buffer, 0, 4);
+        }
+
+        private static void BufferSubDataRegression()
+        {
+            var data = new float[] { 0 };
+            gl.BufferSubData(0, 0, data);
         }
     }
 }
