@@ -1,3 +1,5 @@
+set -v
+
 rm -rf website/www/
 cp -rf src/Samples/bin/Debug/netstandard2.0/ website/www/
 mkdir website/www/tests
