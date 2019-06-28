@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <script src="runtime.js"></script>
+    <script defer src="mono.js"></script>
+    <script defer src="mono_support.js"></script>
+</head>
+    <body>
+        Open the web console (F12) to see the results.
+
+        <script type="text/javascript">
+            var App = {
+                init: function () {
+                    BINDING.call_static_method("[Tests] Tests.Program:Main", []);
+                }
+            };
+        </script>
+    </body>
+</html>

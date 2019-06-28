@@ -1,47 +1,39 @@
-﻿using Samples.Helpers;
+﻿using WebAssembly;
 using WebGLDotNET;
 
-namespace Samples
+namespace Tests
 {
-    public static class Tests
+    public class TheTests
     {
-        private static WebGL2RenderingContext gl;
+        private readonly WebGL2RenderingContext gl;
 
-        public static void Run()
+        public TheTests(JSObject canvas)
         {
-            using (var canvas = HtmlHelper.AddCanvas("tests-canvas-wrapper", "tests-canvas", 1, 1))
-            {
-                gl = new WebGL2RenderingContext(canvas);
-
-                GetErrorRegression();
-                GetUniformBlockIndexRegression();
-                BindBufferRangeRegression();
-                BufferSubDataRegression();
-            }
+            gl = new WebGL2RenderingContext(canvas);
         }
 
         // https://github.com/WaveEngine/WebGL.NET/issues/5
-        private static void GetErrorRegression()
+        public void GetErrorRegressionTest()
         {
             var error = gl.GetError();
             var test = error != WebGLRenderingContextBase.NO_ERROR;
         }
 
         // https://github.com/WaveEngine/WebGL.NET/issues/5
-        private static void GetUniformBlockIndexRegression()
+        public void GetUniformBlockIndexRegressionTest()
         {
             var program = gl.CreateProgram();
             gl.GetUniformBlockIndex(program, "foo");
         }
 
         // https://github.com/WaveEngine/WebGL.NET/issues/6
-        private static void BindBufferRangeRegression()
+        public void BindBufferRangeRegressionTest()
         {
             var buffer = gl.CreateBuffer();
             gl.BindBufferRange(WebGL2RenderingContextBase.UNIFORM_BUFFER, 0, buffer, 0, 4);
         }
 
-        private static void BufferSubDataRegression()
+        public void BufferSubDataRegressionTest()
         {
             var data = new float[] { 0 };
             gl.BufferSubData(0, 0, data);

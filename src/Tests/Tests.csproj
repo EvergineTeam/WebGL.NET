@@ -1,0 +1,20 @@
+﻿<Project Sdk="Mono.WebAssembly.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\WebGLDotNET\WebGLDotNET.csproj" />
+  </ItemGroup>
+ 
+  <ItemGroup>
+    <None Remove="index.html" />
+    <None Remove="mono_support.js" />
+    <None Remove="server.py" />
+    <Content Include="server.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  
+</Project>
