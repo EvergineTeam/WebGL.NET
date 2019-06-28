@@ -4,7 +4,7 @@
 
 C# wrapper for WebGL through WebAssembly.
 
-See the samples running [here](https://webglnet.surge.sh).
+See the samples running [here](https://webglnet.surge.sh), or run the tests [here](https://webglnet.surge.sh/tests).
 
 ## Features
 
@@ -22,7 +22,3 @@ BINDING.mono_wasm_object_registry
 ## Thanks
 
 - [@kjpou1](https://github.com/kjpou1), for your PRs improving performance overall, along with nice comments on how stuff work underneath
-
-## TODO
-
-- Unit Tests: mostly for marshalling, to assure we don't drive back while touching the transpiler
