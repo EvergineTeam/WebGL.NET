@@ -137,8 +137,6 @@ namespace WebGLDotNET
             var rawResult = gl.Invoke(method, actualArgs);
             DisposeArrayTypes(actualArgs);
 
-            //Console.WriteLine($"{nameof(Invoke)}<{typeof(T)}>(): {rawResult}");
-
             var result = new T();
             result.Handle = (JSObject)rawResult;
 
@@ -154,10 +152,6 @@ namespace WebGLDotNET
             where T : IConvertible
         {
             var result = Invoke(method, args);
-
-#if DEBUG
-            Console.WriteLine($"{method}() returns {result.GetType()}, which we'll cast to {typeof(T)}");
-#endif
 
             return (T)result;
         }
@@ -198,8 +192,6 @@ namespace WebGLDotNET
                 }
 
                 actualArgs[i] = arg;
-
-                //Console.WriteLine($"{args[i].GetType()} vs. {arg.GetType()}");
             }
 
             return actualArgs;
