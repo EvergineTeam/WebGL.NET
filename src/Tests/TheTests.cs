@@ -18,7 +18,7 @@ namespace Tests
         {
             var error = gl.GetError();
 
-            Assert.Equal(WebGLRenderingContextBase.ACTIVE_TEXTURE, error);
+            Assert.Equal(WebGLRenderingContextBase.NO_ERROR, error);
         }
 
         // https://github.com/WaveEngine/WebGL.NET/issues/5
