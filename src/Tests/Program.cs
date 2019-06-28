@@ -12,8 +12,9 @@ namespace Tests
             var testMethods = testsType
                 .GetMethods()
                 .Where(method => method.Name.EndsWith("Test", StringComparison.InvariantCulture));
+            var testsCount = testMethods.Count();
 
-            Console.WriteLine($"{testMethods.Count()} tests found");
+            Console.WriteLine($"{testsCount} tests found");
 
             var testsPassed = 0;
 
@@ -21,21 +22,36 @@ namespace Tests
             using (var body = (JSObject)document.GetObjectProperty("body"))
             using (var canvas = (JSObject)document.Invoke("createElement", "canvas"))
             {
-                var instance = Activator.CreateInstance(testsType, canvas);
-
                 foreach (var item in testMethods)
                 {
                     Console.WriteLine($"Running '{item.Name}'...");
 
-                    item.Invoke(instance, null);
+                    var isFailed = false;
 
-                    Console.WriteLine($"Passed!");
+                    try
+                    {
+                        var instance = Activator.CreateInstance(testsType, canvas);
+                        item.Invoke(instance, null);
+                    }
+                    catch (Exception exception)
+                    {
+                        Console.WriteLine(exception);
+                        isFailed = true;
+                    }
 
-                    testsPassed++;
+                    if (isFailed)
+                    {
+                        Console.WriteLine($"Failed!");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Passed!");
+                        testsPassed++;
+                    }
                 }
             }
 
-            Console.WriteLine($"{testsPassed} tests passed");
+            Console.WriteLine($"{testsPassed}/{testsCount} tests passed");
         }
     }
 }

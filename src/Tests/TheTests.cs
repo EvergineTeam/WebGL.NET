@@ -1,5 +1,6 @@
 ﻿using WebAssembly;
 using WebGLDotNET;
+using Xunit;
 
 namespace Tests
 {
@@ -16,7 +17,8 @@ namespace Tests
         public void GetErrorRegressionTest()
         {
             var error = gl.GetError();
-            var test = error != WebGLRenderingContextBase.NO_ERROR;
+
+            Assert.Equal(WebGLRenderingContextBase.ACTIVE_TEXTURE, error);
         }
 
         // https://github.com/WaveEngine/WebGL.NET/issues/5
