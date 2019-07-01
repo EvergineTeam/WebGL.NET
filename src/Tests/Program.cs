@@ -6,9 +6,9 @@ using WebAssembly;
 
 namespace Tests
 {
-    public class Program
+    internal class Program
     {
-        public static void Main()
+        private static void Main()
         {
             var testTypes = new Type[] { typeof(WebGL1Tests), typeof(WebGL2Tests) };
             var dictionary = DiscoverTests(testTypes);
