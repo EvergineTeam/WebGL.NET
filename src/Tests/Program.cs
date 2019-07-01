@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using WebAssembly;
 
 namespace Tests
@@ -8,30 +10,34 @@ namespace Tests
     {
         public static void Main()
         {
-            var testsType = typeof(TheTests);
-            var testMethods = testsType
-                .GetMethods()
-                .Where(method => method.Name.EndsWith("Test", StringComparison.InvariantCulture));
-            var testsCount = testMethods.Count();
+            var testTypes = new Type[] { typeof(WebGL1Tests), typeof(WebGL2Tests) };
+            var dictionary = DiscoverTests(testTypes);
+            var testCount = dictionary.Values.Sum(tests => tests.Count());
 
-            Console.WriteLine($"{testsCount} tests found");
+            Console.WriteLine($"{testCount} tests found");
 
             var testsPassed = 0;
 
-            using (var document = (JSObject)Runtime.GetGlobalObject("document"))
-            using (var body = (JSObject)document.GetObjectProperty("body"))
-            using (var canvas = (JSObject)document.Invoke("createElement", "canvas"))
+
+            foreach (var type in dictionary.Keys)
             {
-                foreach (var item in testMethods)
+                var tests = dictionary[type];
+
+                foreach (var test in tests)
                 {
-                    Console.WriteLine($"Running '{item.Name}'...");
+                    Console.WriteLine($"Running '{type.Name}.{test.Name}'...");
 
                     var isFailed = false;
 
                     try
                     {
-                        var instance = Activator.CreateInstance(testsType, canvas);
-                        item.Invoke(instance, null);
+                        using (var document = (JSObject)Runtime.GetGlobalObject("document"))
+                        using (var body = (JSObject)document.GetObjectProperty("body"))
+                        using (var canvas = (JSObject)document.Invoke("createElement", "canvas"))
+                        {
+                            var instance = Activator.CreateInstance(type, canvas);
+                            test.Invoke(instance, null);
+                        }
                     }
                     catch (Exception exception)
                     {
@@ -51,7 +57,22 @@ namespace Tests
                 }
             }
 
-            Console.WriteLine($"{testsPassed}/{testsCount} tests passed");
+            Console.WriteLine($"{testsPassed}/{testCount} tests passed");
+        }
+
+        private static Dictionary<Type, IEnumerable<MethodInfo>> DiscoverTests(Type[] testsTypes)
+        {
+            var dictionary = new Dictionary<Type, IEnumerable<MethodInfo>>();
+
+            foreach (var item in testsTypes)
+            {
+                var methods = item
+                    .GetMethods()
+                    .Where(method => method.Name.EndsWith("Test", StringComparison.InvariantCulture));
+                dictionary.Add(item, methods);
+            }
+
+            return dictionary;
         }
     }
 }
