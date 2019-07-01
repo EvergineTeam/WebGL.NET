@@ -74,6 +74,8 @@ namespace WebGLDotNET
             gl = (JSObject)canvas.Invoke("getContext", contextType, contextAttributes);
         }
 
+        public static bool IsSupported => CheckWindowPropertyExists("WebGLRenderingContext");
+
         public ITypedArray CastNativeArray(object managedArray)
         {
             var arrayType = managedArray.GetType();
@@ -99,6 +101,14 @@ namespace WebGLDotNET
             }
 
             return array;
+        }
+
+        protected static bool CheckWindowPropertyExists(string property)
+        {
+            var window = (JSObject)Runtime.GetGlobalObject();
+            var exists = window.GetObjectProperty(property) != null;
+
+            return exists;
         }
 
         private void DisposeArrayTypes(object[] args)
@@ -230,5 +240,7 @@ namespace WebGLDotNET
             : base(canvas, contextType, contextAttributes)
         {
         }
+
+        new public static bool IsSupported => CheckWindowPropertyExists("WebGL2RenderingContext");
     }
 }

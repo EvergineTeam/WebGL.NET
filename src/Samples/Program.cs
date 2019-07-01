@@ -4,6 +4,7 @@ using System;
 using System.Reflection;
 using WaveEngine.Common.Math;
 using WebAssembly;
+using WebGLDotNET;
 
 namespace Samples
 {
@@ -28,8 +29,7 @@ namespace Samples
         static async void Main()
 #pragma warning restore CC0061 // Asynchronous methods should return a Task instead of void
         {
-            // Let's first check if we can continue with WebGL2 instead of crashing.
-            if (!isBrowserSupportsWebGL2())
+            if (!WebGL2RenderingContextBase.IsSupported)
             {
                 HtmlHelper.AddParagraph("We are sorry, but your browser does not seem to support WebGL2.");
                 HtmlHelper.AddParagraph("See the <a href=\"https://github.com/WaveEngine/WebGL.NET\">GitHub repo</a>.");
@@ -167,17 +167,6 @@ namespace Samples
             }
 
             window.Invoke("requestAnimationFrame", loop);
-        }
-
-        static bool isBrowserSupportsWebGL2()
-        {
-            if (window == null)
-            {
-                window = (JSObject)Runtime.GetGlobalObject();
-            }
-
-            // This is a very simple check for WebGL2 support.
-            return window.GetObjectProperty("WebGL2RenderingContext") != null;
         }
 
         static void AddGenerationStamp()

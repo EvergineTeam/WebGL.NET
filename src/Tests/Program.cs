@@ -18,7 +18,6 @@ namespace Tests
 
             var testsPassed = 0;
 
-
             foreach (var type in dictionary.Keys)
             {
                 var tests = dictionary[type];
@@ -27,6 +26,7 @@ namespace Tests
                 {
                     Console.WriteLine($"Running '{type.Name}.{test.Name}'...");
 
+                    var isInconclusive = false;
                     var isFailed = false;
 
                     try
@@ -39,10 +39,20 @@ namespace Tests
                             test.Invoke(instance, null);
                         }
                     }
+                    catch (TargetInvocationException exception) when (exception.InnerException is InconclusiveException)
+                    {
+                        Console.WriteLine($"Inconclusive: {exception.InnerException.Message}");
+                        isInconclusive = true;
+                    }
                     catch (Exception exception)
                     {
                         Console.WriteLine(exception);
                         isFailed = true;
+                    }
+
+                    if (isInconclusive)
+                    {
+                        continue;
                     }
 
                     if (isFailed)
