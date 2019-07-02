@@ -9,14 +9,17 @@ namespace Tests
 
         public WebGL2Tests(JSObject canvas)
         {
+            if (!WebGL2RenderingContextBase.IsSupported)
+            {
+                throw new InconclusiveException("WebGL 2 is not supported");
+            }
+
             gl = new WebGL2RenderingContext(canvas);
         }
 
         // https://github.com/WaveEngine/WebGL.NET/issues/5
         public void GetUniformBlockIndexRegressionTest()
         {
-            CheckWebGL2Support();
-
             var vertexShader = gl.CreateShader(WebGLRenderingContextBase.VERTEX_SHADER);
             gl.ShaderSource(vertexShader, "void main() {}");
             gl.CompileShader(vertexShader);
@@ -34,19 +37,9 @@ namespace Tests
         // https://github.com/WaveEngine/WebGL.NET/issues/6
         public void BindBufferRangeRegressionTest()
         {
-            CheckWebGL2Support();
-
             var buffer = gl.CreateBuffer();
 
             gl.BindBufferRange(WebGL2RenderingContextBase.UNIFORM_BUFFER, 0, buffer, 0, 4);
-        }
-
-        private void CheckWebGL2Support()
-        {
-            if (!WebGL2RenderingContextBase.IsSupported)
-            {
-                throw new InconclusiveException("WebGL 2 is not supported");
-            }
         }
     }
 }

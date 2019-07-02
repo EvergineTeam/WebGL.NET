@@ -64,13 +64,18 @@ namespace WebGLDotNET
     {
         protected readonly JSObject gl;
 
-        public WebGLRenderingContextBase(JSObject canvas, string contextType)
+        public WebGLRenderingContextBase(JSObject canvas, string contextType) : this(canvas, contextType, null)
         {
-            gl = (JSObject)canvas.Invoke("getContext", contextType);
         }
 
         public WebGLRenderingContextBase(JSObject canvas, string contextType, JSObject contextAttributes)
         {
+            if (!IsSupported)
+            {
+                throw new PlatformNotSupportedException(
+                    $"The context '{contextType}' is not supported in this browser");
+            }
+
             gl = (JSObject)canvas.Invoke("getContext", contextType, contextAttributes);
         }
 
