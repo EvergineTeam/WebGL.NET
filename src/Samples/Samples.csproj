@@ -1,4 +1,4 @@
-﻿<Project Sdk="Mono.WebAssembly.Sdk/0.1.0-preview1">
+﻿<Project Sdk="Mono.WebAssembly.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
