@@ -1,10 +1,11 @@
 ﻿# WebGL.NET
 
 [![Build Status](https://dev.azure.com/webglnet/WebGL.NET/_apis/build/status/WaveEngine.WebGL.NET?branchName=master)](https://dev.azure.com/webglnet/WebGL.NET/_build/latest?definitionId=2&branchName=master)
+[![Run Tests](https://img.shields.io/badge/tests-run%20now-orange.svg)](https://webglnet.surge.sh/tests)
 
 C# wrapper for WebGL through WebAssembly.
 
-See the samples running [here](https://webglnet.surge.sh), or run the tests [here](https://webglnet.surge.sh/tests).
+See the samples running [here](https://webglnet.surge.sh).
 
 ## Features
 
