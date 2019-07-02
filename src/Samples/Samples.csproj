@@ -71,4 +71,6 @@
     </Content>
   </ItemGroup>
   
+  <Import Project="..\HtmlHelper\HtmlHelper.projitems" Label="Shared" Condition="Exists('..\HtmlHelper\HtmlHelper.projitems')" />
+  
 </Project>

@@ -21,4 +21,6 @@
     <PackageReference Include="xunit.assert" Version="2.4.1" />
   </ItemGroup>
   
+  <Import Project="..\HtmlHelper\HtmlHelper.projitems" Label="Shared" Condition="Exists('..\HtmlHelper\HtmlHelper.projitems')" />
+  
 </Project>

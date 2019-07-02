@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using WebAssembly;
+using WebGLDotNET;
 
 namespace Tests
 {
@@ -14,7 +15,7 @@ namespace Tests
             var dictionary = DiscoverTests(testTypes);
             var testCount = dictionary.Values.Sum(tests => tests.Count());
 
-            Console.WriteLine($"{testCount} tests found");
+            Print($"{testCount} tests found");
 
             var testsPassed = 0;
 
@@ -24,7 +25,7 @@ namespace Tests
 
                 foreach (var test in tests)
                 {
-                    Console.WriteLine($"Running '{type.Name}.{test.Name}'...");
+                    Print($"Running '{type.Name}.{test.Name}'...");
 
                     var isInconclusive = false;
                     var isFailed = false;
@@ -41,12 +42,12 @@ namespace Tests
                     }
                     catch (TargetInvocationException exception) when (exception.InnerException is InconclusiveException)
                     {
-                        Console.WriteLine($"Inconclusive: {exception.InnerException.Message}");
+                        Print($"Inconclusive: {exception.InnerException.Message}");
                         isInconclusive = true;
                     }
                     catch (Exception exception)
                     {
-                        Console.WriteLine(exception);
+                        Print(exception.ToString());
                         isFailed = true;
                     }
 
@@ -57,17 +58,24 @@ namespace Tests
 
                     if (isFailed)
                     {
-                        Console.WriteLine($"Failed!");
+                        Print($"Failed!");
                     }
                     else
                     {
-                        Console.WriteLine($"Passed!");
+                        Print($"Passed!");
                         testsPassed++;
                     }
                 }
             }
 
-            Console.WriteLine($"{testsPassed}/{testCount} tests passed");
+            Print($"{testsPassed}/{testCount} tests passed");
+        }
+
+        private static void Print(string message)
+        {
+            HtmlHelper.AddParagraph(message);
+
+            Console.WriteLine(message);
         }
 
         private static Dictionary<Type, IEnumerable<MethodInfo>> DiscoverTests(Type[] testsTypes)

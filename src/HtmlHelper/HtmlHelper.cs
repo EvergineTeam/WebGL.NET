@@ -1,7 +1,7 @@
 ﻿using System;
 using WebAssembly;
 
-namespace Samples.Helpers
+namespace WebGLDotNET
 {
     public static class HtmlHelper
     {
