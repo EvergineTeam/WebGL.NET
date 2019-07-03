@@ -59,7 +59,7 @@ namespace WebGLDotNET
     {
         public int Size => (int)Handle.GetObjectProperty("size");
 
-        public uint Type => (uint)Handle.GetObjectProperty("type");
+        public uint Type => (uint)(int)Handle.GetObjectProperty("type");
 
         public string Name => (string)Handle.GetObjectProperty("name");
 

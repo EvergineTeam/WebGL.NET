@@ -71,6 +71,7 @@ namespace WebIDLToCSharp
             string returnType;
             string rawMethodName;
             string @params;
+            string interfaceName;
 
             public WebIDLListener(StreamWriter outputStream)
             {
@@ -106,10 +107,14 @@ namespace WebIDLToCSharp
                     { "HTMLCanvasElement", "object" }
                 };
 
+                // Mappings can be of type:
+                // - operations: getError, for instance;
+                // - members, *full qualified*: WebGLActiveInfo.type, f.i.
                 returnTypesMappingDictionary = new Dictionary<string, string>
                 {
                     { "getError", "int" },
-                    { "getUniformBlockIndex", "int" }
+                    { "getUniformBlockIndex", "int" },
+                    { "WebGLActiveInfo.type", "int" }
                 };
             }
 
@@ -177,8 +182,10 @@ namespace WebIDLToCSharp
             {
                 base.EnterInterface_(context);
 
+                interfaceName = context.IDENTIFIER_WEBIDL().GetText();
+
                 // partial because can be backed with additional glue outside
-                outputStream.Write($"    public partial class {context.IDENTIFIER_WEBIDL().GetText()}");
+                outputStream.Write($"    public partial class {interfaceName}");
 
                 var inheritance = context.inheritance().IDENTIFIER_WEBIDL();
 
@@ -312,8 +319,17 @@ namespace WebIDLToCSharp
                 var rawName = attributeRest.attributeName().GetText();
                 var name = CSharpify(rawName);
 
-                outputStream.WriteLine(
-                    $"        public {type} {name} => ({type})Handle.GetObjectProperty(\"{rawName}\");");
+                outputStream.Write($"        public {type} {name} => ({type})");
+
+                var fullQualifiedMemberName = $"{interfaceName}.{rawName}";
+
+                if (returnTypesMappingDictionary.ContainsKey(fullQualifiedMemberName))
+                {
+                    var actualReturnType = returnTypesMappingDictionary[fullQualifiedMemberName];
+                    outputStream.Write($"({actualReturnType})");
+                }
+
+                outputStream.WriteLine($"Handle.GetObjectProperty(\"{rawName}\");");
                 outputStream.WriteLine();
             }
 
