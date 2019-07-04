@@ -1,16 +1,23 @@
 #!/usr/bin/env bash
 
-# Enable Developer Mode in windows 10 (https://blogs.windows.com/buildingapps/2016/12/02/symlinks-windows-10/#wbtYV5KMKtH03zrl.97)
-# or 
-# Grant create symbolic links to your user (https://superuser.com/questions/124679/how-do-i-create-a-link-in-windows-7-home-premium-as-a-regular-user/125981#125981)
-
 export MSYS_NO_PATHCONV=1
-export PATH=$(realpath ./tools/):$PATH
 
-if [ ! -f "./tools/msbuild" ]; then
-	MSBUILDPATH=$(vswhere.exe -latest -requires Microsoft.Component.MSBuild -find MSBuild/**/Bin/MSBuild.exe)
-	echo $MSBUILDPATH
-	cmd <<< "mklink .\tools\msbuild \"$MSBUILDPATH\"" > /dev/null
-	ls -la ./tools
+if [ ! -x "$(command -v msbuild)" ] ; then
+
+	VSCOMMUNITY2017='/c/Program Files (x86)/Microsoft Visual Studio/2017/Community/MSBuild/15.0/Bin/'
+	VSCOMMUNITY2019='/c/Program Files (x86)/Microsoft Visual Studio/2019/Community/MSBuild/Current/Bin/'
+
+	VSENTERPRISE2017='/c/Program Files (x86)/Microsoft Visual Studio/2017/Enterprise/MSBuild/15.0/Bin/'
+	VSENTERPRISE2019='/c/Program Files (x86)/Microsoft Visual Studio/2019/Enterprise/MSBuild/Current/Bin/'
+
+	export PATH=$VSCOMMUNITY2017:$PATH
+	export PATH=$VSCOMMUNITY2019:$PATH
+
+	export PATH=$VSENTERPRISE2017:$PATH
+	export PATH=$VSENTERPRISE2019:$PATH
+
+	alias msbuild=msbuild.exe
 fi
+
+
 
