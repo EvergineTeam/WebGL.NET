@@ -2,7 +2,7 @@
 
 windows() { [[ -n "$WINDIR" ]]; }
 if windows; then
-	. init_build_windows.sh
+	. scripts/init_build_windows.sh
 fi
 
 defaultProject=src/WebGL.NET.sln
