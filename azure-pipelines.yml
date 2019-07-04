@@ -20,5 +20,5 @@ jobs:
   pool:
     vmImage: 'windows-2019'
   steps:
-  - script: |
-      bash build.sh
+  - bash: |
+      . build.sh
