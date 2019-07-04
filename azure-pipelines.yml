@@ -18,7 +18,7 @@ jobs:
       source build.sh 
 - job: Windows
   pool:
-    vmImage: 'windows-2019'
+    vmImage: 'vs2017-win2016'
   steps:
   - bash: |
-      source common.sh && source build.sh
+      source scripts/init_build_windows.sh && source build.sh
