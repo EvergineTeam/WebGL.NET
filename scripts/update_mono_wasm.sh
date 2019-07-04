@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 if [ "$#" -ne 1 ]; then
     echo "usage:" `basename "$0"` "folder_to_copy_packages"
 	exit

@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 source scripts/common.sh
 
 defaultProject=src/WebGL.NET.sln

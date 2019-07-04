@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 windows() { [[ -n "$WINDIR" ]]; }
 if windows; then
 	export PATH=$(realpath ./tools/):$PATH

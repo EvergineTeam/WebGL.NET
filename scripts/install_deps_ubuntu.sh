@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # ubuntu 18.04
 
 echo "deb https://download.mono-project.com/repo/ubuntu stable-bionic main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
