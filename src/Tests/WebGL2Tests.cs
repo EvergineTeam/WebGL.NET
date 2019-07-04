@@ -72,5 +72,11 @@ void main(void) {
 
             Assert.IsType(typeof(uint), uniform.Type);
         }
+
+        public void GetSupportedExtensionsRegressionTest()
+        {
+            var extensions = gl.GetSupportedExtensions();
+            Assert.NotEmpty(extensions);
+        }
     }
 }

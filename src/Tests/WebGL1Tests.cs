@@ -1,4 +1,5 @@
-﻿using WebAssembly;
+﻿using System;
+using WebAssembly;
 using WebGLDotNET;
 using Xunit;
 
@@ -29,6 +30,12 @@ namespace Tests
             var data = new float[] { 0 };
 
             gl.BufferSubData(WebGLRenderingContextBase.ARRAY_BUFFER, 512, data);
+        }
+
+        public void GetSupportedExtensionsRegressionTest()
+        {
+            var extensions = gl.GetSupportedExtensions();
+            Assert.NotEmpty(extensions);
         }
     }
 }
