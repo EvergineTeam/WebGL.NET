@@ -4,7 +4,7 @@ jobs:
     vmImage: 'ubuntu-16.04'
   steps:
   - script: |
-      ./build.sh && ./publish_website.sh
+      source build.sh && source publish_website.sh
     env:
       SURGE_LOGIN: $(SURGE_LOGIN)
       SURGE_TOKEN: $(SURGE_TOKEN)
@@ -13,11 +13,11 @@ jobs:
     vmImage: 'macOS-10.14'
   steps:
   - script: |
-      ./build.sh 
+      source build.sh 
 - job: Windows
   pool:
     vmImage: 'windows-2019'
   steps:
   - script: |
-      bash ./scripts/install_env_windows.sh
-      bash ./build.sh
+      bash source common.sh
+      bash source build.sh
