@@ -9,6 +9,8 @@ export PATH=$(realpath ./tools/):$PATH
 
 if [ ! -f "./tools/msbuild" ]; then
 	MSBUILDPATH=$(vswhere.exe -latest -requires Microsoft.Component.MSBuild -find MSBuild/**/Bin/MSBuild.exe)
+	echo $MSBUILDPATH
 	cmd <<< "mklink .\tools\msbuild \"$MSBUILDPATH\"" > /dev/null
+	ls -la ./tools
 fi
 
