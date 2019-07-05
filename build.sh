@@ -2,11 +2,8 @@
 
 windows() { [[ -n "$WINDIR" ]]; }
 if windows; then
-	shopt -s expand_aliases
-	alias msbuild='MSBuild.exe'
+	source scripts/init_build_windows.sh
 fi
-
-printenv
 
 defaultProject=src/WebGL.NET.sln
 defaultRestore=true
