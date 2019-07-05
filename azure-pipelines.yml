@@ -20,7 +20,5 @@ jobs:
   pool:
     vmImage: 'windows-2019'
   steps:
-  - pwsh: |
-      ./scripts/init_build_windows.ps1
   - bash: |
       ./build.sh      
