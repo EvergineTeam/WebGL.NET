@@ -4,7 +4,7 @@ using Xunit;
 
 namespace Tests
 {
-    public class WebGL2Tests
+    public class WebGL2Tests : BaseTests
     {
         private readonly WebGL2RenderingContext gl;
 
@@ -21,16 +21,7 @@ namespace Tests
         // https://github.com/WaveEngine/WebGL.NET/issues/5
         public void GetUniformBlockIndexRegressionTest()
         {
-            var vertexShader = gl.CreateShader(WebGLRenderingContextBase.VERTEX_SHADER);
-            gl.ShaderSource(vertexShader, "void main() {}");
-            gl.CompileShader(vertexShader);
-            var fragmentShader = gl.CreateShader(WebGLRenderingContextBase.FRAGMENT_SHADER);
-            gl.ShaderSource(fragmentShader, "void main() {}");
-            gl.CompileShader(fragmentShader);
-            var program = gl.CreateProgram();
-            gl.AttachShader(program, vertexShader);
-            gl.AttachShader(program, fragmentShader);
-            gl.LinkProgram(program);
+            var program = SetUpProgram(gl);
 
             gl.GetUniformBlockIndex(program, "foo");
         }
@@ -45,8 +36,9 @@ namespace Tests
 
         public void GetActiveUniformRegressionTest()
         {
-            var vertexShader = gl.CreateShader(WebGLRenderingContextBase.VERTEX_SHADER);
-            gl.ShaderSource(vertexShader, @"attribute vec3 position;
+            var program = SetUpProgram(
+                gl,
+@"attribute vec3 position;
 attribute vec3 color;
 
 uniform mat4 pMatrix;
@@ -59,14 +51,6 @@ void main(void) {
     gl_Position = pMatrix * vMatrix * wMatrix * vec4(position, 1.0);
     vColor = color;
 }");
-            gl.CompileShader(vertexShader);
-            var fragmentShader = gl.CreateShader(WebGLRenderingContextBase.FRAGMENT_SHADER);
-            gl.ShaderSource(fragmentShader, "void main() {}");
-            gl.CompileShader(fragmentShader);
-            var program = gl.CreateProgram();
-            gl.AttachShader(program, vertexShader);
-            gl.AttachShader(program, fragmentShader);
-            gl.LinkProgram(program);
 
             var uniform = gl.GetActiveUniform(program, 0);
 
@@ -76,7 +60,32 @@ void main(void) {
         public void GetSupportedExtensionsRegressionTest()
         {
             var extensions = gl.GetSupportedExtensions();
+
             Assert.NotEmpty(extensions);
+        }
+
+        public void GetUniformIndicesTest()
+        {
+            var program = SetUpProgram(
+                gl,
+@"attribute vec3 position;
+attribute vec3 color;
+
+uniform mat4 pMatrix;
+uniform mat4 vMatrix;
+uniform mat4 wMatrix;
+
+varying vec3 vColor;
+
+void main(void) {
+    gl_Position = pMatrix * vMatrix * wMatrix * vec4(position, 1.0);
+    vColor = color;
+}");
+            var names = new string[] { "pMatrix", "vMatrix", "wMatrix" };
+
+            var indices = gl.GetUniformIndices(program, names);
+
+            Assert.Equal(names.Length, indices.Length);
         }
     }
 }

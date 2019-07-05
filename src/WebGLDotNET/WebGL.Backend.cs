@@ -148,20 +148,45 @@ namespace WebGLDotNET
         protected T Invoke<T>(string method, params object[] args)
             where T : JSHandler, new()
         {
-            var actualArgs = Translate(args);
-            var rawResult = gl.Invoke(method, actualArgs);
-            DisposeArrayTypes(actualArgs);
+            var rawResult = Invoke(method, args);
 
-            var result = new T();
-            result.Handle = (JSObject)rawResult;
+            var result = new T
+            {
+                Handle = (JSObject)rawResult
+            };
 
             return result;
         }
 
-        protected T[] InvokeForArray<T>(string method, params object[] args) =>
-            ((object[])gl.Invoke(method, args))
-                .Cast<T>()
-                .ToArray();
+        protected uint[] InvokeForIntToUintArray(string method, params object[] args)
+        {
+            var temp = InvokeForArray<int>(method, args);
+            var result = new uint[temp.Length];
+
+            for (int i = 0; i < temp.Length; i++)
+            {
+                result[i] = (uint)temp[i];
+            }
+
+            return result;
+        }
+
+        protected T[] InvokeForArray<T>(string method, params object[] args)
+        {
+            using (var rawResult = (WebAssembly.Core.Array)Invoke(method, args))
+            {
+                return rawResult.ToArray(item => (T)item);
+            }
+        }
+
+        protected T[] InvokeForJavaScriptArray<T>(string method, params object[] args)
+            where T : JSHandler, new()
+        {
+            using (var rawResult = (WebAssembly.Core.Array)Invoke(method, args))
+            {
+                return rawResult.ToArray(item => new T { Handle = (JSObject)item });
+            }
+        }
 
         protected T InvokeForBasicType<T>(string method, params object[] args)
             where T : IConvertible

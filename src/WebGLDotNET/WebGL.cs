@@ -799,7 +799,7 @@ namespace WebGLDotNET
 
         public WebGLActiveInfo GetActiveUniform(WebGLProgram program, uint index) => Invoke<WebGLActiveInfo>("getActiveUniform", program, index);
 
-        public WebGLShader[] GetAttachedShaders(WebGLProgram program) => InvokeForArray<WebGLShader>("getAttachedShaders", program);
+        public WebGLShader[] GetAttachedShaders(WebGLProgram program) => InvokeForJavaScriptArray<WebGLShader>("getAttachedShaders", program);
 
         public int GetAttribLocation(WebGLProgram program, string name) => InvokeForBasicType<int>("getAttribLocation", program, name);
 
@@ -1769,7 +1769,7 @@ namespace WebGLDotNET
 
         public object GetIndexedParameter(uint target, uint index) => Invoke("getIndexedParameter", target, index);
 
-        public uint[] GetUniformIndices(WebGLProgram program, string[] uniformNames) => InvokeForArray<uint>("getUniformIndices", program, uniformNames);
+        public uint[] GetUniformIndices(WebGLProgram program, string[] uniformNames) => InvokeForIntToUintArray("getUniformIndices", program, uniformNames);
 
         public object GetActiveUniforms(WebGLProgram program, uint[] uniformIndices, uint pname) => Invoke("getActiveUniforms", program, uniformIndices, pname);
 

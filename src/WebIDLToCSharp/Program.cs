@@ -65,6 +65,7 @@ namespace WebIDLToCSharp
             readonly StreamWriter outputStream;
             readonly Dictionary<string, string> typesDictionary;
             readonly Dictionary<string, string> returnTypesMappingDictionary;
+            readonly List<string> typesCastingToSystemArray;
             readonly List<string> constants = new List<string>();
             readonly List<string> operations = new List<string>();
 
@@ -114,7 +115,14 @@ namespace WebIDLToCSharp
                 {
                     { "getError", "int" },
                     { "getUniformBlockIndex", "int" },
+                    { "getUniformIndices", "int" },
                     { "WebGLActiveInfo.type", "int" }
+                };
+
+                typesCastingToSystemArray = new List<string>
+                {
+                    "string",
+                    "uint"
                 };
             }
 
@@ -250,7 +258,24 @@ namespace WebIDLToCSharp
                 if (isArray)
                 {
                     var finalReturnType = returnType.Substring(0, returnType.Length - 2);
-                    outputStream.Write($"InvokeForArray<{finalReturnType}>");
+                    var isJavaScriptArray = !typesCastingToSystemArray.Contains(finalReturnType);
+                    var isMappingNeeded = returnTypesMappingDictionary.ContainsKey(rawMethodName);
+
+                    if (isJavaScriptArray)
+                    {
+                        outputStream.Write($"InvokeForJavaScriptArray<{finalReturnType}>");
+                    }
+                    else
+                    {
+                        if (isMappingNeeded)
+                        {
+                            outputStream.Write("InvokeForIntToUintArray");
+                        }
+                        else
+                        {
+                            outputStream.Write($"InvokeForArray<{finalReturnType}>");
+                        }
+                    }
                 }
                 else if (isReturnTypeBasic)
                 {

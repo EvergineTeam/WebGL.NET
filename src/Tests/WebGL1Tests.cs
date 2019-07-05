@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Tests
 {
-    public class WebGL1Tests
+    public class WebGL1Tests : BaseTests
     {
         private readonly WebGLRenderingContext gl;
 
@@ -35,7 +35,17 @@ namespace Tests
         public void GetSupportedExtensionsRegressionTest()
         {
             var extensions = gl.GetSupportedExtensions();
+
             Assert.NotEmpty(extensions);
+        }
+
+        public void GetAttachedShadersTest()
+        {
+            var program = SetUpProgram(gl);
+
+            var shaders = gl.GetAttachedShaders(program);
+
+            Assert.NotEmpty(shaders);
         }
     }
 }
