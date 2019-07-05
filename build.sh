@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+windows() { [[ -n "$WINDIR" ]]; }
+if windows; then
+	source scripts/init_build_windows.sh
+fi
+
 defaultProject=src/WebGL.NET.sln
 defaultRestore=true
 defaultTreatWarningsAsErrors=true
