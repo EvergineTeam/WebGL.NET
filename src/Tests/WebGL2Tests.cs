@@ -93,5 +93,15 @@ void main(void) {
 
             Assert.Equal(names.Length, indices.Length);
         }
+
+        public void SameBufferBindMultipleTargetsTest()
+        {
+            var buffer = gl.CreateBuffer();
+            gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, buffer);
+            gl.BindBuffer(WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER, buffer);
+            var error = gl.GetError();
+
+            Assert.Equal(WebGLRenderingContextBase.INVALID_OPERATION, error);
+        }
     }
 }
