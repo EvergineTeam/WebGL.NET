@@ -151,7 +151,7 @@ namespace WebGLDotNET
             var result = gl.Invoke(method, actualArgs);
             DisposeArrayTypes(actualArgs);
 
-            Console.WriteLine($"{method}(): {result ?? "null"} ({result?.GetType()})");
+            //Console.WriteLine($"{method}(): {result ?? "null"} ({result?.GetType()})");
 
             return result;
         }
