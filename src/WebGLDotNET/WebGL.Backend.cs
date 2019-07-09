@@ -64,11 +64,11 @@ namespace WebGLDotNET
     {
         protected readonly JSObject gl;
 
-        public WebGLRenderingContextBase(JSObject canvas, string contextType) : this(canvas, contextType, null)
+        protected WebGLRenderingContextBase(JSObject canvas, string contextType) : this(canvas, contextType, null)
         {
         }
 
-        public WebGLRenderingContextBase(JSObject canvas, string contextType, JSObject contextAttributes)
+        protected WebGLRenderingContextBase(JSObject canvas, string contextType, JSObject contextAttributes)
         {
             if (!IsSupported)
             {
@@ -79,7 +79,7 @@ namespace WebGLDotNET
             gl = (JSObject)canvas.Invoke("getContext", contextType, contextAttributes);
         }
 
-        public static bool IsSupported => CheckWindowPropertyExists("WebGLRenderingContext");
+        public virtual bool IsSupported => CheckWindowPropertyExists("WebGLRenderingContext");
 
         public ITypedArray CastNativeArray(object managedArray)
         {
@@ -261,16 +261,16 @@ namespace WebGLDotNET
 
     public abstract partial class WebGL2RenderingContextBase : WebGLRenderingContextBase
     {
-        public WebGL2RenderingContextBase(JSObject canvas, string contextType) 
+        protected WebGL2RenderingContextBase(JSObject canvas, string contextType) 
             : base(canvas, contextType)
         {
         }
 
-        public WebGL2RenderingContextBase(JSObject canvas, string contextType, JSObject contextAttributes) 
+        protected WebGL2RenderingContextBase(JSObject canvas, string contextType, JSObject contextAttributes) 
             : base(canvas, contextType, contextAttributes)
         {
         }
 
-        new public static bool IsSupported => CheckWindowPropertyExists("WebGL2RenderingContext");
+        public override bool IsSupported => CheckWindowPropertyExists("WebGL2RenderingContext");
     }
 }
