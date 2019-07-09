@@ -85,6 +85,12 @@ void main(void) {
 
             var indices = gl.GetUniformIndices(program, names);
 
+            if (indices == null)
+            {
+                // This happens "only" in Safari
+                throw new InconclusiveException("The indices array is empty");
+            }
+
             Assert.Equal(names.Length, indices.Length);
         }
     }

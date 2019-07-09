@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using WebAssembly;
 using WebAssembly.Core;
 
@@ -62,15 +61,25 @@ namespace WebGLDotNET
 
     public abstract partial class WebGLRenderingContextBase : JSHandler
     {
+        private const string WindowPropertyName = "WebGLRenderingContext";
+
         protected readonly JSObject gl;
 
-        protected WebGLRenderingContextBase(JSObject canvas, string contextType) : this(canvas, contextType, null)
+        protected WebGLRenderingContextBase(
+            JSObject canvas, 
+            string contextType,
+            string windowPropertyName = WindowPropertyName) 
+            : this(canvas, contextType, null, windowPropertyName)
         {
         }
 
-        protected WebGLRenderingContextBase(JSObject canvas, string contextType, JSObject contextAttributes)
+        protected WebGLRenderingContextBase(
+            JSObject canvas, 
+            string contextType, 
+            JSObject contextAttributes, 
+            string windowPropertyName = WindowPropertyName)
         {
-            if (!IsSupported)
+            if (!CheckWindowPropertyExists(windowPropertyName))
             {
                 throw new PlatformNotSupportedException(
                     $"The context '{contextType}' is not supported in this browser");
@@ -79,7 +88,7 @@ namespace WebGLDotNET
             gl = (JSObject)canvas.Invoke("getContext", contextType, contextAttributes);
         }
 
-        public virtual bool IsSupported => CheckWindowPropertyExists("WebGLRenderingContext");
+        public static bool IsSupported => CheckWindowPropertyExists(WindowPropertyName);
 
         public ITypedArray CastNativeArray(object managedArray)
         {
@@ -142,6 +151,8 @@ namespace WebGLDotNET
             var result = gl.Invoke(method, actualArgs);
             DisposeArrayTypes(actualArgs);
 
+            Console.WriteLine($"{method}(): {result ?? "null"} ({result?.GetType()})");
+
             return result;
         }
 
@@ -161,6 +172,12 @@ namespace WebGLDotNET
         protected uint[] InvokeForIntToUintArray(string method, params object[] args)
         {
             var temp = InvokeForArray<int>(method, args);
+
+            if (temp == null)
+            {
+                return null;
+            }
+
             var result = new uint[temp.Length];
 
             for (int i = 0; i < temp.Length; i++)
@@ -261,16 +278,25 @@ namespace WebGLDotNET
 
     public abstract partial class WebGL2RenderingContextBase : WebGLRenderingContextBase
     {
-        protected WebGL2RenderingContextBase(JSObject canvas, string contextType) 
-            : base(canvas, contextType)
+        private const string WindowPropertyName = "WebGL2RenderingContext";
+
+        protected WebGL2RenderingContextBase(
+            JSObject canvas, 
+            string contextType,
+            string windowPropertyName = WindowPropertyName) 
+            : this(canvas, contextType, null, windowPropertyName)
         {
         }
 
-        protected WebGL2RenderingContextBase(JSObject canvas, string contextType, JSObject contextAttributes) 
-            : base(canvas, contextType, contextAttributes)
+        protected WebGL2RenderingContextBase(
+            JSObject canvas, 
+            string contextType, 
+            JSObject contextAttributes, 
+            string windowPropertyName = WindowPropertyName) 
+            : base(canvas, contextType, contextAttributes, windowPropertyName)
         {
         }
 
-        public override bool IsSupported => CheckWindowPropertyExists("WebGL2RenderingContext");
+        public new static bool IsSupported => CheckWindowPropertyExists(WindowPropertyName);
     }
 }
