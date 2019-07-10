@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using WebAssembly;
 using WebAssembly.Core;
 
@@ -90,6 +91,13 @@ namespace WebGLDotNET
 
         public static bool IsSupported => CheckWindowPropertyExists(WindowPropertyName);
 
+        public static bool IsVerbosityEnabled { get; set; } = 
+#if DEBUG
+            true;
+#else
+            false;
+#endif
+
         public ITypedArray CastNativeArray(object managedArray)
         {
             var arrayType = managedArray.GetType();
@@ -151,7 +159,25 @@ namespace WebGLDotNET
             var result = gl.Invoke(method, actualArgs);
             DisposeArrayTypes(actualArgs);
 
-            //Console.WriteLine($"{method}(): {result ?? "null"} ({result?.GetType()})");
+            if (IsVerbosityEnabled)
+            {
+                var dump = new StringBuilder();
+                dump.Append($"{method}(");
+
+                for (var i = 0; i < args.Length; i++)
+                {
+                    var item = args[i];
+                    dump.Append(Dump(item));
+
+                    if (i < (args.Length - 1))
+                    {
+                        dump.Append(", ");
+                    }
+                }
+
+                dump.Append($") = {Dump(result)}");
+                Console.WriteLine(dump);
+            }
 
             return result;
         }
@@ -212,6 +238,8 @@ namespace WebGLDotNET
 
             return (T)result;
         }
+
+        private string Dump(object @object) => $"{@object ?? "null"} ({@object?.GetType()})";
 
         private object[] Translate(object[] args)
         {
