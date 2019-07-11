@@ -116,7 +116,8 @@ namespace WebIDLToCSharp
                     { "getError", "int" },
                     { "getUniformBlockIndex", "int" },
                     { "getUniformIndices", "int" },
-                    { "WebGLActiveInfo.type", "int" }
+                    { "WebGLActiveInfo.type", "int" },
+                    { "checkFramebufferStatus", "int" }
                 };
 
                 typesCastingToSystemArray = new List<string>

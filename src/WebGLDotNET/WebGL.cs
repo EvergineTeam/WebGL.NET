@@ -715,7 +715,7 @@ namespace WebGLDotNET
 
         public void BufferSubData(uint target, uint offset, System.Array data) => Invoke("bufferSubData", target, offset, data);
 
-        public uint CheckFramebufferStatus(uint target) => InvokeForBasicType<uint>("checkFramebufferStatus", target);
+        public uint CheckFramebufferStatus(uint target) => (uint)InvokeForBasicType<int>("checkFramebufferStatus", target);
 
         public void Clear(uint mask) => Invoke("clear", mask);
 

@@ -47,5 +47,15 @@ namespace Tests
 
             Assert.NotEmpty(shaders);
         }
+
+        // https://github.com/WaveEngine/WebGL.NET/issues/7
+        public void CheckFramebufferStatusRegressionTest()
+        {
+            gl.CreateFramebuffer();
+            
+            var status = gl.CheckFramebufferStatus(WebGLRenderingContextBase.FRAMEBUFFER);
+
+            Assert.IsType<uint>(status);
+        }
     }
 }

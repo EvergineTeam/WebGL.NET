@@ -11,7 +11,7 @@ namespace Tests
     {
         private static void Main()
         {
-            var testTypes = new Type[] { typeof(WebGL1Tests), typeof(WebGL2Tests) };
+            var testTypes = new Type[] { typeof(WebGLBackendTests), typeof(WebGL1Tests), typeof(WebGL2Tests) };
             var dictionary = DiscoverTests(testTypes);
             var testCount = dictionary.Values.Sum(tests => tests.Count());
 
