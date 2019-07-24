@@ -5,6 +5,10 @@
 
 .NET binding for WebGL through WebAssembly.
 
+We've published a preview [NuGet](https://www.nuget.org/packages/WebGLDotNET) *but* you need a copy of:
+- this [packages](https://github.com/WaveEngine/WebGL.NET/tree/master/src/packages) folder which contains mandatory NuGets from Mono still not published in nuget.org, and
+- this [NuGet.config](https://github.com/WaveEngine/WebGL.NET/blob/master/src/NuGet.config) along your SLN/CSPROJ
+
 See the samples running [here](https://webglnet.surge.sh).
 
 ## Features
