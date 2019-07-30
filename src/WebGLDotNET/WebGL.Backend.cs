@@ -354,6 +354,7 @@ namespace WebGLDotNET
             int internalformat,
             int width,
             int height,
+            int depth,
             int border,
             uint format,
             uint type,
@@ -361,7 +362,7 @@ namespace WebGLDotNET
         {
             using (var nativeArray = Uint8Array.From(source))
             {
-                TexImage3D(target, level, internalformat, width, height, 0, border, format, type, nativeArray);
+                TexImage3D(target, level, internalformat, width, height, depth, border, format, type, nativeArray);
             }
         }
 

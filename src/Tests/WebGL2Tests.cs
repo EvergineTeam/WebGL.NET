@@ -148,6 +148,7 @@ void main(void) {
                 TextureWidthOrHeight,
                 TextureWidthOrHeight,
                 0,
+                0,
                 WebGLRenderingContextBase.RGBA,
                 WebGLRenderingContextBase.UNSIGNED_BYTE,
                 span);
