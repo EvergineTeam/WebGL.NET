@@ -1,6 +1,8 @@
 *.user
+
 .vs/
+.vscode/
 bin/
-obj/
 node_modules/
+obj/
 tools/
