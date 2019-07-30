@@ -4,17 +4,17 @@
     <TargetFramework>netstandard2.0</TargetFramework>
 	  <NoWarn>NU1604</NoWarn>
     <Authors>Wave Engine Team</Authors>
-    <Description>.NET binding for WebGL through WebAssembly.</Description>
+    <Description>.NET binding for WebGL through WebAssembly. *Please* follow the installation instructions at the Project Site.</Description>
     <Copyright>Wave Engine Team</Copyright>
     <PackageProjectUrl>https://github.com/WaveEngine/WebGL.NET</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/WaveEngine/WebGL.NET/blob/master/LICENSE</PackageLicenseUrl>
     <RepositoryUrl>https://github.com/WaveEngine/WebGL.NET</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>webgl webgl2 csharp dotnet wrapper webassembly wasm binding</PackageTags>
-    <PackageReleaseNotes>Initial upload</PackageReleaseNotes>
+    <PackageReleaseNotes>Sources can now be passed as ReadOnlySpan&lt;byte&gt; for TexImage2D, TexImage3D &amp; TexSubImage3D.</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>1.0.0-preview</Version>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <Version>1.1.0-preview</Version>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
