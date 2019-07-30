@@ -258,25 +258,7 @@ namespace WebIDLToCSharp
 
                 if (isArray)
                 {
-                    var finalReturnType = returnType.Substring(0, returnType.Length - 2);
-                    var isJavaScriptArray = !typesCastingToSystemArray.Contains(finalReturnType);
-                    var isMappingNeeded = returnTypesMappingDictionary.ContainsKey(rawMethodName);
-
-                    if (isJavaScriptArray)
-                    {
-                        outputStream.Write($"InvokeForJavaScriptArray<{finalReturnType}>");
-                    }
-                    else
-                    {
-                        if (isMappingNeeded)
-                        {
-                            outputStream.Write("InvokeForIntToUintArray");
-                        }
-                        else
-                        {
-                            outputStream.Write($"InvokeForArray<{finalReturnType}>");
-                        }
-                    }
+                    WriteArrayInvoke();
                 }
                 else if (isReturnTypeBasic)
                 {
@@ -359,7 +341,30 @@ namespace WebIDLToCSharp
                 outputStream.WriteLine();
             }
 
-            static string CSharpify(string value)
+            void WriteArrayInvoke()
+            {
+                var finalReturnType = returnType.Substring(0, returnType.Length - 2);
+                var isJavaScriptArray = !typesCastingToSystemArray.Contains(finalReturnType);
+                var isMappingNeeded = returnTypesMappingDictionary.ContainsKey(rawMethodName);
+
+                if (isJavaScriptArray)
+                {
+                    outputStream.Write($"InvokeForJavaScriptArray<{finalReturnType}>");
+                }
+                else
+                {
+                    if (isMappingNeeded)
+                    {
+                        outputStream.Write("InvokeForIntToUintArray");
+                    }
+                    else
+                    {
+                        outputStream.Write($"InvokeForArray<{finalReturnType}>");
+                    }
+                }
+            }
+
+            string CSharpify(string value)
             {
                 var result = value;
 

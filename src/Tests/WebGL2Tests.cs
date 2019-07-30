@@ -1,4 +1,6 @@
-﻿using WebAssembly;
+﻿using System;
+using System.Runtime.InteropServices;
+using WebAssembly;
 using WebGLDotNET;
 using Xunit;
 
@@ -6,7 +8,13 @@ namespace Tests
 {
     public class WebGL2Tests : BaseTests
     {
+        private const int TextureWidthOrHeight = 1;
+        private const int BytesPerPixel = 4;
+
         private readonly WebGL2RenderingContext gl;
+        private readonly byte[] pixels;
+        private readonly GCHandle pixelsHandle;
+        private readonly WebGLTexture texture;
 
         public WebGL2Tests(JSObject canvas)
         {
@@ -16,6 +24,10 @@ namespace Tests
             }
 
             gl = new WebGL2RenderingContext(canvas);
+
+            pixels = new byte[TextureWidthOrHeight * 2 * BytesPerPixel];
+            pixelsHandle = GCHandle.Alloc(pixels, GCHandleType.Pinned);
+            texture = gl.CreateTexture();
         }
 
         // https://github.com/WaveEngine/WebGL.NET/issues/5
@@ -102,6 +114,75 @@ void main(void) {
             var error = gl.GetError();
 
             Assert.Equal(WebGLRenderingContextBase.INVALID_OPERATION, error);
+        }
+
+        public unsafe void ReadOnlySpanByteSourceTexImage2DTest()
+        {
+            var span = new ReadOnlySpan<byte>(pixelsHandle.AddrOfPinnedObject().ToPointer(), pixels.Length);
+
+            gl.BindTexture(WebGLRenderingContextBase.TEXTURE_2D, texture);
+            gl.TexImage2D(
+                WebGLRenderingContextBase.TEXTURE_2D,
+                0,
+                (int)WebGLRenderingContextBase.RGBA,
+                TextureWidthOrHeight,
+                TextureWidthOrHeight,
+                0,
+                WebGLRenderingContextBase.RGBA,
+                WebGLRenderingContextBase.UNSIGNED_BYTE,
+                span);
+            var error = gl.GetError();
+
+            Assert.Equal((uint)0, error);
+        }
+
+        public unsafe void ReadOnlySpanByteSourceTexImage3DTest()
+        {
+            var span = new ReadOnlySpan<byte>(pixelsHandle.AddrOfPinnedObject().ToPointer(), pixels.Length);
+
+            gl.BindTexture(WebGL2RenderingContextBase.TEXTURE_2D_ARRAY, texture);
+            gl.TexImage3D(
+                WebGL2RenderingContextBase.TEXTURE_2D_ARRAY,
+                0,
+                (int)WebGLRenderingContextBase.RGBA,
+                TextureWidthOrHeight,
+                TextureWidthOrHeight,
+                0,
+                WebGLRenderingContextBase.RGBA,
+                WebGLRenderingContextBase.UNSIGNED_BYTE,
+                span);
+            var error = gl.GetError();
+
+            Assert.Equal((uint)0, error);
+        }
+
+        public unsafe void ReadOnlySpanByteSourceTexSubImage3DTest()
+        {
+            var span = new ReadOnlySpan<byte>(pixelsHandle.AddrOfPinnedObject().ToPointer(), pixels.Length);
+
+            gl.BindTexture(WebGL2RenderingContextBase.TEXTURE_2D_ARRAY, texture);
+            gl.TexStorage3D(
+                WebGL2RenderingContextBase.TEXTURE_2D_ARRAY, 
+                1, 
+                WebGL2RenderingContextBase.RGBA8, 
+                TextureWidthOrHeight, 
+                TextureWidthOrHeight, 
+                1);
+            gl.TexSubImage3D(
+                WebGL2RenderingContextBase.TEXTURE_2D_ARRAY,
+                0,
+                0,
+                0,
+                0,
+                TextureWidthOrHeight,
+                TextureWidthOrHeight,
+                1,
+                WebGLRenderingContextBase.RGBA,
+                WebGLRenderingContextBase.UNSIGNED_BYTE,
+                span);
+            var error = gl.GetError();
+
+            Assert.Equal((uint)0, error);
         }
     }
 }

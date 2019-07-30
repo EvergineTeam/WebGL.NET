@@ -330,5 +330,69 @@ namespace WebGLDotNET
         }
 
         public new static bool IsSupported => CheckWindowPropertyExists(WindowPropertyName);
+
+        public void TexImage2D(
+            uint target, 
+            int level, 
+            int internalformat, 
+            int width, 
+            int height, 
+            int border, 
+            uint format, 
+            uint type, 
+            ReadOnlySpan<byte> source)
+        {
+            using (var nativeArray = Uint8Array.From(source))
+            {
+                TexImage2D(target, level, internalformat, width, height, border, format, type, nativeArray);
+            }
+        }
+
+        public void TexImage3D(
+            uint target,
+            int level,
+            int internalformat,
+            int width,
+            int height,
+            int border,
+            uint format,
+            uint type,
+            ReadOnlySpan<byte> source)
+        {
+            using (var nativeArray = Uint8Array.From(source))
+            {
+                TexImage3D(target, level, internalformat, width, height, 0, border, format, type, nativeArray);
+            }
+        }
+
+        public void TexSubImage3D(
+            uint target,
+            int level,
+            int xoffset,
+            int yoffset,
+            int zoffset,
+            int width,
+            int height,
+            int depth,
+            uint format,
+            uint type,
+            ReadOnlySpan<byte> source)
+        {
+            using (var nativeArray = Uint8Array.From(source))
+            {
+                TexSubImage3D(
+                    target, 
+                    level, 
+                    xoffset, 
+                    yoffset, 
+                    zoffset, 
+                    width, 
+                    height, 
+                    depth, 
+                    format, 
+                    type, 
+                    nativeArray);
+            }
+        }
     }
 }
