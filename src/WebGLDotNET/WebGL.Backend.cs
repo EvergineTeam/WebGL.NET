@@ -395,5 +395,31 @@ namespace WebGLDotNET
                     nativeArray);
             }
         }
+
+        public void TexSubImage2D(
+            uint target, 
+            int level, 
+            int xoffset, 
+            int yoffset, 
+            int width, 
+            int height, 
+            uint format, 
+            uint type, 
+            ReadOnlySpan<byte> source)
+        {
+            using (var nativeArray = Uint8Array.From(source))
+            {
+                TexSubImage2D(
+                    target,
+                    level,
+                    xoffset,
+                    yoffset,
+                    width,
+                    height,
+                    format,
+                    type,
+                    nativeArray);
+            }
+        }
     }
 }

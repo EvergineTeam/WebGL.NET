@@ -11,10 +11,10 @@
     <RepositoryUrl>https://github.com/WaveEngine/WebGL.NET</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>webgl webgl2 csharp dotnet wrapper webassembly wasm binding</PackageTags>
-    <PackageReleaseNotes>Sources can now be passed as ReadOnlySpan&lt;byte&gt; for TexImage2D, TexImage3D &amp; TexSubImage3D.</PackageReleaseNotes>
+    <PackageReleaseNotes>Source can now be passed as ReadOnlySpan&lt;byte&gt; for TexSubImage2D.</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>1.1.1-preview</Version>
-    <AssemblyVersion>1.1.1.0</AssemblyVersion>
+    <Version>1.2.0-preview</Version>
+    <AssemblyVersion>1.2.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">

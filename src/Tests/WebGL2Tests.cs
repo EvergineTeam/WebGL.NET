@@ -185,5 +185,31 @@ void main(void) {
 
             Assert.Equal((uint)0, error);
         }
+
+        public unsafe void ReadOnlySpanByteSourceTexSubImage2DTest()
+        {
+            var span = new ReadOnlySpan<byte>(pixelsHandle.AddrOfPinnedObject().ToPointer(), pixels.Length);
+
+            gl.BindTexture(WebGLRenderingContextBase.TEXTURE_2D, texture);
+            gl.TexStorage2D(
+                WebGLRenderingContextBase.TEXTURE_2D,
+                1,
+                WebGL2RenderingContextBase.RGBA8,
+                TextureWidthOrHeight,
+                TextureWidthOrHeight);
+            gl.TexSubImage2D(
+                WebGLRenderingContextBase.TEXTURE_2D,
+                0,
+                0,
+                TextureWidthOrHeight,
+                TextureWidthOrHeight,
+                0,
+                WebGLRenderingContextBase.RGBA,
+                WebGLRenderingContextBase.UNSIGNED_BYTE,
+                span);
+            var error = gl.GetError();
+
+            Assert.Equal((uint)0, error);
+        }
     }
 }
