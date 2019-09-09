@@ -2,14 +2,11 @@
 
 [![Build Status](https://dev.azure.com/webglnet/WebGL.NET/_apis/build/status/WaveEngine.WebGL.NET?branchName=master)](https://dev.azure.com/webglnet/WebGL.NET/_build/latest?definitionId=2&branchName=master)
 [![Run Tests](https://img.shields.io/badge/tests-run%20now-orange.svg)](https://webglnet.surge.sh/tests)
+[![WebGLDotNET](https://img.shields.io/nuget/v/WebGLDotNET.svg?label=WebGLDotNET)](https://www.nuget.org/packages/WebGLDotNET)
 
-.NET binding for WebGL through WebAssembly.
+.NET binding for WebGL through WebAssembly. See the samples running [here](https://webglnet.surge.sh).
 
-We've published a preview [NuGet](https://www.nuget.org/packages/WebGLDotNET) *but* you need a copy of:
-- this [packages](https://github.com/WaveEngine/WebGL.NET/tree/master/src/packages) folder which contains mandatory NuGets from Mono still not published in nuget.org, and
-- this [NuGet.config](https://github.com/WaveEngine/WebGL.NET/blob/master/src/NuGet.config) along your SLN/CSPROJ
-
-See the samples running [here](https://webglnet.surge.sh).
+If you want to jump in quickly, [Your first WebGL.NET app](https://geeks.ms/xamarinteam/2019/08/28/your-first-webgldotnet-app/) will guide you step by step.
 
 ## Features
 
