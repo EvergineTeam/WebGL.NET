@@ -1,6 +1,6 @@
 ﻿# WebGL.NET
 
-[![Build Status](https://dev.azure.com/webglnet/WebGL.NET/_apis/build/status/WaveEngine.WebGL.NET?branchName=master)](https://dev.azure.com/webglnet/WebGL.NET/_build/latest?definitionId=2&branchName=master)
+[![Build Status](https://dev.azure.com/waveengineteam/Wave.Engine/_apis/build/status/WaveEngine.WebGL.NET?branchName=master)](https://dev.azure.com/waveengineteam/Wave.Engine/_build/latest?definitionId=42&branchName=master)
 [![Run Tests](https://img.shields.io/badge/tests-run%20now-orange.svg)](https://webglnet.surge.sh/tests)
 [![NuGet](https://img.shields.io/nuget/v/WebGLDotNET.svg?label=NuGet)](https://www.nuget.org/packages/WebGLDotNET)
 
