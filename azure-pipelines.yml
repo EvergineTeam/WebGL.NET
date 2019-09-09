@@ -8,15 +8,15 @@ jobs:
 #  steps:
 #  - bash: |
 #      ./build.sh
-#    env:
-#      SURGE_LOGIN: $(SURGE_LOGIN)
-#      SURGE_TOKEN: $(SURGE_TOKEN)
 - job: Mac
   pool:
     vmImage: 'macOS-10.14'
   steps:
   - bash: |
       ./build.sh && ./publish_website.sh
+    env:
+      SURGE_LOGIN: $(SURGE_LOGIN)
+      SURGE_TOKEN: $(SURGE_TOKEN)
 - job: Windows
   pool:
     vmImage: 'windows-2019'
