@@ -13,6 +13,11 @@ If you want to jump in quickly, [Your first WebGL.NET app](https://geeks.ms/xama
 - WebGL 1 & 2 support
 - API C#-ified to make .NET Developers feel at home
 
+## Who's using it?
+
+Apart from serving Wave Engine 3.0 for the Web, it's being used in some other really nice projects, such like:
+- [Jazz² Resurrection](http://deat.tk/jazz2/wasm/): a "reimplementation of the game Jazz Jackrabbit 2 released in 1998"
+
 ## Debugging
 
 Run this in browser's Console to monitor how many bridged objects there are in such moment:
