@@ -6,12 +6,13 @@ if windows; then
 fi
 
 defaultProject=src/WebGL.NET.sln
-defaultRestore=true
+defaultConfiguration=Release
 defaultTreatWarningsAsErrors=true
 
 project=${1:-$defaultProject}
-restore=${2:-$defaultRestore}
+configuration=${2:-$defaultConfiguration}
 treatWarningsAsErrors=${3:-$defaultTreatWarningsAsErrors}
 commithash=$(git rev-parse HEAD)
+verbosity=n
 
-msbuild /restore:$restore $project -p:CommitHash=$commithash -p:TreatWarningsAsErrors=$treatWarningsAsErrors
+dotnet build $project -c $configuration -v $verbosity -p:CommitHash=$commithash;TreatWarningsAsErrors=$treatWarningsAsErrors
