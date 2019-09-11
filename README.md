@@ -8,6 +8,12 @@
 
 If you want to jump in quickly, [Your first WebGL.NET app](https://geeks.ms/xamarinteam/2019/08/28/your-first-webgldotnet-app/) will guide you step by step.
 
+### Installation instructions
+
+Apart from adding the [NuGet](https://www.nuget.org/packages/WebGLDotNET) package, make a local copy of:
+- this [packages](https://github.com/WaveEngine/WebGL.NET/tree/master/src/packages) folder, which contains mandatory NuGets from Mono still not published in nuget.org; and
+- this [NuGet.config](https://github.com/WaveEngine/WebGL.NET/blob/master/src/NuGet.config) along your SLN/CSPROJ
+
 ## Features
 
 - WebGL 1 & 2 support
