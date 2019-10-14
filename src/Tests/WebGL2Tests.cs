@@ -222,9 +222,9 @@ void main(void) {
             }
 
             var parameterName = (uint)(int)extension.GetObjectProperty("MAX_TEXTURE_MAX_ANISOTROPY_EXT");
-            var max_anisotropy = gl.GetParameter(parameterName);
+            var maxAnisotropy = gl.GetParameter(parameterName);
 
-            Assert.IsType<int>(max_anisotropy);
+            Assert.IsType<int>(maxAnisotropy);
         }
     }
 }
