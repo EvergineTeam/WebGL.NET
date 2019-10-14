@@ -211,5 +211,20 @@ void main(void) {
 
             Assert.Equal((uint)0, error);
         }
+
+        public void TextureFilterAnisotropicExtensionTest()
+        {
+            var extension = (JSObject)gl.GetExtension("EXT_texture_filter_anisotropic");
+
+            if (extension == null)
+            {
+                throw new InconclusiveException();
+            }
+
+            var parameterName = (uint)(int)extension.GetObjectProperty("MAX_TEXTURE_MAX_ANISOTROPY_EXT");
+            var max_anisotropy = gl.GetParameter(parameterName);
+
+            Assert.IsType<int>(max_anisotropy);
+        }
     }
 }
