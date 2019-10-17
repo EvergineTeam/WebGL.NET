@@ -6,6 +6,8 @@
 
 .NET binding for WebGL through WebAssembly. See the samples running [here](https://webgldotnet.surge.sh).
 
+<img src="LoadGLTFSample.gif" width="509" />
+
 If you want to jump in quickly, [Your first WebGL.NET app](https://geeks.ms/xamarinteam/2019/08/28/your-first-webgldotnet-app/) will guide you step by step.
 
 ### Installation instructions
