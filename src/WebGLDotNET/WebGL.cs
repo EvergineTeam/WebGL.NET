@@ -5,21 +5,53 @@ namespace WebGLDotNET
 #pragma warning disable MEN002
     public partial class WebGLContextAttributes
     {
-        public bool Alpha { get; set; } = true;
+        public bool Alpha
+        {
+            get => (bool)Handle.GetObjectProperty("alpha");
+            set => Handle.SetObjectProperty("alpha", value);
+        }
 
-        public bool Depth { get; set; } = true;
+        public bool Depth
+        {
+            get => (bool)Handle.GetObjectProperty("depth");
+            set => Handle.SetObjectProperty("depth", value);
+        }
 
-        public bool Stencil { get; set; } = false;
+        public bool Stencil
+        {
+            get => (bool)Handle.GetObjectProperty("stencil");
+            set => Handle.SetObjectProperty("stencil", value);
+        }
 
-        public bool Antialias { get; set; } = true;
+        public bool Antialias
+        {
+            get => (bool)Handle.GetObjectProperty("antialias");
+            set => Handle.SetObjectProperty("antialias", value);
+        }
 
-        public bool PremultipliedAlpha { get; set; } = true;
+        public bool PremultipliedAlpha
+        {
+            get => (bool)Handle.GetObjectProperty("premultipliedAlpha");
+            set => Handle.SetObjectProperty("premultipliedAlpha", value);
+        }
 
-        public bool PreserveDrawingBuffer { get; set; } = false;
+        public bool PreserveDrawingBuffer
+        {
+            get => (bool)Handle.GetObjectProperty("preserveDrawingBuffer");
+            set => Handle.SetObjectProperty("preserveDrawingBuffer", value);
+        }
 
-        public bool PreferLowPowerToHighPerformance { get; set; } = false;
+        public bool PreferLowPowerToHighPerformance
+        {
+            get => (bool)Handle.GetObjectProperty("preferLowPowerToHighPerformance");
+            set => Handle.SetObjectProperty("preferLowPowerToHighPerformance", value);
+        }
 
-        public bool FailIfMajorPerformanceCaveat { get; set; } = false;
+        public bool FailIfMajorPerformanceCaveat
+        {
+            get => (bool)Handle.GetObjectProperty("failIfMajorPerformanceCaveat");
+            set => Handle.SetObjectProperty("failIfMajorPerformanceCaveat", value);
+        }
 
     }
 

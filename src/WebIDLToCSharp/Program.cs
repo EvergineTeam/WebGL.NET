@@ -170,13 +170,21 @@ namespace WebIDLToCSharp
                 base.EnterDictionaryMember(context);
 
                 var type = TranslateType(context.type().GetText());
-                var name = CSharpify(context.IDENTIFIER_WEBIDL().GetText());
+                var rawName = context.IDENTIFIER_WEBIDL().GetText();
+                var name = CSharpify(rawName);
                 var value = context.default_().defaultValue()?.GetText();
-                outputStream.Write($"        public {type} {name} {{ get; set; }}");
+                outputStream.WriteLine($"        public {type} {name}");
 
-                if (value != null)
+                if (value == null)
                 {
-                    outputStream.WriteLine($" = {value};");
+                    outputStream.WriteLine($" {{ get; set; }}");
+                }
+                else
+                {
+                    outputStream.WriteLine($"        {{");
+                    outputStream.WriteLine($"            get => ({type})Handle.GetObjectProperty(\"{rawName}\");");
+                    outputStream.WriteLine($"            set => Handle.SetObjectProperty(\"{rawName}\", value);");
+                    outputStream.WriteLine($"        }}");
                 }
 
                 outputStream.WriteLine();

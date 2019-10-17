@@ -41,6 +41,10 @@ namespace WebGLDotNET
 
     public partial class WebGLContextAttributes : JSHandler
     {
+        public WebGLContextAttributes()
+        {
+            Handle = new JSObject();
+        }
     }
 
     public partial class WebGLObject : JSHandler
@@ -54,7 +58,7 @@ namespace WebGLDotNET
         {
         }
 
-        public WebGLRenderingContext(JSObject canvas, JSObject contextAttributes) 
+        public WebGLRenderingContext(JSObject canvas, WebGLContextAttributes contextAttributes) 
             : base(canvas, "webgl", contextAttributes)
         {
         }
@@ -77,7 +81,7 @@ namespace WebGLDotNET
         protected WebGLRenderingContextBase(
             JSObject canvas, 
             string contextType, 
-            JSObject contextAttributes, 
+            WebGLContextAttributes contextAttributes, 
             string windowPropertyName = WindowPropertyName)
         {
             if (!CheckWindowPropertyExists(windowPropertyName))
@@ -86,7 +90,7 @@ namespace WebGLDotNET
                     $"The context '{contextType}' is not supported in this browser");
             }
 
-            gl = (JSObject)canvas.Invoke("getContext", contextType, contextAttributes);
+            gl = (JSObject)canvas.Invoke("getContext", contextType, contextAttributes?.Handle);
         }
 
         public static bool IsSupported => CheckWindowPropertyExists(WindowPropertyName);
@@ -297,7 +301,7 @@ namespace WebGLDotNET
         { 
         }
 
-        public WebGL2RenderingContext(JSObject canvas, JSObject contextAttributes) 
+        public WebGL2RenderingContext(JSObject canvas, WebGLContextAttributes contextAttributes) 
             : base(canvas, "webgl2", contextAttributes)
         {
         }
@@ -318,7 +322,7 @@ namespace WebGLDotNET
         protected WebGL2RenderingContextBase(
             JSObject canvas, 
             string contextType, 
-            JSObject contextAttributes, 
+            WebGLContextAttributes contextAttributes, 
             string windowPropertyName = WindowPropertyName) 
             : base(canvas, contextType, contextAttributes, windowPropertyName)
         {

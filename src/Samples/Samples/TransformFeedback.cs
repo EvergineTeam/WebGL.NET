@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Samples.Helpers;
 using WaveEngine.Common.Math;
 using WebAssembly;
 using WebGLDotNET;
@@ -23,7 +22,6 @@ namespace Samples
 
         private Vector4 clearColor;
         private JSObject canvas;
-        private static JSObject contextAttributes;
 
         private int canvasWidth;
         private int canvasHeight;
@@ -55,9 +53,7 @@ namespace Samples
 
         public void Run()
         {
-            InitContextAttributes();
-
-            gl = new WebGL2RenderingContext(canvas, contextAttributes);
+            gl = new WebGL2RenderingContext(canvas);
 
             var vertexShaderCode =
 @"#version 300 es
@@ -110,20 +106,9 @@ void main(void)
             gl.BindTransformFeedback(WebGL2RenderingContextBase.TRANSFORM_FEEDBACK, transformFeedback);
         }
 
-        private static void InitContextAttributes()
-        {
-            Runtime.InvokeJS(
-@"
-var obj = {
-    antialias: false,
-    depth: false
-};
-Module.mono_call_static_method (""[Samples] Samples.TransformFeedback:GetCanvasContextAttributes"", [ obj ]);
-");
-        }
-
         public void Update(double elapsedTime)
-        { }
+        {
+        }
 
         public void Draw()
         {
@@ -151,11 +136,6 @@ Module.mono_call_static_method (""[Samples] Samples.TransformFeedback:GetCanvasC
             bufB = t;
 
             shouldDraw = false;
-        }
-
-        public static void GetCanvasContextAttributes(JSObject obj)
-        {
-            contextAttributes = obj;
         }
 
         public void Resize(int width, int height)

@@ -25,8 +25,7 @@ namespace Samples
             canvasWidth = (int)canvas.GetObjectProperty("width");
             canvasHeight = (int)canvas.GetObjectProperty("height");
 
-            var contextAttributes = new JSObject();
-            contextAttributes.SetObjectProperty("stencil", true);
+            var contextAttributes = new WebGLContextAttributes { Stencil = true };
             gl = new WebGL2RenderingContext(canvas, contextAttributes);
 
             return Task.CompletedTask;
