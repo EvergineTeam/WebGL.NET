@@ -91,12 +91,7 @@ namespace WebGLDotNET
 
         public static bool IsSupported => CheckWindowPropertyExists(WindowPropertyName);
 
-        public static bool IsVerbosityEnabled { get; set; } = 
-#if DEBUG
-            true;
-#else
-            false;
-#endif
+        public static bool IsVerbosityEnabled { get; set; } = false;
 
         public ITypedArray CastNativeArray(object managedArray)
         {

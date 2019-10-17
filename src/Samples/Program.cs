@@ -49,10 +49,10 @@ namespace Samples
                 new Texture2D(),
                 new TexturedCubeFromHTMLImage(),
                 new TexturedCubeFromAssets(),
-                // TODO: Report issue with monolinker (remove Linker workaround project)
                 new LoadGLTF(),
                 new TransformFeedback(),
                 new PointerLock(),
+                new DepthStencil(),
             };
 
             foreach (var sample in samples)
