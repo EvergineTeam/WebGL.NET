@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-	<NoWarn>NU1604</NoWarn>
+	  <NoWarn>NU1604</NoWarn>
     <Authors>Wave Engine Team</Authors>
     <Description>.NET binding for WebGL through WebAssembly. *Please* follow the installation instructions at the Project Site.</Description>
     <Copyright>Wave Engine Team</Copyright>
@@ -11,10 +11,10 @@
     <RepositoryUrl>https://github.com/WaveEngine/WebGL.NET</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>webgl webgl2 csharp dotnet wrapper webassembly wasm binding</PackageTags>
-    <PackageReleaseNotes>Updated Mono's WASM packages to 0.2.0.</PackageReleaseNotes>
+    <PackageReleaseNotes>Passed context attributes in prior versions were lost through the wire, now you can rely on WebGLContextAttributes class for such to make it even easier.</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>1.3.0-preview</Version>
-    <AssemblyVersion>1.3.0.0</AssemblyVersion>
+    <Version>2.0.0</Version>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
