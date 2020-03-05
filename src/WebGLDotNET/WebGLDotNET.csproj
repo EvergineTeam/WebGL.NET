@@ -11,10 +11,10 @@
     <RepositoryUrl>https://github.com/WaveEngine/WebGL.NET</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>webgl webgl2 csharp dotnet wrapper webassembly wasm binding</PackageTags>
-    <PackageReleaseNotes>Passed context attributes in prior versions were lost through the wire, now you can rely on WebGLContextAttributes class for such to make it even easier.</PackageReleaseNotes>
+    <PackageReleaseNotes>Updated .NET Wasm NuGets to 0.2.2.</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>2.0.0</Version>
-    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <Version>2.0.1</Version>
+    <AssemblyVersion>2.0.1.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
