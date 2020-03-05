@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <PackageReference Include="System.Memory" Version="4.5.2" />
-    <PackageReference Include="WebAssembly.Bindings" Version="0.2.0" />
+    <PackageReference Include="WebAssembly.Bindings" Version="0.2.2" />
   </ItemGroup>
     
   <ItemGroup>
