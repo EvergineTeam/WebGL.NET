@@ -25,6 +25,7 @@ Apart from adding the [NuGet](https://www.nuget.org/packages/WebGLDotNET) packag
 
 Apart from serving Wave Engine 3.0 for the Web, it's being used in some other really nice projects, such like:
 - [Jazz² Resurrection](http://deat.tk/jazz2/wasm/): a "reimplementation of the game Jazz Jackrabbit 2 released in 1998"
+- [Wave Engine's glTF viewer](http://gltf.waveengine.net): self-explanatory O:-)
 
 ## Debugging
 
