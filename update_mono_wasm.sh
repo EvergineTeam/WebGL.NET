@@ -13,4 +13,4 @@ curl -L -o mono_wasm_sdk.zip $WASM_DROP_URL/$WASM_SDK
 unzip -o -qq mono_wasm_sdk.zip 'packages/*' -d $1
 rm -rf mono_wasm_sdk.zip
 
-nuget locals all -clear
+dotnet nuget locals all --clear
