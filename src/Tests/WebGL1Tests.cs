@@ -1,4 +1,5 @@
 ﻿using WebAssembly;
+using WebAssembly.Core;
 using WebGLDotNET;
 using Xunit;
 
@@ -53,14 +54,20 @@ namespace Tests
         }
 
         // https://github.com/WaveEngine/WebGL.NET/issues/12
-        public void BufferDataArrayTest()
+        public void BufferDataITypedArrayRegressionTest()
         {
-            var buffer = gl.CreateBuffer();
-            gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, buffer);
-            var data = new float[] { 1, 2, 3, 4 };
+            var indexData = new short[] { 1, 2, 3, 4 };
+            
+            var indexBuffer = gl.CreateBuffer();
+            gl.BindBuffer(WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER, indexBuffer);
 
-            gl.BufferData(WebGLRenderingContextBase.ARRAY_BUFFER, data, WebGLRenderingContextBase.STATIC_DRAW);
+            gl.BufferData(WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER, 
+                Int16Array.From(indexData), 
+                WebGLRenderingContextBase.STATIC_DRAW);
 
+            gl.BindBuffer(WebGLRenderingContextBase.ELEMENT_ARRAY_BUFFER, null);
+            gl.DeleteBuffer(indexBuffer);
+            
             this.AssertNoWebGLError();
         }
 

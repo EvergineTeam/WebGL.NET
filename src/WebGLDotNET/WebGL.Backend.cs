@@ -97,6 +97,12 @@ namespace WebGLDotNET
 
         public static bool IsVerbosityEnabled { get; set; } = false;
 
+        public void BufferData(uint target, System.Array data, uint usage) =>
+            BufferData(target, CastNativeArray(data), usage);
+
+        public void BufferSubData(uint target, uint offset, System.Array data) =>
+            BufferSubData(target, offset, CastNativeArray(data));
+
         public ITypedArray CastNativeArray(object managedArray)
         {
             var arrayType = managedArray.GetType();

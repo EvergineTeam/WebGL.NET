@@ -97,7 +97,8 @@ namespace WebIDLToCSharp
                     { "GLuint", "uint" },
                     { "GLuint64", "ulong" },
                     // Workarounds to bypass commented typedefs with "or"
-                    { "BufferDataSource", "System.Array" },
+                    // typedef (ArrayBuffer or ArrayBufferView) BufferDataSource;
+                    { "BufferDataSource", "ITypedArray" },
                     // typedef (ImageData or HTMLImageElement or HTMLCanvasElement or HTMLVideoElement) TexImageSource;
                     { "TexImageSource", "object" },
                     // Workarounds for WebGL 2 missing definitions
