@@ -11,10 +11,10 @@
     <RepositoryUrl>https://github.com/WaveEngine/WebGL.NET</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>webgl webgl2 csharp dotnet wrapper webassembly wasm binding</PackageTags>
-    <PackageReleaseNotes>Updated .NET Wasm NuGets to 0.2.2.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added, in WebGL 1 context, BufferData() and BufferSubData() overloads for ITypedArray data.</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <Version>2.0.1</Version>
-    <AssemblyVersion>2.0.1.0</AssemblyVersion>
+    <Version>2.1.0</Version>
+    <AssemblyVersion>2.1.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
