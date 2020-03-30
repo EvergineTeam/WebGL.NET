@@ -1,5 +1,4 @@
-﻿using System;
-using WebAssembly;
+﻿using WebAssembly;
 using WebGLDotNET;
 using Xunit;
 
@@ -15,12 +14,7 @@ namespace Tests
         }
 
         // https://github.com/WaveEngine/WebGL.NET/issues/5
-        public void GetErrorRegressionTest()
-        {
-            var error = gl.GetError();
-
-            Assert.Equal(WebGLRenderingContextBase.NO_ERROR, error);
-        }
+        public void GetErrorRegressionTest() => this.AssertNoWebGLError();
 
         public void BufferSubDataRegressionTest()
         {
@@ -56,6 +50,25 @@ namespace Tests
             var status = gl.CheckFramebufferStatus(WebGLRenderingContextBase.FRAMEBUFFER);
 
             Assert.IsType<uint>(status);
+        }
+
+        // https://github.com/WaveEngine/WebGL.NET/issues/12
+        public void BufferDataArrayTest()
+        {
+            var buffer = gl.CreateBuffer();
+            gl.BindBuffer(WebGLRenderingContextBase.ARRAY_BUFFER, buffer);
+            var data = new float[] { 1, 2, 3, 4 };
+
+            gl.BufferData(WebGLRenderingContextBase.ARRAY_BUFFER, data, WebGLRenderingContextBase.STATIC_DRAW);
+
+            this.AssertNoWebGLError();
+        }
+
+        private void AssertNoWebGLError()
+        {
+            var error = gl.GetError();
+
+            Assert.Equal(WebGLRenderingContextBase.NO_ERROR, error);
         }
     }
 }
