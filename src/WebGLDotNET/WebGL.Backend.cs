@@ -148,16 +148,20 @@ namespace WebGLDotNET
             {
                 var arg = args[i];
 
-                if (arg is ITypedArray typedArray && typedArray != null)
+                if (arg == null)
+                {
+                    continue;
+                }
+
+                if (arg is ITypedArray typedArray)
                 {
                     var disposable = (IDisposable)typedArray;
                     disposable.Dispose();
                 }
-                if (arg is WebAssembly.Core.Array jsArray && jsArray != null)
+                else if (arg is WebAssembly.Core.Array jsArray)
                 {
                     var disposable = (IDisposable)jsArray;
                     disposable.Dispose();
-
                 }
             }
         }
@@ -225,27 +229,36 @@ namespace WebGLDotNET
 
         protected T[] InvokeForArray<T>(string method, params object[] args)
         {
+            T[] result;
+
             using (var rawResult = (WebAssembly.Core.Array)Invoke(method, args))
             {
-                return rawResult.ToArray(item => (T)item);
+                result = rawResult.ToArray(item => (T)item);
             }
+
+            return result;
         }
 
         protected T[] InvokeForJavaScriptArray<T>(string method, params object[] args)
             where T : JSHandler, new()
         {
+            T[] result;
+
             using (var rawResult = (WebAssembly.Core.Array)Invoke(method, args))
             {
-                return rawResult.ToArray(item => new T { Handle = (JSObject)item });
+                result = rawResult.ToArray(item => new T { Handle = (JSObject)item });
             }
+
+            return result;
         }
 
         protected T InvokeForBasicType<T>(string method, params object[] args)
             where T : IConvertible
         {
-            var result = Invoke(method, args);
 
-            return (T)result;
+            var result = (T)Invoke(method, args);
+
+            return result;
         }
 
         private string Dump(object @object) => $"{@object ?? "null"} ({@object?.GetType()})";
@@ -270,18 +283,13 @@ namespace WebGLDotNET
                 }
                 else if (arg is System.Array array)
                 {
-                    if (((System.Array)arg).GetType().GetElementType().IsPrimitive)
+                    if (array.GetType().GetElementType().IsPrimitive)
+                    {
                         arg = CastNativeArray(array);
+                    }
                     else
                     {
-                        // WebAssembly.Core.Array or Runtime should probably provide some type of
-                        // helper functions for doing this.  I will put it on my todo list.
-                        var argArray = new WebAssembly.Core.Array();
-                        foreach(var item in (System.Array)arg)
-                        {
-                            argArray.Push(item);
-                        }
-                        arg = argArray;
+                        arg = new WebAssembly.Core.Array(array);
                     }
                 }
 
