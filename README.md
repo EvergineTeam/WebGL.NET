@@ -1,4 +1,10 @@
-﻿# WebGL.NET
+**Update November 13th, 2020**
+
+After noticing performance issues with this approach, we have moved to [Emscripten's EGL one](https://emscripten.org/docs/porting/multimedia_and_graphics/EGL-Support-in-Emscripten.html) through static linking –which has resulted much faster. [Wave Engine 3.0 preview 4](https://geeks.ms/waveengineteam/2020/08/28/wave-engine-3-0-preview-4/) already contains these changes.
+
+Our efforts will go in this direction and, surely, we will not maintain this repository as much as before. However, WebGL.NET is still valid whenever performance is not the key ([this article](https://marcoscobena.com/?i=wave-engine-web-performance) draws a red line on it).
+
+# WebGL.NET
 
 [![Build Status](https://dev.azure.com/waveengineteam/Wave.Engine/_apis/build/status/WaveEngine.WebGL.NET?branchName=master)](https://dev.azure.com/waveengineteam/Wave.Engine/_build/latest?definitionId=42&branchName=master)
 [![Run Tests](https://img.shields.io/badge/tests-run%20now-orange.svg)](https://webgldotnet.surge.sh/tests)
